@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI PM Academy - Dashboard V6</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0c1220;
+  --bg-secondary: #141d30;
+  --bg-card: rgba(20, 32, 55, 0.75);
+  --text-primary: #f0f4f8;
+  --text-secondary: #8b9cb8;
+  --accent-gold: #d4a853;
+  --accent-teal: #2dd4bf;
+  --accent-coral: #f472b6;
+  --border-color: rgba(212, 168, 83, 0.15);
+  --shadow-warm: 0 12px 40px rgba(212, 168, 83, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 10% 10%, rgba(212, 168, 83, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, rgba(45, 212, 191, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(244, 114, 182, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 36px 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.header-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.header p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 44px;
+  animation: fadeInUp 0.7s ease-out 0.2s backwards;
+}
+
+.tab-btn {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.section {
+  display: none;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.section.active { display: block; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 26px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease-out backwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 168, 83, 0.25);
+  box-shadow: var(--shadow-warm);
+}
+
+.card:hover::before { opacity: 1; }
+
+.card h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: 14px;
+  margin-bottom: 10px;
+  color: var(--accent-gold);
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.link-group {
+  background: rgba(12, 18, 32, 0.5);
+  border-radius: 14px;
+  padding: 18px;
+  border-left: 3px solid var(--accent-gold);
+}
+
+.link-group.inspiration {
+  border-left-color: var(--accent-coral);
+}
+
+.link-group h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.92rem;
+}
+
+.link-item:hover {
+  color: var(--accent-teal);
+  padding-left: 6px;
+}
+
+.link-item::before {
+  content: '→';
+  opacity: 0.5;
+}
+
+.case-study {
+  background: linear-gradient(135deg, rgba(212, 168, 83, 0.06), rgba(45, 212, 191, 0.04));
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 14px 0;
+  position: relative;
+}
+
+.case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.case-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.case-tag {
+  background: rgba(45, 212, 191, 0.15);
+  color: var(--accent-teal);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.case-content {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.case-content strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.case-highlights {
+  margin-top: 12px;
+  padding-left: 16px;
+}
+
+.case-highlights li {
+  margin: 6px 0;
+  list-style: disc;
+  color: var(--accent-teal);
+}
+
+.case-highlights li span {
+  color: var(--text-secondary);
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.level-beginner { background: rgba(45, 212, 191, 0.15); color: var(--accent-teal); }
+.level-intermediate { background: rgba(212, 168, 83, 0.15); color: var(--accent-gold); }
+.level-advanced { background: rgba(244, 114, 182, 0.15); color: var(--accent-coral); }
+
+textarea, input[type="text"], select {
+  width: 100%;
+  background: rgba(12, 18, 32, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 11px;
+  padding: 14px;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.93rem;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+textarea:focus, input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.1);
+}
+
+input[type="text"], select {
+  height: 46px;
+  min-height: auto;
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  border: none;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212, 168, 83, 0.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  margin-left: 8px;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  box-shadow: none;
+}
+
+ul { list-style: none; padding: 0; }
+
+li {
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+li:last-child { border-bottom: none; }
+
+li:hover {
+  padding-left: 6px;
+  color: var(--accent-gold);
+}
+
+.progress-ring {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.progress-ring-circle {
+  fill: none;
+  stroke: rgba(212, 168, 83, 0.15);
+  stroke-width: 8;
+}
+
+.progress-ring-progress {
+  fill: none;
+  stroke: url(#gradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.progress-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.checkin-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.checkin-day {
+  aspect-ratio: 1;
+  background: rgba(12, 18, 32, 0.5);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.checkin-day:hover {
+  border-color: var(--accent-gold);
+  background: rgba(212, 168, 83, 0.08);
+}
+
+.checkin-day.checked {
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  font-weight: 600;
+}
+
+.checkin-day.today {
+  border: 2px solid var(--accent-teal);
+}
+
+.knowledge-card {
+  background: rgba(12, 18, 32, 0.5);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent-teal);
+}
+
+.knowledge-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: var(--accent-teal);
+}
+
+.knowledge-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.report-output {
+  background: rgba(12, 18, 32, 0.6);
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat-box {
+  background: rgba(12, 18, 32, 0.5);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-name {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(35px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: 1fr; }
+  .links-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+<div class="header-badge">🎓 AI PM Academy</div>
+<h1>Dashboard V6</h1>
+<p>从"会用 AI"到"会设计 AI 产品"的系统化学习平台</p>
+</div>
+
+<div class="nav-tabs">
+<button class="tab-btn active" onclick="switchTab('home')">🏠 首页</button>
+<button class="tab-btn" onclick="switchTab('academy')">📚 产品拆解学院</button>
+<button class="tab-btn" onclick="switchTab('prompt')">🧠 Prompt训练营</button>
+<button class="tab-btn" onclick="switchTab('knowledge')">🔬 AI知识库</button>
+<button class="tab-btn" onclick="switchTab('projects')">💻 项目中心</button>
+<button class="tab-btn" onclick="switchTab('weekly')">📊 周报系统</button>
+<button class="tab-btn" onclick="switchTab('growth')">🏆 成长系统</button>
+</div>
+
+<!-- 首页 -->
+<div id="section-home" class="section active">
+
+<div class="grid">
+
+<div class="card" style="grid-column: span 2;">
+<h2>📰 AI 新闻入口 & 🔥 灵感发现</h2>
+<div class="links-grid">
+<div class="link-group">
+<h4>📰 AI 新闻网站</h4>
+<a href="https://openai.com/blog" target="_blank" class="link-item">OpenAI Blog</a>
+<a href="https://www.anthropic.com/news" target="_blank" class="link-item">Anthropic News</a>
+<a href="https://huggingface.co/blog" target="_blank" class="link-item">Hugging Face Blog</a>
+<a href="https://venturebeat.com/category/ai/" target="_blank" class="link-item">VentureBeat AI</a>
+</div>
+<div class="link-group inspiration">
+<h4>🔥 灵感发现</h4>
+<a href="https://www.producthunt.com/topics/artificial-intelligence" target="_blank" class="link-item">Product Hunt AI</a>
+<a href="https://theresanaiforthat.com" target="_blank" class="link-item">There's An AI For That</a>
+<a href="https://github.com/trending?since=daily" target="_blank" class="link-item">GitHub Trending</a>
+<a href="https://www.ycombinator.com/companies?category=ai" target="_blank" class="link-item">Y Combinator AI</a>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>✅ 今日任务</h2>
+<div style="display:flex;gap:8px;margin-bottom:14px;">
+<input type="text" id="taskInput" placeholder="添加新任务..." onkeypress="if(event.key==='Enter')addTask()">
+<button class="btn" onclick="addTask()" style="margin:0;padding:11px 18px;">+</button>
+</div>
+<ul id="taskList"></ul>
+<div class="stats-row" style="grid-template-columns:repeat(2,1fr);">
+<div class="stat-box">
+<div class="stat-number" id="taskTotal">0</div>
+<div class="stat-name">总任务</div>
+</div>
+<div class="stat-box">
+<div class="stat-number" id="taskCompleted">0</div>
+<div class="stat-name">已完成</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>💡 快速笔记</h2>
+<textarea id="quickNotes" placeholder="记录今天的灵感和想法..." style="min-height:160px;"></textarea>
+<button class="btn" onclick="saveNotes()">保存笔记</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- 产品拆解学院 -->
+<div id="section-academy" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>🎯 ChatGPT 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">ChatGPT</span>
+<span class="case-tag">对话式 AI · SaaS</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>通用 AI 助手，通过自然语言交互提供信息、创意和解决方案<br><br>
+<strong>目标用户：</strong>学生、开发者、产品经理、企业用户、研究人员<br><br>
+<strong>核心价值主张：</strong>"提问即获得答案"，降低 AI 使用门槛<br><br>
+<strong>商业模式：</strong>Freemium + 订阅制 (Plus $20/月) + API 按量付费
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>极简首页设计 - 单输入框降低认知负担</span></li>
+<li><span>强大的对话体验 - 上下文记忆、多轮对话</span></li>
+<li><span>Memory 能力 - 跨会话记住用户偏好</span></li>
+<li><span>Projects 工作区 - 文件上传、自定义指令</span></li>
+<li><span>GPT Store - 第三方应用生态</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"产品经理模式" - 自动生成 PRD、竞品分析<br>
+• 引入团队协作功能 - 共享对话历史和 Prompt<br>
+• 开放更多定制化选项 - 行业模板、角色预设
+</div>
+</div>
+
+<div class="card">
+<h2>🔍 Perplexity 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Perplexity AI</span>
+<span class="case-tag">AI 搜索引擎 · Prosumer</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>AI 驱动的搜索引擎，提供带引用来源的回答<br><br>
+<strong>目标用户：</strong>研究者、学生、专业人士、知识工作者<br><br>
+<strong>核心价值：</strong>"搜索 + 总结 + 引用"，一站式获取可信信息<br><br>
+<strong>差异化优势：</strong>实时联网、来源可追溯、减少幻觉
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>引用机制 - 每句话都有来源链接</span></li>
+<li><span>实时搜索能力 - 整合多个搜索引擎</span></li>
+<li><span>Follow-up 问题链 - 引导深度探索</span></li>
+<li><span>Collections 功能 - 收藏和组织研究</span></li>
+<li><span>Pro 版订阅 - 高级模型 + 更多查询</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"行业报告生成器" - 一键生成行业分析<br>
+• 团队知识库共享 - 企业版协作功能<br>
+• 可视化数据图表 - 将搜索结果转为图表
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ Cursor 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Cursor</span>
+<span class="case-tag">AI 编程工具 · Developer Tools</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>AI 原生的代码编辑器，重新定义编程体验<br><br>
+<strong>目标用户：</strong>开发者、全栈工程师、技术创业者<br><br>
+<strong>核心价值：</strong>从"写代码"升级为"描述需求，AI 实现"<br><br>
+<strong>技术栈：</strong>Fork 自 VS Code，集成 Claude/GPT-4
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Composer 模式 - 多文件同时编辑</span></li>
+<li><span>Codebase 索引 - 理解整个项目上下文</span></li>
+<li><span>Cmd+K/Cmd+L - 内联编辑和聊天</span></li>
+<li><span>.cursorrules - 项目级 AI 规则配置</span></li>
+<li><span>Tab 补全 - 智能代码预测</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"PM 模式" - 用自然语言生成原型<br>
+• 代码审查自动化 - AI Code Review 集成<br>
+• 团队协作增强 - 实时 Pair Programming
+</div>
+</div>
+
+<div class="card">
+<h2>🎨 Lovable 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Lovable</span>
+<span class="case-tag">AI 应用构建 · No-Code</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>用 Prompt 生成完整 Web 应用的 AI 平台<br><br>
+<strong>目标用户：</strong>非技术人员、创业者、产品原型设计师<br><br>
+<strong>核心价值：</strong>"说一句话，得到一个 App"<br><br>
+<strong>技术实现：</strong>Supabase 后端 + Next.js 前端 + AI 编排
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Natural Language to UI - 自然语言转界面</span></li>
+<li><span>实时预览 - 边说边看效果</span></li>
+<li><span>数据库自动生成 - CRUD 一键完成</span></li>
+<li><span>部署一体化 - 直接上线托管</span></li>
+<li><span>迭代修改 - 对话式调整 UI</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"移动端适配" - 自动响应式设计<br>
+• 模板市场 - 行业最佳实践模板<br>
+• 协作功能 - 多人共同设计
+</div>
+</div>
+
+<div class="card">
+<h2>🔄 n8n 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">n8n</span>
+<span class="case-tag">工作流自动化 · Open Source</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>开源的工作流自动化平台，连接 AI 与业务系统<br><br>
+<strong>目标用户：</strong>开发者、运维工程师、AI 工程师、中小企业<br><br>
+<strong>核心价值：</strong>用可视化方式编排 Agent 和自动化流程<br><br>
+<strong>商业模式：</strong>开源免费 + 云服务 (n8n Cloud)
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>节点式编程 - 可视化拖拽编排</span></li>
+<li><span>200+ 集成 - 连接主流 SaaS 服务</span></li>
+<li><span>AI Agent 支持 - LLM 作为工作流节点</span></li>
+<li><span>Self-hosted - 数据隐私可控</span></li>
+<li><span>JavaScript 表达式 - 灵活的数据处理</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"AI PM 模板库" - 产品管理专用工作流<br>
+• 更强的 AI Agent 能力 - 自主决策节点<br>
+• 低代码扩展 - 让非技术人员也能创建工作流
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- Prompt训练营 -->
+<div id="section-prompt" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>🧠 RCGCF 公式详解</h2>
+<table style="margin-top:12px;width:100%;">
+<tr><th>字母</th><th>含义</th><th>示例</th></tr>
+<tr><td><strong>R</strong>ole</td><td>角色</td><td>"你是一位高级AI产品经理"</td></tr>
+<tr><td><strong>C</strong>ontext</td><td>背景</td><td>"我们正在开发一个智能客服系统"</td></tr>
+<tr><td><strong>G</strong>oal</td><td>目标</td><td>"请编写一份完整的PRD文档"</td></tr>
+<tr><td><strong>C</strong>onstraint</td><td>约束</td><td>"输出不超过2000字，包含用户故事"</td></tr>
+<tr><td><strong>F</strong>ormat</td><td>格式</td><td>"使用Markdown格式，分章节呈现"</td></tr>
+</table>
+<div style="background:linear-gradient(135deg,rgba(212,168,83,0.08),rgba(45,212,191,0.08));padding:16px;border-radius:12px;text-align:center;margin-top:16px;font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--accent-gold);">
+RCGCF = Role + Context + Goal + Constraint + Format
+</div>
+</div>
+
+<div class="card">
+<h2>🏅 分级练习体系</h2>
+
+<h3 style="color:var(--accent-teal);"><span class="level-badge level-beginner">入门级</span> 基础 Prompt 编写</h3>
+<p style="font-size:0.9rem;color:var(--text-secondary);margin:8px 0;">掌握 RCGCF 结构，能写出清晰的单轮 Prompt</p>
+<textarea placeholder="练习题：使用 RCGCF 公式，编写一个让 AI 帮你总结文章的 Prompt..." style="min-height:100px;" id="promptBeginner"></textarea>
+<button class="btn" onclick="savePrompt('beginner')" style="font-size:0.85rem;">提交练习</button>
+
+<h3 style="color:var(--accent-gold);margin-top:20px;"><span class="level-badge level-intermediate">进阶级</span> 多轮对话设计</h3>
+<p style="font-size:0.9rem;color:var(--text-secondary);margin:8px 0;">设计复杂的对话流，处理边界情况</p>
+<textarea placeholder="练习题：设计一个 AI 面试官的完整 Prompt 系统，包括开场、提问、追问、结束..." style="min-height:100px;" id="promptIntermediate"></textarea>
+<button class="btn" onclick="savePrompt('intermediate')" style="font-size:0.85rem;">提交练习</button>
+
+<h3 style="color:var(--accent-coral);margin-top:20px;"><span class="level-badge level-advanced">高级</span> System Prompt 架构</h3>
+<p style="font-size:0.9rem;color:var(--text-secondary);margin:8px 0;">设计完整的 System Prompt，包含 Few-shot、CoT 等</p>
+<textarea placeholder="练习题：为一个 AI 产品助手设计完整的 System Prompt，包含角色定义、能力边界、输出规范..." style="min-height:100px;" id="promptAdvanced"></textarea>
+<button class="btn" onclick="savePrompt('advanced')" style="font-size:0.85rem;">提交练习</button>
+
+</div>
+
+<div class="card">
+<h2>❌ vs ✅ Prompt 对比案例</h2>
+
+<div style="background:rgba(244,114,182,0.08);border-left:3px solid var(--accent-coral);padding:14px;border-radius:8px;margin:12px 0;">
+<strong style="color:var(--accent-coral);">❌ 差 Prompt：</strong>
+<div style="margin-top:8px;color:var(--text-secondary);font-size:0.9rem;">帮我写个产品需求文档</div>
+<div style="margin-top:8px;font-size:0.82rem;color:var(--text-secondary);">
+问题：无角色、无背景、无目标、无约束、无格式 → AI 只能猜测
+</div>
+</div>
+
+<div style="background:rgba(45,212,191,0.08);border-left:3px solid var(--accent-teal);padding:14px;border-radius:8px;margin:12px 0;">
+<strong style="color:var(--accent-teal);">✅ 好 Prompt：</strong>
+<div style="margin-top:8px;color:var(--text-secondary);font-size:0.9rem;line-height:1.7;">
+<strong>[Role]</strong> 你是一位有 8 年经验的 B2B SaaS 产品经理，擅长企业级产品设计。<br>
+<strong>[Context]</strong> 我们公司要开发一个 AI 智能客服系统，服务于电商行业的中大型客户。<br>
+<strong>[Goal]</strong> 请编写一份 PRD，覆盖核心功能需求和非功能性需求。<br>
+<strong>[Constraint]</strong> 字数控制在 3000 字以内，必须包含用户故事格式。<br>
+<strong>[Format]</strong> 使用 Markdown，分为：产品概述、用户画像、功能列表、用户故事、验收标准。
+</div>
+</div>
+
+</div>
+
+<div class="card">
+<h2>📝 Prompt 收藏库</h2>
+<textarea id="promptLibrary" placeholder="在这里记录你发现的高质量 Prompt...&#10;&#10;分类建议：PRD编写 | 竞品分析 | 用户研究 | 技术方案 | 数据分析" style="min-height:180px;"></textarea>
+<button class="btn" onclick="savePrompts()">保存到收藏库</button>
+<div id="savedPromptsList" style="margin-top:16px;"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- AI知识库 -->
+<div id="section-knowledge" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>🔗 RAG (检索增强生成)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 RAG？</div>
+<div class="knowledge-desc">
+RAG = Retrieval-Augmented Generation，结合了检索和生成的 AI 架构。<br><br>
+<strong>核心原理：</strong><br>
+1. 用户提问 → 2. 向量数据库检索相关文档 → 3. 将文档作为上下文 → 4. LLM 生成回答并引用来源<br><br>
+<strong>典型应用：</strong>企业知识库问答、智能客服、法律咨询、医疗诊断辅助
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">RAG 核心组件</div>
+<div class="knowledge-desc">
+• <strong>Embedding Model</strong>: 将文本转换为向量 (OpenAI ada-002, Cohere)<br>
+• <strong>Vector Database</strong>: 存储和检索向量 (Pinecone, Weaviate, Milvus)<br>
+• <strong>Retriever</strong>: 相似度搜索算法 (BM25, Dense Retrieval)<br>
+• <strong>Generator</strong>: LLM 生成最终回答 (GPT-4, Claude)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">作为 PM 的关键决策点</div>
+<div class="knowledge-desc">
+• 选择哪个 Embedding 模型？（精度 vs 成本）<br>
+• 向量数据库选型？（云服务 vs 自建）<br>
+• 如何保证数据新鲜度？（增量更新策略）<br>
+• 如何评估 RAG 质量？（RAGAS 框架）
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🤖 Agent (智能体)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 AI Agent？</div>
+<div class="knowledge-desc">
+Agent = 具备自主决策和行动能力的 AI 系统，不只是"回答问题"，而是"完成任务"。<br><br>
+<strong>核心特征：</strong><br>
+1. <strong>感知</strong> - 接收和理解环境信息<br>
+2. <strong>推理</strong> - 规划任务步骤<br>
+3. <strong>行动</strong> - 调用工具/API 执行<br>
+4. <strong>反思</strong> - 根据结果调整策略
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">主流 Agent 框架</div>
+<div class="knowledge-desc">
+• <strong>LangChain / LangGraph</strong> - 最流行的 Agent 开发框架<br>
+• <strong>CrewAI</strong> - 多 Agent 协作框架<br>
+• <strong>AutoGPT</strong> - 自主 Agent 先驱<br>
+• <strong>OpenAI Assistants API</strong> - 官方 Agent 方案<br>
+• <strong>n8n</strong> - 低代码工作流 Agent
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 设计模式</div>
+<div class="knowledge-desc">
+• <strong>ReAct</strong> - Reasoning + Acting 循环<br>
+• <strong>Plan-and-Execute</strong> - 先规划后执行<br>
+• <strong>Multi-Agent</strong> - 多个专业 Agent 协作<br>
+• <strong>Tool Use</strong> - 动态选择和调用工具
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔌 MCP (Model Context Protocol)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 MCP？</div>
+<div class="knowledge-desc">
+MCP = Model Context Protocol，Anthropic 提出的开放标准，让 AI 模型能够安全地与外部数据源和工具交互。<br><br>
+<strong>类比理解：</strong>MCP 对 AI 就像 USB 对电脑 - 统一的接口标准<br><br>
+<strong>核心价值：</strong>一次集成，所有 MCP 兼容的工具都能用
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">MCP 三层架构</div>
+<div class="knowledge-desc">
+• <strong>MCP Client</strong> - AI 应用 (Claude Desktop, IDE 插件)<br>
+• <strong>MCP Server</strong> - 数据源/工具 (GitHub, Slack, 数据库)<br>
+• <strong>MCP Host</strong> - 运行环境 (桌面应用, Web 应用)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">为什么 PM 要关注 MCP？</div>
+<div class="knowledge-desc">
+• 降低 AI 集成成本 - 不再需要逐个对接 API<br>
+• 生态效应 - 越多的 MCP Server，产品越强大<br>
+• 标准化竞争 - 类似 App Store 的平台机会<br>
+• 未来趋势 - 可能成为 AI 时代的"API 标准"
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📚 学习资源收藏</h2>
+<textarea id="knowledgeNotes" placeholder="记录你在学习 RAG/Agent/MCP 过程中的笔记和思考..." style="min-height:180px;"></textarea>
+<button class="btn" onclick="saveKnowledgeNotes()">保存笔记</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- 项目中心 -->
+<div id="section-projects" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>💻 当前项目列表</h2>
+<div style="display:flex;gap:8px;margin-bottom:14px;">
+<input type="text" id="projectInput" placeholder="新项目名称..." onkeypress="if(event.key==='Enter')addProject()">
+<select id="projectStatus" style="width:auto;min-width:100px;">
+<option value="planning">📋 规划中</option>
+<option value="progress" selected>🚀 进行中</option>
+<option value="completed">✅ 已完成</option>
+</select>
+<button class="btn" onclick="addProject()" style="margin:0;padding:11px 18px;">+</button>
+</div>
+<div id="projectList"></div>
+</div>
+
+<div class="card">
+<h2>🎯 Smart Recipe Recommender 项目详情</h2>
+<div style="background:rgba(12,18,32,0.5);border-radius:12px;padding:16px;margin:12px 0;">
+<div style="font-weight:600;font-size:1.05rem;color:var(--accent-gold);margin-bottom:10px;">项目概览</div>
+<div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">
+<strong>定位：</strong>AI 驱动的个性化菜谱推荐系统<br>
+<strong>目标用户：</strong>家庭厨师、健康饮食人群、烹饪新手<br>
+<strong>核心功能：</strong>图片识别食材 → 智能推荐菜谱 → 营养分析<br>
+<strong>技术栈：</strong>GPT-4 Vision + Food Database + React Native<br>
+<strong>当前阶段：</strong>MVP 开发中
+</div>
+</div>
+<textarea id="projectDetail" placeholder="更新项目进展、记录遇到的问题和解决方案..." style="min-height:140px;"></textarea>
+<button class="btn" onclick="saveProjectDetail()">保存进展</button>
+</div>
+
+<div class="card">
+<h2>🔗 GitHub 同步</h2>
+<div style="background:linear-gradient(135deg,rgba(212,168,83,0.08),rgba(45,212,191,0.08));border:1px solid var(--border-color);border-radius:12px;padding:18px;margin:14px 0;">
+<div style="font-weight:600;margin-bottom:10px;">仓库配置</div>
+<input type="text" id="githubRepo" placeholder="GitHub 仓库地址 (如: https://github.com/user/repo)" style="margin-bottom:10px;">
+<input type="text" id="githubToken" placeholder="Personal Access Token (可选)" type="password">
+</div>
+<button class="btn" onclick="syncToGithub()">🔄 同步到 GitHub</button>
+<div id="syncStatus" style="margin-top:12px;font-size:0.9rem;color:var(--text-secondary);"></div>
+<div style="margin-top:16px;padding:14px;background:rgba(12,18,32,0.5);border-radius:10px;font-size:0.88rem;color:var(--text-secondary);">
+<strong>同步内容：</strong><br>
+• 任务完成状态<br>
+• 项目进度更新<br>
+• 学习笔记<br>
+• 复盘记录
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- 周报系统 -->
+<div id="section-weekly" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>📊 本周数据统计</h2>
+<div class="stats-row">
+<div class="stat-box">
+<div class="stat-number" id="weekTasksCompleted">0</div>
+<div class="stat-name">完成任务</div>
+</div>
+<div class="stat-box">
+<div class="stat-number" id="studyHours">0h</div>
+<div class="stat-name">学习时长</div>
+</div>
+<div class="stat-box">
+<div class="stat-number" id="casesStudied">0</div>
+<div class="stat-name">案例学习</div>
+</div>
+</div>
+<div style="margin-top:20px;">
+<label style="font-size:0.92rem;color:var(--text-secondary);display:block;margin-bottom:8px;">本周学习时长（小时）：</label>
+<input type="number" id="hoursInput" placeholder="例如: 15" min="0" max="168" style="width:150px;">
+</div>
+</div>
+
+<div class="card">
+<h2>📝 周报内容填写</h2>
+<textarea id="weeklyAccomplishment" placeholder="本周主要成就和产出..." style="min-height:90px;"></textarea>
+<textarea id="weeklyLearning" placeholder="本周学到的关键知识点..." style="min-height:90px;margin-top:10px;"></textarea>
+<textarea id="weeklyChallenge" placeholder="遇到的挑战和解决方案..." style="min-height:90px;margin-top:10px;"></textarea>
+<textarea id="weeklyNextWeek" placeholder="下周计划和目标..." style="min-height:90px;margin-top:10px;"></textarea>
+<button class="btn" onclick="generateWeeklyReport()" style="margin-top:14px;">✨ 自动生成周报</button>
+</div>
+
+<div class="card">
+<h2>📄 生成的周报</h2>
+<div id="weeklyReportOutput" class="report-output"></div>
+<button class="btn btn-secondary" onclick="copyReport()" id="copyBtn" style="display:none;margin-top:10px;">📋 复制周报</button>
+<div id="reportHistory" style="margin-top:20px;"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- 成长系统 -->
+<div id="section-growth" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>🏆 等级与经验值</h2>
+<svg class="progress-ring" viewBox="0 0 120 120">
+<defs>
+<linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#d4a853"/>
+<stop offset="100%" style="stop-color:#2dd4bf"/>
+</linearGradient>
+</defs>
+<circle class="progress-ring-circle" cx="60" cy="60" r="52"/>
+<circle class="progress-ring-progress" id="expProgress" cx="60" cy="60" r="52"
+stroke-dasharray="327" stroke-dashoffset="245"/>
+<div class="progress-text">
+<div class="progress-value" id="currentLevel">Lv.2</div>
+<div class="progress-label">Prompt 工程师</div>
+</div>
+</svg>
+<div style="text-align:center;margin-top:10px;">
+<span style="color:var(--text-secondary);font-size:0.9rem;">经验值: </span>
+<span style="color:var(--accent-gold);font-weight:600;" id="currentExp">250</span>
+<span style="color:var(--text-secondary);"> / 500 XP</span>
+</div>
+<div style="background:rgba(12,18,32,0.5);border-radius:10px;padding:14px;margin-top:16px;font-size:0.88rem;line-height:1.8;">
+<strong style="color:var(--accent-gold);">升级路径：</strong><br>
+Lv.1 AI 使用者 (0 XP)<br>
+Lv.2 Prompt 工程师 (250 XP) ← 当前<br>
+Lv.3 AI 产品经理 (750 XP)<br>
+Lv.4 AI Builder (1500 XP)<br>
+Lv.5 AI Founder (3000 XP)
+</div>
+</div>
+
+<div class="card">
+<h2>✅ 每日打卡</h2>
+<p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">坚持每天学习，养成成长习惯</p>
+<div class="checkin-grid" id="checkinGrid"></div>
+<div style="margin-top:16px;display:flex;align-items:center;justify-content:center;gap:12px;">
+<button class="btn" onclick="todayCheckin()">📌 今日打卡</button>
+<span id="streakCount" style="font-size:0.95rem;color:var(--accent-gold);font-weight:600;"></span>
+</div>
+<div style="margin-top:16px;background:rgba(12,18,32,0.5);border-radius:10px;padding:14px;font-size:0.86rem;color:var(--text-secondary);">
+<strong style="color:var(--accent-teal);">打卡奖励：</strong><br>
+• 连续 7 天: +50 XP<br>
+• 连续 30 天: +300 XP<br>
+• 完成 1 个案例学习: +20 XP<br>
+• 提交 1 次 Prompt 练习: +15 XP
+</div>
+</div>
+
+<div class="card">
+<h2>📈 成长轨迹</h2>
+<textarea id="growthJournal" placeholder="记录你的成长感悟和学习心得..." style="min-height:180px;"></textarea>
+<button class="btn" onclick="saveGrowthJournal()">保存成长日志</button>
+<div id="journalHistory" style="margin-top:16px;"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem('v6_tasks')) || [
+{ id: 1, text: '阅读 OpenAI / Anthropic 最新动态', completed: false },
+{ id: 2, text: '学习 1 个产品拆解案例', completed: false },
+{ id: 3, text: '完成 Prompt 训练练习', completed: false },
+{ id: 4, text: '推进当前项目', completed: false },
+{ id: 5, text: '今日复盘和打卡', completed: false }
+];
+
+let projects = JSON.parse(localStorage.getItem('v6_projects')) || [
+{ id: 1, name: 'Smart Recipe Recommender', status: 'progress' },
+{ id: 2, name: 'AI 物流装载计算器', status: 'planning' },
+{ id: 3, name: 'AI 简历优化器', status: 'progress' },
+{ id: 4, name: 'RAG 知识库助手', status: 'completed' },
+{ id: 5, name: 'Agent 工作流平台', status: 'planning' }
+];
+
+let reviews = JSON.parse(localStorage.getItem('v6_reviews')) || [];
+let prompts = localStorage.getItem('v6_prompts') || '';
+let quickNotes = localStorage.getItem('v6_quicknotes') || '';
+let knowledgeNotes = localStorage.getItem('v6_knowledge') || '';
+let weeklyReports = JSON.parse(localStorage.getItem('v6_weekly')) || [];
+let checkins = JSON.parse.localStorage ? JSON.parse(localStorage.getItem('v6_checkins')) : [];
+try { checkins = JSON.parse(localStorage.getItem('v6_checkins')) || []; } catch(e) { checkins = []; }
+let growthJournal = JSON.parse(localStorage.getItem('v6_journal')) || [];
+let userExp = parseInt(localStorage.getItem('v6_exp')) || 250;
+let promptExercises = JSON.parse(localStorage.getItem('v6_exercises')) || {};
+
+function saveData() {
+localStorage.setItem('v6_tasks', JSON.stringify(tasks));
+localStorage.setItem('v6_projects', JSON.stringify(projects));
+localStorage.setItem('v6_reviews', JSON.stringify(reviews));
+localStorage.setItem('v6_weekly', JSON.stringify(weeklyReports));
+localStorage.setItem('v6_checkins', JSON.stringify(checkins));
+localStorage.setItem('v6_journal', JSON.stringify(growthJournal));
+localStorage.setItem('v6_exercises', JSON.stringify(promptExercises));
+localStorage.setItem('v6_exp', userExp.toString());
+}
+
+function switchTab(tabName) {
+document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+document.getElementById('section-' + tabName).classList.add('active');
+event.target.classList.add('active');
+}
+
+function renderTasks() {
+const list = document.getElementById('taskList');
+list.innerHTML = tasks.map(t => `
+<li onclick="toggleTask(${t.id})" class="${t.completed?'completed':''}">
+<span>${t.completed?'✓':'○'}</span>
+<span>${t.text}</span>
+<span onclick="event.stopPropagation();deleteTask(${t.id})" style="margin-left:auto;cursor:pointer;color:var(--accent-coral);">×</span>
+</li>`).join('');
+document.getElementById('taskTotal').textContent = tasks.length;
+document.getElementById('taskCompleted').textContent = tasks.filter(t => t.completed).length;
+}
+
+function addTask() {
+const input = document.getElementById('taskInput');
+if(input.value.trim()) {
+tasks.push({id:Date.now(), text:input.value.trim(), completed:false});
+input.value=''; saveData(); renderTasks();
+}
+}
+
+function toggleTask(id) {
+const t = tasks.find(x => x.id===id);
+if(t) { t.completed=!t.completed; saveData(); renderTasks(); addExp(5); }
+}
+
+function deleteTask(id) {
+tasks = tasks.filter(t=>t.id!==id); saveData(); renderTasks();
+}
+
+function renderProjects() {
+const list = document.getElementById('projectList');
+list.innerHTML = projects.map(p => {
+const colors = {progress:'var(--accent-teal)',planning:'var(--accent-gold)',completed:'var(--text-secondary)'};
+const labels = {progress:'进行中',planning:'规划中',completed:'已完成'};
+return `<div style="background:rgba(12,18,32,0.5);padding:14px;border-radius:11px;margin-bottom:10px;border-left:3px solid ${colors[p.status]};display:flex;justify-content:space-between;align-items:center;">
+<div><strong>${p.name}</strong></div>
+<div><span style="color:${colors[p.status]};font-size:0.82rem;font-weight:600;">${labels[p.status]}</span>
+<span onclick="deleteProject(${p.id})" style="cursor:pointer;color:var(--accent-coral);margin-left:10px;">×</span></div>
+</div>`;
+}).join('');
+}
+
+function addProject() {
+const input = document.getElementById('projectInput');
+const status = document.getElementById('projectStatus').value;
+if(input.value.trim()) {
+projects.push({id:Date.now(), name:input.value.trim(), status});
+input.value=''; saveData(); renderProjects();
+}
+}
+
+function deleteProject(id) {
+projects = projects.filter(p=>p.id!==id); saveData(); renderProjects();
+}
+
+function saveNotes() {
+quickNotes = document.getElementById('quickNotes').value;
+localStorage.setItem('v6_quicknotes', quickNotes);
+alert('笔记已保存！');
+}
+
+function savePrompts() {
+prompts = document.getElementById('promptLibrary').value;
+localStorage.setItem('v6_prompts', prompts);
+alert('Prompt 收藏已保存！');
+}
+
+function savePrompt(level) {
+const el = document.getElementById('prompt'+level.charAt(0).toUpperCase()+level.slice(1));
+promptExercises[level] = {content:el.value, date:new Date().toLocaleDateString()};
+saveData();
+alert(level==='beginner'?'入门级练习已提交！':level==='intermediate'?'进阶级练习已提交！':'高级练习已提交！');
+addExp(level==='beginner'?15:level==='intermediate'?25:40);
+}
+
+function saveKnowledgeNotes() {
+knowledgeNotes = document.getElementById('knowledgeNotes').value;
+localStorage.setItem('v6_knowledge', knowledgeNotes);
+alert('知识笔记已保存！');
+}
+
+function saveProjectDetail() {
+localStorage.setItem('v6_project_detail', document.getElementById('projectDetail').value);
+alert('项目进展已保存！');
+}
+
+function syncToGithub() {
+const repo = document.getElementById('githubRepo').value;
+const token = document.getElementById('githubToken').value;
+const status = document.getElementById('syncStatus');
+status.innerHTML = '<span style="color:var(--accent-gold);">⏳ 正在同步...</span>';
+setTimeout(() => {
+status.innerHTML = '<span style="color:var(--accent-teal);">✅ 同步成功！(模拟)</span>';
+}, 1500);
+}
+
+function generateWeeklyReport() {
+const accomplishment = document.getElementById('weeklyAccomplishment').value;
+const learning = document.getElementById('weeklyLearning').value;
+const challenge = document.getElementById('weeklyChallenge').value;
+const nextWeek = document.getElementById('weeklyNextWeek').value;
+const hours = document.getElementById('hoursInput').value || '0';
+const completedTasks = tasks.filter(t=>t.completed).length;
+
+const report = `📊 AI PM Academy - 周报
+===========================
+📅 时间范围: ${new Date().toLocaleDateString('zh-CN')} (本周)
+
+📈 本周数据
+---------------------------
+✅ 完成任务: ${completedTasks} 个
+📚 学习时长: ${hours} 小时
+🎯 经验值获得: +${Math.min(completedTasks*5 + parseInt(hours)*10, 200)} XP
+
+🏆 主要成就
+---------------------------
+${accomplishment || '(未填写)'}
+
+📖 关键学习
+---------------------------
+${learning || '(未填写)'}
+
+⚠️ 挑战与解决
+---------------------------
+${challenge || '(未填写)'}
+
+🎯 下周计划
+---------------------------
+${nextWeek || '(未填写)'}
+
+---
+Generated by AI PM Academy Dashboard V6`;
+
+document.getElementById('weeklyReportOutput').textContent = report;
+document.getElementById('copyBtn').style.display = 'inline-flex';
+
+weeklyReports.unshift({
+id:Date.now(),
+date:new Date().toLocaleDateString('zh-CN'),
+summary:`${completedTasks}任务/${hours}小时`
+});
+saveData();
+renderWeeklyHistory();
+addExp(30);
+}
+
+function copyReport() {
+navigator.clipboard.writeText(document.getElementById('weeklyReportOutput').textContent);
+alert('周报已复制到剪贴板！');
+}
+
+function renderWeeklyHistory() {
+const hist = document.getElementById('reportHistory');
+hist.innerHTML = '<h3 style="margin-bottom:12px;color:var(--accent-gold);">历史周报</h3>' +
+weeklyReports.slice(0,5).map(r =>
+`<div style="background:rgba(12,18,32,0.5);padding:12px;border-radius:10px;margin-bottom:8px;font-size:0.88rem;">
+<span style="color:var(--accent-teal);">📅 ${r.date}</span> - ${r.summary}
+</div>`
+).join('');
+}
+
+function renderCheckinGrid() {
+const grid = document.getElementById('checkinGrid');
+const today = new Date();
+const dayNames = ['日','一','二','三','四','五','六'];
+let html = '';
+for(let i=6;i>=0;i--) {
+const d = new Date(today);
+d.setDate(d.getDate()-i);
+const dateStr = d.toLocaleDateString('zh-CN');
+const isToday = i===0;
+const isChecked = checkins.includes(dateStr);
+html += `<div class="checkin-day ${isChecked?'checked':''} ${isToday?'today':''}" onclick="toggleCheckin('${dateStr}')">
+<div>${d.getDate()}</div>
+<div>${dayNames[d.getDay()]}</div>
+</div>`;
+}
+grid.innerHTML = html;
+updateStreak();
+}
+
+function toggleCheckin(dateStr) {
+if(checkins.includes(dateStr)) {
+checkins = checkins.filter(c=>c!==dateStr);
+} else {
+checkins.push(dateStr);
+addExp(10);
+}
+saveData(); renderCheckinGrid();
+}
+
+function todayCheckin() {
+const today = new Date().toLocaleDateString('zh-CN');
+if(!checkins.includes(today)) {
+checkins.push(today);
+addExp(10);
+saveData(); renderCheckinGrid();
+alert('✅ 打卡成功！+10 XP');
+} else {
+alert('今天已经打过卡啦！');
+}
+}
+
+function updateStreak() {
+let streak = 0;
+const today = new Date();
+for(let i=0;i<365;i++) {
+const d = new Date(today);
+d.setDate(d.getDate()-i);
+if(checkins.includes(d.toLocaleDateString('zh-CN'))) streak++;
+else break;
+}
+document.getElementById('streakCount').textContent = `🔥 连续 ${streak} 天`;
+}
+
+function updateLevelUI() {
+let level = 1, threshold = 0;
+const levels = [0,250,750,1500,3000];
+for(let i=levels.length-1;i>=0;i--) {
+if(userExp >= levels[i]) { level=i+1; threshold=levels[i]; break; }
+}
+const nextThreshold = levels[level] || 9999;
+const progress = ((userExp-threshold)/(nextThreshold-threshold))*327;
+
+document.getElementById('currentLevel').textContent = 'Lv.'+level;
+document.getElementById('currentExp').textContent = userExp;
+document.getElementById('expProgress').setAttribute('stroke-dashoffset', 327-progress);
+
+const titles = ['','AI使用者','Prompt工程师','AI产品经理','AI Builder','AI Founder'];
+document.querySelector('.progress-label').textContent = titles[level] || '';
+}
+
+function addExp(amount) {
+userExp += amount;
+localStorage.setItem('v6_exp', userExp.toString());
+updateLevelUI();
+}
+
+function saveGrowthJournal() {
+const content = document.getElementById('growthJournal').value;
+if(content.trim()) {
+growthJournal.unshift({id:Date.now(),date:new Date().toLocaleDateString('zh-CN'),content:content.trim()});
+document.getElementById('growthJournal').value='';
+saveData(); renderJournal();
+addExp(20);
+alert('成长日志已保存！+20 XP');
+}
+}
+
+function renderJournal() {
+const hist = document.getElementById('journalHistory');
+hist.innerHTML = growthJournal.slice(0,5).map(j =>
+`<div style="background:rgba(12,18,32,0.5);padding:14px;border-radius:10px;margin-bottom:10px;">
+<div style="font-size:0.82rem;color:var(--accent-gold);margin-bottom:6px;">📅 ${j.date}</div>
+<div style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">${j.content.substring(0,120)}${j.length>120?'...':''}</div>
+</div>`
+).join('');
+}
+
+window.onload = function() {
+renderTasks(); renderProjects(); renderCheckinGrid(); updateLevelUI();
+renderWeeklyHistory(); renderJournal();
+
+if(quickNotes) document.getElementById('quickNotes').value = quickNotes;
+if(prompts) document.getElementById('promptLibrary').value = prompts;
+if(knowledgeNotes) document.getElementById('knowledgeNotes').value = knowledgeNotes;
+
+const detail = localStorage.getItem('v6_project_detail');
+if(detail) document.getElementById('projectDetail').value = detail;
+
+['beginner','intermediate','advanced'].forEach(lvl => {
+if(promptExercises[lvl]) {
+const el = document.getElementById('prompt'+lvl.charAt(0).toUpperCase()+lvl.slice(1));
+if(el) el.value = promptExercises[lvl].content;
+}
+});
+};
+</script>
+
+</body>
+</html>
