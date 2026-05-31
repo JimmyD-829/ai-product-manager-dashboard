@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI PM OS Dashboard V5</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a0e17;
+  --bg-secondary: #131a2b;
+  --bg-card: rgba(20, 30, 50, 0.7);
+  --text-primary: #e8edf5;
+  --text-secondary: #8b95a8;
+  --accent-primary: #00d4aa;
+  --accent-secondary: #f4b942;
+  --accent-tertiary: #ff6b9d;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --shadow-glow: 0 8px 32px rgba(0, 212, 170, 0.15);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(0, 212, 170, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(244, 185, 66, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(255, 107, 157, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 40px 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 28px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease-out backwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 212, 170, 0.2);
+  box-shadow: var(--shadow-glow);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+.card:nth-child(5) { animation-delay: 0.5s; }
+.card:nth-child(6) { animation-delay: 0.6s; }
+
+.card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+}
+
+.card h2 .icon {
+  font-size: 1.5rem;
+  filter: grayscale(0.2);
+}
+
+.card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 16px;
+  margin-bottom: 12px;
+  color: var(--accent-secondary);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+li:hover {
+  padding-left: 8px;
+  color: var(--accent-primary);
+}
+
+li.completed {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+  opacity: 0.6;
+}
+
+textarea, input[type="text"] {
+  width: 100%;
+  background: rgba(10, 14, 23, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  resize: vertical;
+  transition: all 0.3s ease;
+  min-height: 140px;
+}
+
+textarea:focus, input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+}
+
+input[type="text"] {
+  min-height: auto;
+  height: 48px;
+  margin-bottom: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 12px;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color);
+}
+
+th {
+  background: rgba(0, 212, 170, 0.08);
+  color: var(--accent-primary);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text-primary);
+}
+
+.badge {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.15), rgba(244, 185, 66, 0.15));
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--accent-primary);
+  border: 1px solid rgba(0, 212, 170, 0.2);
+  margin: 4px 4px 4px 0;
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--accent-primary), #00b894);
+  color: var(--bg-primary);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'DM Sans', sans-serif;
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  margin-left: 8px;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+  box-shadow: none;
+}
+
+.growth-map {
+  position: relative;
+  padding: 20px 0;
+}
+
+.stage {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  background: rgba(10, 14, 23, 0.4);
+  border-left: 4px solid var(--border-color);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.stage.active {
+  border-left-color: var(--accent-primary);
+  background: rgba(0, 212, 170, 0.08);
+}
+
+.stage.completed {
+  border-left-color: var(--accent-secondary);
+  opacity: 0.7;
+}
+
+.stage-number {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.stage.active .stage-number {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+.stage.completed .stage-number {
+  background: var(--accent-secondary);
+  border-color: var(--accent-secondary);
+  color: var(--bg-primary);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.task-input-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.task-input-group input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.project-item {
+  padding: 16px;
+  background: rgba(10, 14, 23, 0.4);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border-left: 4px solid var(--accent-primary);
+  transition: all 0.3s ease;
+}
+
+.project-item:hover {
+  background: rgba(10, 14, 23, 0.6);
+  transform: translateX(4px);
+}
+
+.project-status {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-left: 8px;
+}
+
+.status-progress {
+  background: rgba(0, 212, 170, 0.15);
+  color: var(--accent-primary);
+}
+
+.status-planning {
+  background: rgba(244, 185, 66, 0.15);
+  color: var(--accent-secondary);
+}
+
+.status-completed {
+  background: rgba(139, 149, 168, 0.15);
+  color: var(--text-secondary);
+}
+
+.formula-box {
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.08), rgba(244, 185, 66, 0.08));
+  border: 1px solid rgba(0, 212, 170, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  letter-spacing: 0.05em;
+}
+
+.prompt-example {
+  background: rgba(10, 14, 23, 0.5);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  border-left: 3px solid;
+}
+
+.prompt-good {
+  border-left-color: var(--accent-primary);
+}
+
+.prompt-bad {
+  border-left-color: var(--accent-tertiary);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat-item {
+  background: rgba(10, 14, 23, 0.4);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .container {
+    padding: 24px 16px;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .card {
+    padding: 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>AI PM OS Dashboard V5</h1>
+<p>面向 AI 产品经理的智能操作系统 · 学习 · 拆解 · 训练 · 成长</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<h2><span class="icon">✅</span> 今日任务系统</h2>
+<div class="task-input-group">
+<input type="text" id="taskInput" placeholder="输入新任务...">
+<button class="btn" onclick="addTask()">添加</button>
+</div>
+<ul id="taskList"></ul>
+<div class="stats-grid">
+<div class="stat-item">
+<div class="stat-value" id="taskTotal">0</div>
+<div class="stat-label">总任务</div>
+</div>
+<div class="stat-item">
+<div class="stat-value" id="taskCompleted">0</div>
+<div class="stat-label">已完成</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2><span class="icon">🎯</span> 产品拆解中心</h2>
+<h3>产品拆解框架</h3>
+<textarea id="decompositionTemplate" placeholder="在此输入产品拆解内容...
+1. 产品定位是什么？
+2. 用户是谁？
+3. 核心痛点是什么？
+4. 核心功能有哪些？
+5. AI价值体现在哪里？
+6. 商业模式是什么？
+7. 增长策略是什么？
+8. 护城河是什么？
+9. 如果是我会如何优化？"></textarea>
+<button class="btn" onclick="saveDecomposition()">保存拆解</button>
+<div style="margin-top: 20px;">
+<h3>ChatGPT 拆解示例</h3>
+<div class="prompt-example prompt-good">
+<strong>定位：</strong>通用AI助手<br>
+<strong>用户：</strong>学生、开发者、产品经理、企业<br>
+<strong>核心价值：</strong>提问即获得答案<br><br>
+<strong>学习重点：</strong><br>
+• 极简首页设计<br>
+• 强大的对话体验<br>
+• Memory记忆能力<br>
+• Projects工作区<br>
+• Plus订阅体系
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2><span class="icon">🧠</span> Prompt 训练中心</h2>
+<h3>好 Prompt 标准 (RCGCF)</h3>
+<table>
+<tr><th>维度</th><th>说明</th></tr>
+<tr><td><strong>R</strong>ole</td><td>指定角色</td></tr>
+<tr><td><strong>C</strong>ontext</td><td>说明背景</td></tr>
+<tr><td><strong>G</strong>oal</td><td>明确目标</td></tr>
+<tr><td><strong>C</strong>onstraint</td><td>给出限制</td></tr>
+<tr><td><strong>F</strong>ormat</td><td>指定输出格式</td></tr>
+</table>
+<div class="formula-box">RCGCF 公式</div>
+<div style="margin-top: 20px;">
+<h3>❌ 差 Prompt 示例</h3>
+<div class="prompt-example prompt-bad">
+帮我写一个产品需求文档
+</div>
+<p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">问题：没有角色、没有背景、没有目标、没有输出格式</p>
+</div>
+<div style="margin-top: 20px;">
+<h3>✅ 好 Prompt 示例</h3>
+<div class="prompt-example prompt-good">
+你是一位高级AI产品经理。<br><br>
+请为<strong>AI菜谱推荐系统</strong>编写PRD。<br><br>
+<strong>目标用户：</strong>家庭用户<br>
+<strong>功能：</strong><br>
+1. 上传图片<br>
+2. 识别食材<br>
+3. 推荐菜谱<br><br>
+<strong>输出要求：</strong>用户故事、功能需求、验收标准
+</div>
+</div>
+<div style="margin-top: 20px;">
+<h3>Prompt 收藏库</h3>
+<textarea id="promptLibrary" placeholder="记录高质量 Prompt..." style="min-height: 120px;"></textarea>
+<p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 8px;">分类建议：<span class="badge">PRD</span><span class="badge">竞品分析</span><span class="badge">开发</span><span class="badge">Agent</span><span class="badge">RAG</span></p>
+<button class="btn" onclick="savePrompts()" style="margin-top: 12px;">保存到收藏库</button>
+</div>
+</div>
+
+<div class="card">
+<h2><span class="icon">📈</span> 产品经理成长地图</h2>
+<div class="growth-map" id="growthMap">
+<div class="stage completed">
+<div class="stage-number">1</div>
+<div>
+<div style="font-weight: 600;">AI使用者</div>
+<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">熟练使用 AI 工具</div>
+</div>
+</div>
+<div class="stage active">
+<div class="stage-number">2</div>
+<div>
+<div style="font-weight: 600;">Prompt工程师 ← 当前阶段</div>
+<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">掌握提示词工程</div>
+</div>
+</div>
+<div class="stage">
+<div class="stage-number">3</div>
+<div>
+<div style="font-weight: 600;">AI产品经理</div>
+<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">能独立负责 AI 产品</div>
+</div>
+</div>
+<div class="stage">
+<div class="stage-number">4</div>
+<div>
+<div style="font-weight: 600;">AI Builder</div>
+<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">构建 AI 应用与系统</div>
+</div>
+</div>
+<div class="stage">
+<div class="stage-number">5</div>
+<div>
+<div style="font-weight: 600;">AI Founder</div>
+<div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">创立 AI 公司或产品</div>
+</div>
+</div>
+</div>
+<div class="progress-bar">
+<div class="progress-fill" id="growthProgress" style="width: 40%;"></div>
+</div>
+<p style="text-align: center; margin-top: 12px; font-size: 0.9rem; color: var(--text-secondary);">
+当前进度：<span id="currentStage" style="color: var(--accent-primary); font-weight: 600;">第 2 阶段 / 共 5 阶段</span>
+</p>
+</div>
+
+<div class="card">
+<h2><span class="icon">💻</span> 项目管理系统</h2>
+<div class="task-input-group">
+<input type="text" id="projectInput" placeholder="输入新项目名称...">
+<select id="projectStatus" style="height: 48px; padding: 0 16px; background: rgba(10, 14, 23, 0.6); border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-primary); font-family: 'DM Sans', sans-serif;">
+<option value="planning">规划中</option>
+<option value="progress" selected>进行中</option>
+<option value="completed">已完成</option>
+</select>
+<button class="btn" onclick="addProject()">添加</button>
+</div>
+<div id="projectList"></div>
+</div>
+
+<div class="card">
+<h2><span class="icon">📝</span> 今日复盘</h2>
+<textarea id="dailyReview" placeholder="今天学到了什么？最大的收获是什么？遇到什么挑战？明天计划做什么？" style="min-height: 200px;"></textarea>
+<button class="btn" onclick="saveReview()">保存复盘</button>
+<div id="reviewHistory" style="margin-top: 20px;"></div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem('pm_tasks')) || [
+{ id: 1, text: '阅读 OpenAI / Anthropic 更新', completed: false },
+{ id: 2, text: '拆解今日推荐产品', completed: false },
+{ id: 3, text: '推进 Smart Recipe Recommender', completed: false },
+{ id: 4, text: '收藏1个高质量 Prompt', completed: false },
+{ id: 5, text: '完成今日复盘', completed: false }
+];
+
+let projects = JSON.parse(localStorage.getItem('pm_projects')) || [
+{ id: 1, name: 'Smart Recipe Recommender', status: 'progress' },
+{ id: 2, name: 'AI物流装载计算器', status: 'planning' },
+{ id: 3, name: 'AI简历优化器', status: 'progress' },
+{ id: 4, name: 'RAG知识库助手', status: 'completed' },
+{ id: 5, name: 'Agent工作流平台', status: 'planning' }
+];
+
+let reviews = JSON.parse(localStorage.getItem('pm_reviews')) || [];
+let prompts = localStorage.getItem('pm_prompts') || '';
+let decomposition = localStorage.getItem('pm_decomposition') || '';
+
+function saveToStorage() {
+localStorage.setItem('pm_tasks', JSON.stringify(tasks));
+localStorage.setItem('pm_projects', JSON.stringify(projects));
+localStorage.setItem('pm_reviews', JSON.stringify(reviews));
+}
+
+function renderTasks() {
+const taskList = document.getElementById('taskList');
+taskList.innerHTML = tasks.map(task => `
+<li onclick="toggleTask(${task.id})" class="${task.completed ? 'completed' : ''}">
+<span>${task.completed ? '✓' : '○'}</span>
+<span>${task.text}</span>
+<span onclick="event.stopPropagation(); deleteTask(${task.id})" style="margin-left: auto; cursor: pointer; color: var(--accent-tertiary);">×</span>
+</li>
+`).join('');
+
+document.getElementById('taskTotal').textContent = tasks.length;
+document.getElementById('taskCompleted').textContent = tasks.filter(t => t.completed).length;
+}
+
+function addTask() {
+const input = document.getElementById('taskInput');
+if (input.value.trim()) {
+tasks.push({
+id: Date.now(),
+text: input.value.trim(),
+completed: false
+});
+input.value = '';
+saveToStorage();
+renderTasks();
+}
+}
+
+function toggleTask(id) {
+const task = tasks.find(t => t.id === id);
+if (task) {
+task.completed = !task.completed;
+saveToStorage();
+renderTasks();
+}
+}
+
+function deleteTask(id) {
+tasks = tasks.filter(t => t.id !== id);
+saveToStorage();
+renderTasks();
+}
+
+function renderProjects() {
+const projectList = document.getElementById('projectList');
+projectList.innerHTML = projects.map(project => {
+const statusClass = project.status === 'progress' ? 'status-progress' :
+project.status === 'planning' ? 'status-planning' : 'status-completed';
+const statusText = project.status === 'progress' ? '进行中' :
+project.status === 'planning' ? '规划中' : '已完成';
+return `
+<div class="project-item">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+<span style="font-weight: 500;">${project.name}</span>
+<div>
+<span class="project-status ${statusClass}">${statusText}</span>
+<span onclick="deleteProject(${project.id})" style="cursor: pointer; color: var(--accent-tertiary); margin-left: 8px;">×</span>
+</div>
+</div>
+</div>
+`;
+}).join('');
+}
+
+function addProject() {
+const input = document.getElementById('projectInput');
+const status = document.getElementById('projectStatus').value;
+if (input.value.trim()) {
+projects.push({
+id: Date.now(),
+name: input.value.trim(),
+status: status
+});
+input.value = '';
+saveToStorage();
+renderProjects();
+}
+}
+
+function deleteProject(id) {
+projects = projects.filter(p => p.id !== id);
+saveToStorage();
+renderProjects();
+}
+
+function saveDecomposition() {
+const template = document.getElementById('decompositionTemplate');
+decomposition = template.value;
+localStorage.setItem('pm_decomposition', decomposition);
+alert('产品拆解已保存！');
+}
+
+function savePrompts() {
+const library = document.getElementById('promptLibrary');
+prompts = library.value;
+localStorage.setItem('pm_prompts', prompts);
+alert('Prompt 已保存到收藏库！');
+}
+
+function saveReview() {
+const review = document.getElementById('dailyReview');
+if (review.value.trim()) {
+reviews.unshift({
+id: Date.now(),
+date: new Date().toLocaleDateString('zh-CN'),
+content: review.value.trim()
+});
+review.value = '';
+saveToStorage();
+renderReviews();
+alert('复盘已保存！');
+}
+}
+
+function renderReviews() {
+const history = document.getElementById('reviewHistory');
+history.innerHTML = reviews.slice(0, 5).map(review => `
+<div style="background: rgba(10, 14, 23, 0.4); padding: 16px; border-radius: 12px; margin-bottom: 12px;">
+<div style="font-size: 0.85rem; color: var(--accent-secondary); font-weight: 600; margin-bottom: 8px;">📅 ${review.date}</div>
+<div style="font-size: 0.9rem; color: var(--text-secondary); white-space: pre-wrap;">${review.content.substring(0, 150)}${review.content.length > 150 ? '...' : ''}</div>
+</div>
+`).join('');
+}
+
+document.getElementById('taskInput').addEventListener('keypress', function(e) {
+if (e.key === 'Enter') addTask();
+});
+
+document.getElementById('projectInput').addEventListener('keypress', function(e) {
+if (e.key === 'Enter') addProject();
+});
+
+window.onload = function() {
+renderTasks();
+renderProjects();
+renderReviews();
+
+if (prompts) document.getElementById('promptLibrary').value = prompts;
+if (decomposition) document.getElementById('decompositionTemplate').value = decomposition;
+
+const today = new Date().toLocaleDateString('zh-CN');
+const todayReview = reviews.find(r => r.date === today);
+if (todayReview) {
+document.getElementById('dailyReview').value = todayReview.content;
+}
+};
+</script>
+
+</body>
+</html>
