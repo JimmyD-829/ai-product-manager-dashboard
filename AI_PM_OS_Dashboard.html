@@ -1064,84 +1064,6 @@ RCGCF = Role + Context + Goal + Constraint + Format
 </div>
 </div>
 
-<div class="card">
-<h2>🖼️ 多模态 AI (Multimodal AI)</h2>
-<div class="knowledge-card">
-<div class="knowledge-title">什么是多模态？</div>
-<div class="knowledge-desc">
-<strong>Multimodal AI = 同时处理多种类型数据的AI系统</strong><br><br>
-<strong>支持的模态：</strong><br>
-• 📝 **文本 (Text)** - 自然语言<br>
-• 🖼️ **图像 (Image)** - 照片、图表、截图<br>
-• 🎵 **音频 (Audio)** - 语音、音乐、音效<br>
-• 🎥 **视频 (Video)** - 动态画面序列<br>
-• 📊 **结构化数据** - 表格、JSON、代码<br><br>
-<strong>核心突破：</strong>统一表征空间，跨模态理解语义
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">多模态模型代表</div>
-<div class="knowledge-desc">
-• <strong>GPT-4V / GPT-4o</strong> - OpenAI 视觉语言模型<br>
-• <strong>Claude 3.5 Sonnet</strong> - Anthropic 多模态理解<br>
-• <strong>Gemini Ultra</strong> - Google 原生多模态<br>
-• <strong>Llava / Qwen-VL</strong> - 开源视觉语言模型<br><br>
-<strong>能力：</strong>看图回答、OCR识别、图表分析、视频理解
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">PM 应用场景</div>
-<div class="knowledge-desc">
-✅ <strong>文档智能</strong> - 发票/合同自动识别录入<br>
-✅ <strong>视觉问答</strong> - 产品图片自动生成描述<br>
-✅ <strong>内容审核</strong> - 图文结合检测违规内容<br>
-✅ <strong>辅助诊断</strong> - 医学影像+病历综合分析<br>
-✅ <strong>电商搜索</strong> - 以图搜图、拍照购物
-</div>
-</div>
-</div>
-
-<div class="card">
-<h2>⚙️ 关键参数详解</h2>
-<div class="knowledge-card">
-<div class="knowledge-title">Temperature (温度)</div>
-<div class="knowledge-desc">
-<strong>控制输出随机性的核心参数 (0-2)</strong><br><br>
-• <strong>低 Temperature (0-0.3)</strong>: 输出确定、一致、事实性高<br>
-&nbsp;&nbsp;适用：代码生成、数据提取、翻译<br><br>
-• <strong>中 Temperature (0.5-0.8)</strong>: 平衡创造性和准确性<br>
-&nbsp;&nbsp;适用：日常对话、写作辅助、问答<br><br>
-• <strong>高 Temperature (0.9-1.5)</strong>: 输出多样、创意性强<br>
-&nbsp;&nbsp;适用：创意写作、头脑风暴、角色扮演<br><br>
-<strong>PM 提示：</strong>产品中通常设为固定值或让用户选择
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">Top-P (核采样)</div>
-<div class="knowledge-desc">
-<strong>另一种控制随机性的方法 (0-1)</strong><br><br>
-只从累积概率达到 P 的 token 中采样：<br>
-• <strong>Top-P = 0.1</strong>: 只选最可能的 10% token<br>
-• <strong>Top-P = 0.9</strong>: 选概率累积到 90% 的 token<br><br>
-<strong>vs Temperature 区别：</strong><br>
-• Temperature 是全局调整<br>
-• Top-P 是动态调整（根据实际概率分布）<br><br>
-<strong>最佳实践：</strong>两者配合使用，或只用一个
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">其他重要参数</div>
-<div class="knowledge-desc">
-• <strong>Max Tokens</strong> - 最大输出长度限制<br>
-• <strong>Stop Sequences</strong> - 停止生成的触发词<br>
-• <strong>Frequency Penalty</strong> - 减少重复词出现<br>
-• <strong>Presence Penalty</strong> - 鼓励新话题引入<br>
-• <strong>Top-K</strong> - 只从 K 个最可能 token 中选择<br><br>
-<strong>调优建议：</strong>先用默认值，根据输出质量微调
-</div>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1180,36 +1102,6 @@ RCGCF = Role + Context + Goal + Constraint + Format
 ⚠️ <strong>实时性差</strong> - 训练截止日期后的事件不知道<br>
 ⚠️ <strong>成本高</strong> - API 调用费用昂贵<br>
 ⚠️ <strong>偏见问题</strong> - 训练数据中的社会偏见
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">📏 Context Window (上下文窗口) 详解</div>
-<div class="knowledge-desc">
-<strong>Context Window = LLM 一次能处理的最多 Token 数量</strong><br><br>
-<strong>主流模型上下文长度对比：</strong><br>
-• GPT-4o: **128K** tokens (~300页文本)<br>
-• Claude 3.5: **200K** tokens (~500页文本)<br>
-• Gemini 1.5 Pro: **1M-2M** tokens (~数百万页)<br>
-• LLaMA 3: **8K-128K** tokens<br><br>
-<strong>为什么重要？</strong><br>
-✅ 决定能否一次性处理长文档<br>
-✅ 影响多轮对话的记忆长度<br>
-✅ 直接影响 API 成本 (Token 越多越贵)<br><br>
-<strong>PM 决策：</strong>需要处理多长文档？选择合适上下文长度的模型
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">🏆 主流 LLM 模型对比 (2024)</div>
-<div class="knowledge-desc">
-<table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
-<tr style="border-bottom:1px solid rgba(212,168,83,0.2);"><th style="text-align:left;padding:6px;">模型</th><th style="text-align:left;padding:6px;">厂商</th><th style="text-align:center;padding:6px;">上下文</th><th style="text-align:right;padding:6px;">特点</th></tr>
-<tr><td style="padding:6px;"><strong>GPT-4o</strong></td><td>OpenAI</td><td style="text-align:center;">128K</td><td style="text-align:right;">多模态、速度快</td></tr>
-<tr><td style="padding:6px;"><strong>Claude 3.5</strong></td><td>Anthropic</td><td style="text-align:center;">200K</td><td style="text-align:right;">长文本、编程强</td></tr>
-<tr><td style="padding:6px;"><strong>Gemini Pro</strong></td><td>Google</td><td style="text-align:center;">1M+</td><td style="text-align:right;">超长上下文</td></tr>
-<tr><td style="padding:6px;"><strong>LLaMA 3</strong></td><td>Meta</td><td style="text-align:center;">8K-128K</td><td style="text-align:right;">开源可本地部署</td></tr>
-<tr><td style="padding:6px;"><strong>Mistral</strong></td><td>Mistral AI</td><td style="text-align:center;">32K-128K</td><td style="text-align:right;">欧洲开源、高效</td></tr>
-<tr><td style="padding:6px;"><strong>Qwen 2</strong></td><td>阿里</td><td style="text-align:center;">128K</td><td style="text-align:right;">中文优化</td></tr>
-</table>
 </div>
 </div>
 </div>
@@ -1322,26 +1214,6 @@ Attention(Q,K,V) = softmax(Q·K^T / √d_k) · V<br><br>
 • 效果接近全量微调<br>
 • 支持快速切换不同任务<br><br>
 <strong>工具库：</strong>PEFT (Hugging Face), Axolotl, Unsloth
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">🎯 SFT / RLHF / DPO 三大对齐技术</div>
-<div class="knowledge-desc">
-<strong>1. SFT (Supervised Fine-tuning) 监督微调</strong><br>
-• 使用高质量问答对训练模型<br>
-• 让模型学会"如何正确回答"<br>
-• 数据来源：人工标注、GPT-4生成<br><br>
-<strong>2. RLHF (Reinforcement Learning from Human Feedback)</strong><br>
-• ChatGPT 的核心技术！<br>
-• 三阶段：SFT → 奖励模型(RM) → PPO强化学习<br>
-• 人类对回答排序，训练奖励模型<br>
-• 用PPO算法优化策略，最大化奖励<br>
-• <strong>优点：</strong>效果最好 &nbsp; <strong>缺点：</strong>复杂、昂贵<br><br>
-<strong>3. DPO (Direct Preference Optimization)</strong><br>
-• 直接偏好优化，无需训练奖励模型<br>
-• 从偏好数据直接学习最优策略<br>
-• <strong>优点：</strong>简单、稳定、成本低 &nbsp; <strong>缺点：</strong>略逊RLHF<br><br>
-<strong>PM 视角：</strong>ChatGPT = Pre-training + SFT + RLHF
 </div>
 </div>
 </div>
@@ -1664,134 +1536,6 @@ Anthropic 提出的开放标准 (2024年11月)<br><br>
 </div>
 </div>
 
-<div class="card">
-<h2>🎯 Skill (技能/能力)</h2>
-<div class="knowledge-card">
-<div class="knowledge-title">什么是 Skill？</div>
-<div class="knowledge-desc">
-<strong>Skill = Agent 或 LLM 可学习、可调用的特定能力或专业技能</strong><br><br>
-<strong>核心概念：</strong><br>
-• Skill 是**可复用的能力单元**<br>
-• 类似于人类的"技能"：会写代码、会搜索、会翻译...<br>
-• Agent 可以**动态组合多个 Skill** 完成复杂任务<br>
-• Skill 可以**通过示例学习**或**预定义规则**获得<br><br>
-<strong>类比：</strong>就像手机App，每个App是一个Skill，组合使用实现复杂功能
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">Skill 类型分类</div>
-<div class="knowledge-desc">
-<strong>1. 基础 Skills (Foundation Skills)</strong><br>
-• 文本生成、总结、翻译<br>
-• 代码编写、调试、解释<br>
-• 数学计算、逻辑推理<br><br>
-<strong>2. 工具 Skills (Tool Skills)</strong><br>
-• 搜索引擎调用、API 请求<br>
-• 数据库查询、文件操作<br>
-• 邮件发送、消息通知<br><br>
-<strong>3. 领域 Skills (Domain Skills)</strong><br>
-• 法律文档分析、医疗诊断辅助<br>
-• 金融数据处理、营销文案撰写<br>
-• 产品设计建议、用户研究分析
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">Skill 实现方式</div>
-<div class="knowledge-desc>
-<strong>1. Prompt-based Skills (基于提示词)</strong><br>
-通过精心设计的 System Prompt 定义能力<br>例："你是一位专业的数据分析师..."<br><br>
-<strong>2. Function-based Skills (基于函数)</strong><br>
-封装为可调用的函数/工具<br>例：search_web(query), calculate_formula(expr)<br><br>
-<strong>3. Fine-tuned Skills (微调技能)</strong><br>
-针对特定任务微调的专用模型<br>例：法律LLM、医疗LLM、代码LLM<br><br>
-<strong>4. MCP Skills (协议化技能)</strong><br>
-通过MCP标准封装的标准化技能<br>例：GitHub MCP Server, Slack MCP Server
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">PM 如何设计 Skill 系统？</div>
-<div class="knowledge-desc">
-✅ **识别核心场景** - 用户需要什么能力？<br>
-✅ **定义 Skill 边界** - 单一职责，粒度适中<br>
-✅ **设计 Skill 组合** - 允许灵活编排<br>
-✅ **建立 Skill 市场** - 让第三方贡献 Skills<br>
-✅ **监控 Skill 质量** - 成功率、延迟、满意度<br><br>
-<strong>成功案例：</strong>OpenAI GPTs、Claude Projects、Custom GPTs
-</div>
-</div>
-</div>
-
-<div class="card">
-<h2>🔄 Agentic Patterns (智能体模式)</h2>
-<div class="knowledge-card">
-<div class="knowledge-title">核心 Agentic 模式</div>
-<div class="knowledge-desc">
-<strong>1. ReAct (Reasoning + Acting)</strong><br>
-最常用的Agent模式：思考→行动→观察→再思考<br>
-适用：需要推理的多步骤任务<br><br>
-<strong>2. Plan-and-Execute (规划-执行)</strong><br>
-先制定完整计划，再逐步执行和调整<br>
-适用：复杂项目、长期目标<br><br>
-<strong>3. Reflection (反思模式)</strong><br>
-执行后回顾结果，自我纠正错误<br>
-适用：写作、编程、数据分析<br><br>
-<strong>4. Multi-Agent Collaboration (多智能体协作)</strong><br>
-多个专业Agent分工合作（如：研究员+写手+审稿人）<br>
-适用：内容创作、研究报告
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">Agentic Workflow 设计原则</div>
-<div class="knowledge-desc">
-✅ **明确目标** - Agent知道要完成什么<br>
-✅ **工具就绪** - 提供必要的Skills和Tools<br>
-✅ **反馈循环** - 能根据结果调整策略<br>
-✅ **容错机制** - 失败时有重试或备选方案<br>
-✅ **人类监督** - 关键决策点有人工确认<br><br>
-<strong>框架支持：</strong>LangGraph, CrewAI, AutoGen
-</div>
-</div>
-</div>
-
-<div class="card">
-<h2>📐 Structured Output (结构化输出)</h2>
-<div class="knowledge-card">
-<div class="knowledge-title">为什么需要结构化输出？</div>
-<div class="knowledge-desc">
-<strong>问题：LLM 默认输出自由文本，难以程序化处理</strong><br><br>
-<strong>解决方案：强制输出特定格式</strong><br>
-• JSON 格式 - 最常用，易于解析<br>
-• XML 格式 - 支持嵌套结构<br>
-• TypeScript 类型 - 前端友好<br>
-• 自定义 Schema - 按需定义<br><br>
-<strong>应用场景：</strong>API响应、数据库写入、表单填充
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">主流实现方案</div>
-<div class="knowledge-desc>
-• <strong>OpenAI JSON Mode</strong> - response_format: {type: "json_object"}<br>
-• <strong>Structured Outputs (新)</strong> - 定义JSON Schema，100%符合格式<br>
-• <strong>Anthropic Tool Use</strong> - 通过function calling输出结构化数据<br>
-• <strong>Pydantic / Zod</strong> - 定义数据模型，验证输出格式<br>
-• <strong>Outlines / Guidance</strong> - 约束解码，强制格式合规<br><br>
-<strong>最佳实践：</strong>定义清晰的Schema + 提供Few-shot示例
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">Function Calling 进阶</div>
-<div class="knowledge-desc">
-<strong>基础用法：</strong>单次调用一个函数<br><br>
-<strong>进阶模式：</strong><br>
-• <strong>Parallel Calling</strong> - 同时调用多个函数 (GPT-4o支持)<br>
-• <strong>Nested Calling</strong> - 函数结果作为另一个函数的输入<br>
-• <strong>Conditional Calling</strong> - 根据条件选择不同函数<br>
-• <strong>Streaming Function Calls</strong> - 流式输出函数调用结果<br><br>
-<strong>PM 设计要点：</strong>定义清晰的函数接口、处理并发调用、优雅的错误降级
-</div>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -1958,59 +1702,6 @@ Anthropic 提出的开放标准 (2024年11月)<br><br>
 💰 <strong>批量处理</strong> - 合并请求降低 API 调用次数<br>
 💰 <strong>开源替代</strong> - LLaMA/Ollama 本地部署<br>
 💰 <strong>量化</strong> - 4-bit/8-bit 降低显存需求
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">💵 API 成本计算指南</div>
-<div class="knowledge-desc>
-<strong>OpenAI GPT-4o 定价 (2024):</strong><br>
-• 输入: $2.50 / 1M tokens<br>
-• 输出: $10.00 / 1M tokens<br><br>
-<strong>实际成本估算：</strong><br>
-• 平均中文 ≈ 1.5 tokens/字<br>
-• 1000字输入 + 500字输出 ≈ 2250 tokens<br>
-• 单次调用成本 ≈ $0.005 - $0.02<br>
-• 日均1000次调用 ≈ $5 - $20/天<br><br>
-<strong>省钱技巧：</strong><br>
-✅ 用 GPT-4o-mini 处理简单任务 (便宜10倍)<br>
-✅ 启用 Prompt Caching (Anthropic/Gemini)<br>
-✅ 批量处理减少API调用次数<br>
-✅ 监控Token使用量，设置预算告警
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">🗄️ Prompt Caching (提示词缓存)</div>
-<div class="knowledge-desc>
-<strong>什么是 Prompt Caching？</strong><br>
-缓存重复的System Prompt或上下文，避免重复计费<br><br>
-<strong>支持情况：</strong><br>
-• Anthropic Claude - 已支持 (自动缓存前缀)<br>
-• Google Gemini - 已支持 (Context Caching)<br>
-• OpenAI - 部分支持 (Prompt Caching Beta)<br><br>
-<strong>适用场景：</strong><br>
-✅ 长System Prompt (不变的部分)<br>
-✅ 多轮对话中的历史消息<br>
-✅ RAG中重复的检索上下文<br><br>
-<strong>节省效果：** 可降低 50-90% 输入成本 **</strong><br>
-特别适合长文档处理、多轮对话场景
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">💻 Code Interpreter / 执行环境</div>
-<div class="knowledge-desc">
-<strong>让 LLM 能执行代码的能力</strong><br><br>
-<strong>核心功能：</strong><br>
-• 🐍 Python 代码执行环境<br>
-• 📊 数据分析和可视化 (matplotlib, pandas)<br>
-• 📁 文件上传下载处理<br>
-• 🔢 数学计算和方程求解<br>
-• 📈 图表生成和数据导出<br><br>
-<strong>应用场景：</strong><br>
-✅ 数据分析报告自动生成<br>
-✅ Excel/CSV 文件智能处理<br>
-✅ 图表可视化创建<br>
-✅ 复杂数学问题求解<br><br>
-<strong>产品案例：</strong>ChatGPT Advanced Data Analysis, Claude Artifacts
 </div>
 </div>
 </div>
