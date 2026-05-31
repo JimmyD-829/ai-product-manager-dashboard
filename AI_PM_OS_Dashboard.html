@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI PM Academy - Dashboard V6</title>
+<title>AI PM Academy - Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -546,9 +546,61 @@ li:hover {
   to { opacity: 1; }
 }
 
+/* Knowledge Base Pagination */
+.knowledge-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.knowledge-nav-btn {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.knowledge-nav-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.knowledge-nav-btn.active {
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.knowledge-page {
+  display: none;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.knowledge-page.active {
+  display: block;
+}
+
+.knowledge-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+
 @media (max-width: 1024px) {
   .grid { grid-template-columns: 1fr; }
   .links-grid { grid-template-columns: 1fr; }
+  .knowledge-grid-2 { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -558,7 +610,7 @@ li:hover {
 
 <div class="header">
 <div class="header-badge">🎓 AI PM Academy</div>
-<h1>Dashboard V6</h1>
+<h1>Dashboard</h1>
 <p>从"会用 AI"到"会设计 AI 产品"的系统化学习平台</p>
 </div>
 
@@ -863,69 +915,546 @@ RCGCF = Role + Context + Goal + Constraint + Format
 <!-- AI知识库 -->
 <div id="section-knowledge" class="section">
 
-<div class="grid">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;text-align:center;margin-bottom:24px;">🔬 AI 知识库</h2>
+
+<div class="knowledge-nav">
+<button class="knowledge-nav-btn active" onclick="switchKnowledgePage('page1')">📖 基础概念</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page2')">🧠 LLM & Transformer</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page3')">🔗 RAG & 向量数据库</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page4')">🤖 Agent & MCP</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page5')">⚙️ 工具 & 框架</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page6')">📊 评估 & 优化</button>
+</div>
+
+<!-- Page 1: 基础概念 -->
+<div id="knowledge-page1" class="knowledge-page active">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>🤖 什么是 AI (人工智能)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">AI 定义与分类</div>
+<div class="knowledge-desc">
+<strong>Artificial Intelligence (AI)</strong> 是让机器模拟人类智能的技术。<br><br>
+<strong>三大分类：</strong><br>
+• <strong>ANI (弱人工智能)</strong>: 专精单一任务 (Siri, AlphaGo)<br>
+• <strong>AGI (通用人工智能)</strong>: 具备人类级别全面智能 (目标中)<br>
+• <strong>ASI (超人工智能)</strong>: 超越人类所有能力 (未来)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">AI 发展历程</div>
+<div class="knowledge-desc">
+• <strong>1950年代</strong>: 图灵测试、达特茅斯会议<br>
+• <strong>1980年代</strong>: 专家系统、神经网络复兴<br>
+• <strong>2010年代</strong>: Deep Learning 爆发<br>
+• <strong>2020年代</strong>: 大语言模型 (LLM) 时代
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">PM 为什么需要懂 AI？</div>
+<div class="knowledge-desc">
+• 判断 AI 技术可行性边界<br>
+• 与技术团队有效沟通<br>
+• 设计合理的 AI 产品功能<br>
+• 预判开发成本和时间<br>
+• 理解用户对 AI 的期望
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎯 Machine Learning (机器学习)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">ML 核心概念</div>
+<div class="knowledge-desc">
+<strong>Machine Learning = 用数据训练模型，让机器自动学习规律</strong><br><br>
+<strong>三大范式：</strong><br>
+1. <strong>监督学习</strong>: 有标签数据 (分类、回归)<br>
+2. <strong>无监督学习</strong>: 无标签数据 (聚类、降维)<br>
+3. <strong>强化学习</strong>: 奖励机制 (游戏 AI、机器人)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">常见 ML 算法</div>
+<div class="knowledge-desc">
+• <strong>线性/逻辑回归</strong> - 基础预测模型<br>
+• <strong>决策树/随机森林</strong> - 可解释性强<br>
+• <strong>SVM</strong> - 分类问题经典算法<br>
+• <strong>K-Means</strong> - 聚类分析<br>
+• <strong>神经网络</strong> - Deep Learning 基础
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">PM 应用场景</div>
+<div class="knowledge-desc">
+• 推荐系统 (协同过滤 + 内容推荐)<br>
+• 用户分群 (聚类算法)<br>
+• 风控模型 (异常检测)<br>
+• 定价优化 (回归预测)
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🧪 Deep Learning (深度学习)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 Deep Learning？</div>
+<div class="knowledge-desc">
+<strong>Deep Learning = 多层神经网络的机器学习方法</strong><br><br>
+<strong>核心优势：</strong><br>
+• 自动特征提取 (无需人工设计特征)<br>
+• 处理非结构化数据 (图像、文本、语音)<br>
+• 在大数据量下表现卓越<br>
+• 端到端学习 (输入原始数据→输出结果)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">关键架构演进</div>
+<div class="knowledge-desc">
+• <strong>CNN (卷积神经网络)</strong> - 图像识别 (AlexNet, ResNet)<br>
+• <strong>RNN/LSTM</strong> - 序列数据处理<br>
+• <strong>Transformer</strong> - Attention 机制革命<br>
+• <strong>GAN</strong> - 生成对抗网络 (图像生成)<br>
+• <strong>Diffusion Model</strong> - 扩散模型 (Midjourney, Stable Diffusion)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">DL vs 传统 ML 对比</div>
+<div class="knowledge-desc">
+<strong>传统 ML:</strong> 数据量小可工作、可解释性好、需要特征工程<br>
+<strong>Deep Learning:</strong> 需要大量数据、黑盒难解释、自动学特征
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>💡 NLP (自然语言处理)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">NLP 定义</div>
+<div class="knowledge-desc">
+<strong>Natural Language Processing = 让计算机理解、生成人类语言</strong><br><br>
+<strong>核心任务：</strong><br>
+• 文本分类 (情感分析、垃圾邮件检测)<br>
+• 命名实体识别 (NER) - 提取人名、地名、机构<br>
+• 机器翻译 (Google Translate)<br>
+• 问答系统 (ChatGPT)<br>
+• 文本摘要 (自动生成摘要)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">NLP 技术演进</div>
+<div class="knowledge-desc">
+• <strong>规则方法</strong> - 人工编写语法规则<br>
+• <strong>统计方法</strong> - HMM, CRF<br>
+• <strong>Word Embedding</strong> - Word2Vec, GloVe<br>
+• <strong>预训练模型</strong> - BERT, GPT 系列<br>
+• <strong>大语言模型</strong> - GPT-4, Claude, Gemini
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Tokenization (分词)</div>
+<div class="knowledge-desc">
+<strong>Token = LLM 处理文本的最小单位</strong><br><br>
+• <strong>Word-level</strong>: 按单词切分 ("Hello" → ["Hello"])<br>
+• <strong>Subword-level</strong>: BPE, WordPiece (处理未知词)<br>
+• <strong>Character-level</strong>: 按字符切分<br><br>
+<strong>为什么重要？</strong>影响模型输入长度限制和成本计算
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 2: LLM & Transformer -->
+<div id="knowledge-page2" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>📚 LLM (大语言模型)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 LLM？</div>
+<div class="knowledge-desc">
+<strong>Large Language Model = 参数量巨大的预训练语言模型</strong><br><br>
+<strong>"大"的定义：</strong><br>
+• 参数量: 通常 > 1B (10亿) 参数<br>
+• 训练数据: TB 级别的文本语料<br>
+• 训练成本: 数百万到数千万美元<br><br>
+<strong>代表模型：</strong>GPT-4 (~1.8T), Claude 3, Gemini Ultra, LLaMA 3
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LLM 核心能力</div>
+<div class="knowledge-desc">
+✅ <strong>文本生成</strong> - 写作、创作、代码生成<br>
+✅ <strong>理解推理</strong> - 问答、分析、数学<br>
+✅ <strong>多轮对话</strong> - 上下文记忆、角色扮演<br>
+✅ <strong>Few-shot Learning</strong> - 少样本快速适应<br>
+✅ <strong>Chain-of-Thought</strong> - 分步推理解决问题
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LLM 局限性</div>
+<div class="knowledge-desc">
+⚠️ <strong>幻觉 (Hallucination)</strong> - 编造不存在的信息<br>
+⚠️ <strong>上下文窗口限制</strong> - 无法处理超长文档<br>
+⚠️ <strong>实时性差</strong> - 训练截止日期后的事件不知道<br>
+⚠️ <strong>成本高</strong> - API 调用费用昂贵<br>
+⚠️ <strong>偏见问题</strong> - 训练数据中的社会偏见
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔄 Transformer 架构</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Transformer 革命 (2017)</div>
+<div class="knowledge-desc">
+<strong>论文:</strong> "Attention Is All You Need" (Google)<br><br>
+<strong>核心创新 - Self-Attention (自注意力机制):</strong><br>
+让模型在处理每个词时，都能"关注"到句子中的其他相关词汇<br><br>
+<strong>类比：</strong>读一句话时，你自然会关注关键词来理解整体含义
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Encoder-Decoder 架构</div>
+<div class="knowledge-desc">
+<strong>Encoder (编码器):</strong><br>
+• 理解输入文本的语义<br>
+• 双向注意力 (同时看前后文)<br><br>
+<strong>Decoder (解码器):</strong><br>
+• 逐词生成输出<br>
+• 单向注意力 (只能看前面的词)<br><br>
+<strong>变体：</strong>BERT (纯Encoder), GPT (纯Decoder), T5 (完整架构)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">为什么 Transformer 如此重要？</div>
+<div class="knowledge-desc">
+• <strong>并行计算</strong> - 比 RNN 快数百倍<br>
+• <strong>长距离依赖</strong> - 解决梯度消失问题<br>
+• <strong>可扩展性</strong> - 更大模型效果更好<br>
+• <strong>通用性</strong> - NLP/CV/多模态统一架构<br>
+• <strong>诞生了所有现代 LLM</strong>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ Attention Mechanism (注意力机制)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Attention 工作原理</div>
+<div class="knowledge-desc">
+<strong>QKV 三元组：</strong><br>
+• <strong>Query (Q)</strong>: "我在找什么信息？"<br>
+• <strong>Key (K)</strong>: "我有什么信息可以提供？"<br>
+• <strong>Value (V)</strong>: "实际的内容是什么？"<br><br>
+<strong>计算过程：</strong><br>
+Attention(Q,K,V) = softmax(Q·K^T / √d_k) · V<br><br>
+简单说：计算 Query 和所有 Key 的相似度，加权求和 Value
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Multi-Head Attention</div>
+<div class="knowledge-desc">
+<strong>多头注意力 = 并行运行多个 Attention 机制</strong><br><br>
+• 每个 Head 学习不同的关注模式<br>
+• 有的关注语法关系<br>
+• 有的关注语义相似<br>
+• 有的指代消解<br><br>
+<strong>类比：</strong>多人从不同角度阅读同一篇文章，综合得出更全面的理解
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Positional Encoding (位置编码)</div>
+<div class="knowledge-desc">
+<strong>问题：</strong>Transformer 本身没有顺序概念！<br><br>
+<strong>解决方案：</strong>给每个位置添加位置信息<br>
+• <strong>Sinusoidal</strong> - 正弦余弦函数 (原始方案)<br>
+• <strong>Learned</strong> - 可学习的嵌入向量 (GPT-2+)<br>
+• <strong>RoPE</strong> - 旋转位置编码 (LLaMA 使用)
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎓 Pre-training & Fine-tuning</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">两阶段训练范式</div>
+<div class="knowledge-desc">
+<strong>Stage 1: Pre-training (预训练)</strong><br>
+• 在海量无标注数据上训练<br>
+• 学习通用的语言理解和生成能力<br>
+• 成本极高 (数百万美元)<br>
+• 产出: Base Model (基础模型)<br><br>
+<strong>Stage 2: Fine-tuning (微调)</strong><br>
+• 在特定任务的小数据集上调整<br>
+• 让模型适配特定场景<br>
+• 成本相对较低<br>
+• 产出: 专用模型
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Fine-tuning 方法对比</div>
+<div class="knowledge-desc">
+• <strong>Full Fine-tuning</strong> - 更新所有参数 (效果好但贵)<br>
+• <strong>LoRA (Low-Rank Adaptation)</strong> - 只训练低秩矩阵 (成本低70%)<br>
+• <strong>QLoRA</strong> - LoRA + 量化 (4-bit 训练)<br>
+• <strong>RLHF</strong> - 人类反馈强化学习 (ChatGPT 核心)<br>
+• <strong>DPO</strong> - 直接偏好优化 (比 RLHF 简单)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">PEFT (参数高效微调)</div>
+<div class="knowledge-desc">
+<strong>为什么需要 PEFT？</strong><br>
+• 全量微调 7B 模型需要 28GB 显存<br>
+• LoRA 只需 4-8GB 显存<br>
+• 效果接近全量微调<br>
+• 支持快速切换不同任务<br><br>
+<strong>工具库：</strong>PEFT (Hugging Face), Axolotl, Unsloth
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 3: RAG & 向量数据库 -->
+<div id="knowledge-page3" class="knowledge-page">
+<div class="knowledge-grid-2">
 
 <div class="card">
 <h2>🔗 RAG (检索增强生成)</h2>
 <div class="knowledge-card">
 <div class="knowledge-title">什么是 RAG？</div>
 <div class="knowledge-desc">
-RAG = Retrieval-Augmented Generation，结合了检索和生成的 AI 架构。<br><br>
+<strong>RAG = Retrieval-Augmented Generation</strong><br>
+结合了检索和生成的混合 AI 架构<br><br>
 <strong>核心原理：</strong><br>
-1. 用户提问 → 2. 向量数据库检索相关文档 → 3. 将文档作为上下文 → 4. LLM 生成回答并引用来源<br><br>
-<strong>典型应用：</strong>企业知识库问答、智能客服、法律咨询、医疗诊断辅助
+1. 用户提问 → 2. 检索相关知识文档 → 3. 将文档作为上下文 → 4. LLM 生成回答并引用来源<br><br>
+<strong>解决的核心问题：</strong>LLM 幻觉、知识过时、私有数据访问
 </div>
 </div>
 <div class="knowledge-card">
-<div class="knowledge-title">RAG 核心组件</div>
+<div class="knowledge-title">RAG vs Fine-tuning 选择指南</div>
 <div class="knowledge-desc">
-• <strong>Embedding Model</strong>: 将文本转换为向量 (OpenAI ada-002, Cohere)<br>
-• <strong>Vector Database</strong>: 存储和检索向量 (Pinecone, Weaviate, Milvus)<br>
-• <strong>Retriever</strong>: 相似度搜索算法 (BM25, Dense Retrieval)<br>
-• <strong>Generator</strong>: LLM 生成最终回答 (GPT-4, Claude)
+<strong>选择 RAG 当你需要：</strong><br>
+✅ 动态更新的知识库<br>
+✅ 可追溯的回答来源<br>
+✅ 降低幻觉风险<br>
+✅ 利用企业私有数据<br><br>
+<strong>选择 Fine-tuning 当你需要：</strong><br>
+✅ 特定风格或格式输出<br>
+✅ 领域专业术语理解<br>
+✅ 低延迟响应<br>
+✅ 减少 Token 消耗
 </div>
 </div>
 <div class="knowledge-card">
-<div class="knowledge-title">作为 PM 的关键决策点</div>
+<div class="knowledge-title">RAG 进阶技术</div>
 <div class="knowledge-desc">
-• 选择哪个 Embedding 模型？（精度 vs 成本）<br>
-• 向量数据库选型？（云服务 vs 自建）<br>
-• 如何保证数据新鲜度？（增量更新策略）<br>
-• 如何评估 RAG 质量？（RAGAS 框架）
+• <strong>Hybrid Search</strong> - 关键词 + 向量混合检索<br>
+• <strong>Reranking</strong> - 二次排序提升精度 (Cohere Rerank)<br>
+• <strong>Parent-Child Chunking</strong> - 父子文档策略<br>
+• <strong>Multi-query</strong> - 一个问题生成多个查询变体<br>
+• <strong>Agentic RAG</strong> - Agent 自主决定检索策略
 </div>
 </div>
 </div>
 
 <div class="card">
-<h2>🤖 Agent (智能体)</h2>
+<h2>🗄️ Vector Database (向量数据库)</h2>
 <div class="knowledge-card">
-<div class="knowledge-title">什么是 AI Agent？</div>
+<div class="knowledge-title">为什么需要向量数据库？</div>
 <div class="knowledge-desc">
-Agent = 具备自主决策和行动能力的 AI 系统，不只是"回答问题"，而是"完成任务"。<br><br>
-<strong>核心特征：</strong><br>
-1. <strong>感知</strong> - 接收和理解环境信息<br>
-2. <strong>推理</strong> - 规划任务步骤<br>
-3. <strong>行动</strong> - 调用工具/API 执行<br>
-4. <strong>反思</strong> - 根据结果调整策略
-</div>
-</div>
-<div class="knowledge-card">
-<div class="knowledge-title">主流 Agent 框架</div>
-<div class="knowledge-desc">
-• <strong>LangChain / LangGraph</strong> - 最流行的 Agent 开发框架<br>
-• <strong>CrewAI</strong> - 多 Agent 协作框架<br>
-• <strong>AutoGPT</strong> - 自主 Agent 先驱<br>
-• <strong>OpenAI Assistants API</strong> - 官方 Agent 方案<br>
-• <strong>n8n</strong> - 低代码工作流 Agent
+传统数据库擅长精确匹配，但无法做"语义搜索"<br><br>
+<strong>例子：</strong><br>
+• 传统 SQL: WHERE title = 'AI产品' → 只能找到完全匹配<br>
+• 向量搜索: 找到语义相近的 "机器学习应用"、"人工智能工具"...<br><br>
+<strong>核心技术：</strong>将文本转为高维向量 (768/1536维)，计算余弦相似度
 </div>
 </div>
 <div class="knowledge-card">
-<div class="knowledge-title">Agent 设计模式</div>
+<div class="knowledge-title">主流向量数据库对比</div>
 <div class="knowledge-desc">
-• <strong>ReAct</strong> - Reasoning + Acting 循环<br>
-• <strong>Plan-and-Execute</strong> - 先规划后执行<br>
-• <strong>Multi-Agent</strong> - 多个专业 Agent 协作<br>
-• <strong>Tool Use</strong> - 动态选择和调用工具
+• <strong>Pinecone</strong> - 全托管云服务，最易上手<br>
+• <strong>Weaviate</strong> - 开源 + 云服务，支持混合搜索<br>
+• <strong>Milvus</strong> - 开源，性能强，适合大规模<br>
+• <strong>Chroma</strong> - 轻量级嵌入式，适合本地开发<br>
+• <strong>Qdrant</strong> - Rust 写成，高性能过滤<br>
+• <strong>pgvector</strong> - PostgreSQL 扩展，无需额外数据库
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">PM 选型决策树</div>
+<div class="knowledge-desc">
+<strong>选云服务如果：</strong>团队小、不想运维、预算充足 → Pinecone<br>
+<strong>选开源自建如果：</strong>数据敏感、需要定制、有运维能力 → Milvus/Qdrant<br>
+<strong>选轻量级如果：</strong>原型验证、个人项目 → Chroma<br>
+<strong>选 PostgreSQL 如果：</strong>已有 PG 实例、需要事务一致性 → pgvector
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📐 Embedding Model (嵌入模型)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Embedding 原理</div>
+<div class="knowledge-desc">
+<strong>Embedding = 将文本映射为高维空间中的向量</strong><br><br>
+<strong>关键特性：</strong><br>
+• 语义相似的文本 → 向量距离近<br>
+• 语义不同的文本 → 向量距离远<br>
+• 维度通常: 384 / 768 / 1536 维<br><br>
+<strong>常用距离度量：</strong><br>
+• 余弦相似度 (Cosine Similarity) - 最常用<br>
+• 欧氏距离 (Euclidean Distance)<br>
+• 点积 (Dot Product)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">主流 Embedding 模型</div>
+<div class="knowledge-desc">
+• <strong>OpenAI text-embedding-3</strong> - 小/大尺寸可选 (1536维)<br>
+• <strong>Cohere embed-v3</strong> - 多语言支持好<br>
+• <strong>HuggingFace E5</strong> - 开源 SOTA<br>
+• <strong>Voyage AI</strong> - 检索专用优化<br>
+• <strong>BGE</strong> - 中文优化 (智源研究院)<br>
+• <strong>M3E</strong> - 中文开源推荐
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Embedding 成本估算</div>
+<div class="knowledge-desc">
+<strong>以 OpenAI 为例：</strong><br>
+• text-embedding-3-small: $0.02 / 1M tokens<br>
+• text-embedding-3-large: $0.13 / 1M tokens<br><br>
+<strong>100万中文 ≈ 150万 tokens ≈ $3-$20</strong><br><br>
+<strong>省钱技巧：</strong>用开源模型本地部署 (BGE/M3E)
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📊 RAG 评估框架</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">RAGAS 框架</div>
+<div class="knowledge-desc">
+<strong>RAGAS = RAG Assessment</strong> - 专门评估 RAG 系统质量<br><br>
+<strong>四大评估维度：</strong><br>
+1. <strong>Faithfulness (忠实度)</strong> - 回答是否基于检索内容<br>
+2. <strong>Answer Relevancy (相关性)</strong> - 回答是否针对问题<br>
+3. <strong>Context Precision (上下文精确度)</strong> - 检索内容是否有用<br>
+4. <strong>Context Recall (上下文召回率)</strong> - 是否找到所有相关信息
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">其他评估指标</div>
+<div class="knowledge-desc">
+• <strong>MRR (Mean Reciprocal Rank)</strong> - 排序质量<br>
+• <strong>NDCG</strong> - 归一化折损累积增益<br>
+• <strong>Hit Rate</strong> - 命中率<br>
+• <strong>Latency</strong> - 响应延迟 (P50/P95/P99)<br>
+• <strong>Cost per Query</strong> - 单次查询成本
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">RAG 优化 Checklist</div>
+<div class="knowledge-desc">
+☐ Chunk size 调优 (512/1024/2048 tokens 测试)<br>
+☐ 重叠比例设置 (10%-20% 防止信息断裂)<br>
+☐ Top-K 值调整 (通常 5-20)<br>
+☐ Reranker 引入 (提升精度 15-30%)<br>
+☐ 元数据过滤 (时间范围、文档类型)<br>
+☐ 缓存策略 (相同问题不重复检索)
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 4: Agent & MCP -->
+<div id="knowledge-page4" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>🤖 AI Agent (智能体)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 定义</div>
+<div class="knowledge-desc">
+<strong>Agent = 具备自主决策和行动能力的 AI 系统</strong><br><br>
+不只是"回答问题"，而是：<br>
+1. <strong>感知 (Perception)</strong> - 接收环境信息<br>
+2. <strong>推理 (Reasoning)</strong> - 规划执行步骤<br>
+3. <strong>行动 (Action)</strong> - 调用工具/API<br>
+4. <strong>反思 (Reflection)</strong> - 根据结果调整策略<br><br>
+<strong>核心区别：</strong>LLM 被动回答 vs Agent 主动完成任务
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 架构模式</div>
+<div class="knowledge-desc">
+• <strong>ReAct (Reasoning + Acting)</strong><br>
+交替进行思考和行动，最常用模式<br><br>
+• <strong>Plan-and-Execute</strong><br>
+先制定完整计划，再逐步执行<br><br>
+• <strong>Multi-Agent System</strong><br>
+多个专业 Agent 协作 (CEO/CTO/CMO 角色)<br><br>
+• <strong>Hierarchical Agent</strong><br>
+上层规划，下层执行的层级结构
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 能力边界</div>
+<div class="knowledge-desc">
+<strong>当前能做到：</strong><br>
+✅ 自动浏览网页、搜索信息<br>
+✅ 调用 API 完成操作<br>
+✅ 读写文件、操作数据库<br>
+✅ 发送邮件、消息通知<br>
+✅ 编写和执行代码<br><br>
+<strong>当前局限：</strong><br>
+❌ 长期记忆和持续学习<br>
+❌ 复杂多步骤任务的可靠性<br>
+❌ 真正的理解而非模式匹配
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🛠️ Tool Use (工具调用)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Function Calling 机制</div>
+<div class="knowledge-desc">
+<strong>Tool Use = LLM 决定何时以及如何调用外部函数</strong><br><br>
+<strong>工作流程：</strong><br>
+1. 用户提问 → 2. LLM 分析需要什么工具 → 3. 输出函数调用请求 → 4. 系统执行函数 → 5. 结果返回 LLM → 6. LLM 生成最终回答<br><br>
+<strong>标准协议：</strong>OpenAI Function Calling, Anthropic Tool Use
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">常用 Tool 类型</div>
+<div class="knowledge-desc">
+• <strong>Search Tools</strong> - Google Search, Tavily, SerpAPI<br>
+• <strong>Code Tools</strong> - Python REPL, Code Interpreter<br>
+• <strong>Data Tools</strong> - SQL Database, CSV/Excel<br>
+• <strong>API Tools</strong> - Weather, Stock, Maps<br>
+• <strong>File Tools</strong> - Read/Write/Create/Delete<br>
+• <strong>Communication</strong> - Email, Slack, Notion
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Tool 设计最佳实践</div>
+<div class="knowledge-desc">
+✅ 清晰的工具名称和描述 (LLM 靠描述选择工具)<br>
+✅ 明确的参数定义和类型约束<br>
+✅ 错误处理和重试机制<br>
+✅ 权限控制和安全沙箱<br>
+✅ 工具结果的简洁返回 (节省 Token)<br>
+❌ 不要让 Agent 有破坏性操作的权限
 </div>
 </div>
 </div>
@@ -933,38 +1462,450 @@ Agent = 具备自主决策和行动能力的 AI 系统，不只是"回答问题"
 <div class="card">
 <h2>🔌 MCP (Model Context Protocol)</h2>
 <div class="knowledge-card">
-<div class="knowledge-title">什么是 MCP？</div>
+<div class="knowledge-title">MCP 是什么？</div>
 <div class="knowledge-desc">
-MCP = Model Context Protocol，Anthropic 提出的开放标准，让 AI 模型能够安全地与外部数据源和工具交互。<br><br>
-<strong>类比理解：</strong>MCP 对 AI 就像 USB 对电脑 - 统一的接口标准<br><br>
-<strong>核心价值：</strong>一次集成，所有 MCP 兼容的工具都能用
+<strong>MCP = Model Context Protocol</strong><br>
+Anthropic 提出的开放标准 (2024年11月)<br><br>
+<strong>核心理念：</strong>让 AI 模型能安全地与外部数据源和工具交互<br><br>
+<strong>类比：</strong><br>
+• USB 对电脑 - 统一硬件接口<br>
+• App Store 对手机 - 统一软件分发<br>
+• MCP 对 AI - 统一工具集成标准
 </div>
 </div>
 <div class="knowledge-card">
 <div class="knowledge-title">MCP 三层架构</div>
 <div class="knowledge-desc">
-• <strong>MCP Client</strong> - AI 应用 (Claude Desktop, IDE 插件)<br>
-• <strong>MCP Server</strong> - 数据源/工具 (GitHub, Slack, 数据库)<br>
-• <strong>MCP Host</strong> - 运行环境 (桌面应用, Web 应用)
+<strong>1. MCP Host (宿主)</strong><br>
+运行环境：Claude Desktop, IDE (VS Code/Cursor), Web App<br><br>
+<strong>2. MCP Client (客户端)</strong><br>
+协议实现：负责与 Server 通信<br><br>
+<strong>3. MCP Server (服务器)</strong><br>
+数据源/工具：GitHub, Slack, Google Drive, PostgreSQL, File System...
 </div>
 </div>
 <div class="knowledge-card">
 <div class="knowledge-title">为什么 PM 要关注 MCP？</div>
 <div class="knowledge-desc">
-• 降低 AI 集成成本 - 不再需要逐个对接 API<br>
-• 生态效应 - 越多的 MCP Server，产品越强大<br>
-• 标准化竞争 - 类似 App Store 的平台机会<br>
-• 未来趋势 - 可能成为 AI 时代的"API 标准"
+🎯 <strong>降低集成成本</strong> - 一次开发，所有兼容平台可用<br>
+🎯 <strong>生态效应</strong> - 类似 iOS App Store 的网络效应<br>
+🎯 <strong>标准化机会</strong> - 可能成为 AI 时代的 API 标准<br>
+🎯 <strong>竞争格局</strong> - OpenAI 可能推出类似标准 (Plugin v2?)<br>
+🎯 <strong>创业机会</strong> - 开发垂直领域 MCP Server
 </div>
 </div>
 </div>
 
 <div class="card">
-<h2>📚 学习资源收藏</h2>
-<textarea id="knowledgeNotes" placeholder="记录你在学习 RAG/Agent/MCP 过程中的笔记和思考..." style="min-height:180px;"></textarea>
-<button class="btn" onclick="saveKnowledgeNotes()">保存笔记</button>
+<h2>🏗️ Memory (记忆系统)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 记忆层次</div>
+<div class="knowledge-desc">
+<strong>1. Short-term Memory (短期记忆)</strong><br>
+• 当前对话上下文 (Context Window)<br>
+• 有限容量 (8K-128K tokens)<br>
+• 会话结束即丢失<br><br>
+<strong>2. Long-term Memory (长期记忆)</strong><br>
+• 跨会话持久化存储<br>
+• 向量数据库存储历史交互<br>
+• 检索时按相关性召回<br><br>
+<strong>3. Episodic Memory (情景记忆)</strong><br>
+• 记住特定事件和经历<br>
+• 时间线组织<br>
+• 用于个性化
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Memory 实现方案</div>
+<div class="knowledge-desc">
+• <strong>Zep</strong> - 专为 LLM Agent 设计的记忆层<br>
+• <strong>Mem0</strong> - 开源记忆管理框架<br>
+• <strong>Letta (MemGPT)</strong> - 操作系统风格的记忆管理<br>
+• <strong>自定义方案</strong> - PostgreSQL + pgvector<br><br>
+<strong>关键功能：</strong>记忆总结、重要性评分、遗忘机制
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Memory 设计考量</div>
+<div class="knowledge-desc">
+⚠️ <strong>隐私合规</strong> - GDPR 要求被遗忘权<br>
+⚠️ <strong>成本控制</strong> - 存储和检索都有成本<br>
+⚠️ <strong>准确性</strong> - 错误记忆比没有记忆更糟糕<br>
+⚠️ <strong>时效性</strong> - 过时的记忆应该降权或删除
+</div>
+</div>
 </div>
 
+</div>
+</div>
+
+<!-- Page 5: 工具 & 框架 -->
+<div id="knowledge-page5" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>🤗 Hugging Face 生态</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Hugging Face 平台</div>
+<div class="knowledge-desc">
+<strong>AI 界的 GitHub</strong> - 模型、数据集、Demo 的中心枢纽<br><br>
+<strong>核心资源：</strong><br>
+• <strong>Model Hub</strong> - 500K+ 开源模型 (LLaMA, BERT, Stable Diffusion...)<br>
+• <strong>Dataset Hub</strong> - 100K+ 数据集<br>
+• <strong>Spaces</strong> - 一键部署 Demo<br>
+• <strong>Inference API</strong> - 免费试用模型<br>
+• <strong>AutoTrain</strong> - 无代码训练
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Transformers 库</div>
+<div class="knowledge-desc">
+<strong>最流行的 NLP/DL 库</strong><br><br>
+• 支持 PyTorch 和 TensorFlow<br>
+• 统一 API 接口 (model.generate())<br>
+• 内置 200+ 预训练模型<br>
+• Tokenizer、Pipeline 一站式<br>
+• 社区活跃，文档完善<br><br>
+<strong>PM 视角：</strong>降低 AI 应用开发门槛 80%
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Hugging Face 其他工具</div>
+<div class="knowledge-desc>
+• <strong>Diffusers</strong> - 生成图像/音频/视频模型库<br>
+• <strong>PEFT</strong> - 高效微调 (LoRA/QLoRA)<br>
+• <strong>TRL</strong> - 强化学习微调 (RLHF/DPO)<br>
+• <strong>Datasets</strong> - 数据加载和处理<br>
+• <strong>Evaluate</strong> - 模型评估基准<br>
+• <strong>Hub CLI</strong> - 命令行上传下载模型
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ LangChain 框架</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">LangChain 是什么？</div>
+<div class="knowledge-desc">
+<strong>构建 LLM 应用的开发框架</strong><br><br>
+<strong>核心抽象：</strong><br>
+• <strong>Model I/O</strong> - Prompt 管理、输出解析<br>
+• <strong>Retrieval</strong> - 文档加载、分割、向量存储、检索<br>
+• <strong>Agents</strong> - 工具调用、决策循环<br>
+• <strong>Chains</strong> - 多步骤工作流编排<br>
+• <strong>Memory</strong> - 对话历史管理<br>
+• <strong>Callbacks</strong> - 日志、监控、流式输出
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LangChain vs LangGraph</div>
+<div class="knowledge-desc">
+<strong>LangChain (传统):</strong><br>
+• 预定义 Chain 模式<br>
+• 适合简单线性流程<br>
+• 学习曲线较陡<br><br>
+<strong>LangGraph (新一代):</strong><br>
+• 图结构定义工作流<br>
+• 支持循环和条件分支<br>
+• 更灵活的 Agent 构建<br>
+• **官方推荐的新方向**
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LangChain 生态系统</div>
+<div class="knowledge-desc>
+• <strong>LangServe</strong> - 将 Chain 部署为 REST API<br>
+• <strong>LangSmith</strong> - LLM 应用监控和调试平台<br>
+• <strong>Template</strong> - 快速启动模板库<br>
+• <strong>LlamaIndex</strong> - 竞品，专注 RAG 场景<br>
+• <strong>Haystack</strong> - deepset 出品的 NLP 框架
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎭 Prompt Engineering (提示工程)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">高级 Prompt 技术</div>
+<div class="knowledge-desc">
+<strong>1. Few-shot Learning (少样本学习)</strong><br>
+提供几个示例，让模型理解任务模式<br><br>
+<strong>2. Chain-of-Thought (CoT)</strong><br>
+"让我们一步步思考..." - 引导推理过程<br><br>
+<strong>3. Self-Consistency</strong><br>
+多次采样，投票选出最一致的答案<br><br>
+<strong>4. Tree-of-Thought (ToT)</strong><br>
+探索多条推理路径，回溯和修正
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">System Prompt 设计</div>
+<div class="knowledge-desc">
+<strong>最佳实践：</strong><br>
+✅ 明确角色和专业背景<br>
+✅ 定义能力边界 (不能做什么)<br>
+✅ 指定输出格式 (JSON/Markdown/Table)<br>
+✅ 设置行为准则 (语气、风格、安全)<br>
+✅ 提供 Few-shot 示例<br>
+✅ 思考安全护栏 (拒绝有害请求)<br><br>
+<strong>长度建议：</strong> 500-1500 字为佳
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Prompt 优化工具</div>
+<div class="knowledge-desc">
+• <strong>PromptPerfect</strong> - 自动优化 Prompt<br>
+• <strong>WePrompt</strong> - 协作编辑和版本管理<br>
+• <strong>LangSmith</strong> - A/B 测试不同 Prompt<br>
+• <strong>HumanLoop</strong> - 人类反馈收集<br>
+• <strong>Argilla</strong> - 标注和评估数据集
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔧 LLM Ops (大模型运维)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">LLM 应用生命周期</div>
+<div class="knowledge-desc">
+<strong>1. 开发阶段</strong><br>
+• Prompt 实验 (Jupyter Notebook)<br>
+• 模型选择 (开源 vs API)<br>
+• Prototype 验证<br><br>
+<strong>2. 生产部署</strong><br>
+• API 封装 (FastAPI/Flask)<br>
+• 负载均衡和缓存<br>
+• 监控告警<br><br>
+<strong>3. 持续优化</strong><br>
+• 收集用户反馈<br>
+• A/B 测试迭代<br>
+• 成本优化
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LLM Ops 工具栈</div>
+<div class="knowledge-desc">
+• <strong>Weights & Biases</strong> - 实验追踪和可视化<br>
+• <strong>MLflow</strong> - 模型版本管理和注册<br>
+• <strong>Arize Phoenix</strong> - LLM 可观测性<br>
+• <strong>Helicone</strong> - OpenAI API 代理和监控<br>
+• <strong>Litellm</strong> - 统一 LLM API 调用接口<br>
+• <strong>Portkey</strong> - Gateway + 缓存 + fallback
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">成本优化策略</div>
+<div class="knowledge-desc">
+💰 <strong>模型路由</strong> - 简单问题用小模型，复杂用大模型<br>
+💰 <strong>响应缓存</strong> - 相似问题命中缓存<br>
+💰 <strong>Prompt 压缩</strong> - 减少输入 Token<br>
+💰 <strong>批量处理</strong> - 合并请求降低 API 调用次数<br>
+💰 <strong>开源替代</strong> - LLaMA/Ollama 本地部署<br>
+💰 <strong>量化</strong> - 4-bit/8-bit 降低显存需求
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 6: 评估 & 优化 -->
+<div id="knowledge-page6" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>📊 LLM 评估方法</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">评估维度</div>
+<div class="knowledge-desc">
+<strong>1. 质量 (Quality)</strong><br>
+• 正确性 (Accuracy) - 回答是否正确<br>
+• 相关性 (Relevance) - 是否针对问题<br>
+• 完整性 (Completeness) - 信息是否充分<br><br>
+<strong>2. 安全性 (Safety)</strong><br>
+• 有害内容检测<br>
+• PII 泄露检查<br>
+• Bias 偏见评估<br><br>
+<strong>3. 性能 (Performance)</strong><br>
+• Latency (P50/P99 延迟)<br>
+• Throughput (TPS 吞吐量)<br>
+• Cost per Request
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">评估方法论</div>
+<div class="knowledge-desc">
+• <strong>人工评估 (Human Eval)</strong><br>
+最准确但昂贵，适合金标准建立<br><br>
+• <strong>自动化指标 (BLEU/ROUGE)</strong><br>
+传统 NLP 指标，与人类判断相关性低<br><br>
+• <strong>LLM-as-Judge</strong><br>
+用 GPT-4/Claude 评判其他模型的输出<br>
+成本低，与人工评估相关性 ~80%<br><br>
+• <strong>众包评估 (Scale/AWS MTurk)</strong><br>
+平衡成本和质量
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">评估框架工具</div>
+<div class="knowledge-desc">
+• <strong>LangSmith</strong> - 内置评估和测试<br>
+• <strong>DeepEval</strong> - LLM 单元测试框架<br>
+• <strong>Ragas</strong> - RAG 专项评估<br>
+• <strong>Phoenix Arize</strong> - 可观测性 + 评估<br>
+• <strong>Promptfoo</strong> - Prompt 变体测试<br>
+• <strong>Confident AI</strong> - 自动化评估平台
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">🔧 LLM Evaluation Harness (评估套件)</div>
+<div class="knowledge-desc">
+<strong>什么是 Harness？</strong><br><br>
+<strong>LLM Evaluation Harness = 大语言模型标准化评测框架</strong><br><br>
+由 **EleutherAI** 开发的开源评估工具，用于对 LLM 进行全面、标准化的性能测试。<br><br>
+<strong>核心功能：</strong><br>
+✅ <strong>支持 200+ 评测数据集</strong> - MMLU、HellaSwag、GSM8K、HumanEval...<br>
+✅ <strong>标准化流程</strong> - 统一的模型加载、推理、评分流程<br>
+✅ <strong>多模型支持</strong> - HuggingFace、OpenAI、本地模型均可<br>
+✅ <strong>可扩展</strong> - 自定义评测任务和指标<br><br>
+<strong>知名评测榜单使用：</strong><br>
+• <strong>Hugging Face Open LLM Leaderboard</strong><br>
+• <strong>EleutherAI Leaderboard</strong><br>
+• 各大模型发布时的基准测试<br><br>
+<strong>PM 视角：</strong>选择模型时，查看 Harness 评测结果比厂商宣传更客观
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎯 HEMERS 评估框架</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">HEMERS 六维评估体系</div>
+<div class="knowledge-desc">
+<strong>HEMERS = Holistic Evaluation Metric for Enterprise Response Systems</strong><br><br>
+面向企业级 AI 应用的综合评估框架：<br><br>
+<strong>H - Helpfulness (有用性)</strong><br>
+回答是否真正帮助用户解决问题？<br><br>
+<strong>E - Exactness (准确性)</strong><br>
+事实陈述是否正确无误？<br><br>
+<strong>M - Measurability (可度量性)</strong><br>
+评估指标是否客观可量化？
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">HEMERS 续</div>
+<div class="knowledge-desc">
+<strong>E - Efficiency (效率性)</strong><br>
+响应速度、资源消耗、成本效益<br><br>
+<strong>R - Robustness (鲁棒性)</strong><br>
+面对异常输入、攻击、边缘情况的稳定性<br><br>
+<strong>S - Safety (安全性)</strong><br>
+隐私保护、内容安全、合规要求<br><br>
+<strong>适用场景：</strong>客服机器人、企业助手、金融咨询等生产系统
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">HEMERS 实施建议</div>
+<div class="knowledge-desc">
+✅ 建立各维度的基线和阈值<br>
+✅ 定期自动化回归测试<br>
+✅ 结合业务指标 (CSAT/NPS)<br>
+✅ 灰度发布时重点监控 R 和 S<br>
+✅ 建立人工审核抽样机制 (10% 抽检)
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔒 AI 安全与治理</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">主要安全风险</div>
+<div class="knowledge-desc">
+<strong>1. Prompt Injection (提示注入)</strong><br>
+恶意用户通过精心构造的输入绕过安全限制<br><br>
+<strong>2. Data Leakage (数据泄露)</strong><br>
+模型在回复中泄露训练数据或用户隐私<br><br>
+<strong>3. Jailbreak (越狱)</strong><br>
+诱导模型违反安全准则输出有害内容<br><br>
+<strong>4. Hallucination (幻觉)</strong><br>
+生成虚假但看似可信的信息
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">安全防护措施</div>
+<div class="knowledge-desc">
+• <strong>Input Guardrails</strong> - 输入过滤和检测 (NeMo Guardrails)<br>
+• <strong>Output Filtering</strong> - 敏感词过滤、PII 识别<br>
+• <strong>Content Moderation</strong> - 内容审核 API (OpenAI Moderation)<br>
+• <strong>Rate Limiting</strong> - 防止滥用和 DDoS<br>
+• <strong>Audit Logging</strong> - 完整的操作日志记录<br>
+• <strong>RBAC</strong> - 基于角色的权限控制
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">合规框架</div>
+<div class="knowledge-desc">
+• <strong>EU AI Act</strong> - 欧盟 AI 法规 (分级监管)<br>
+• <strong>GDPR</strong> - 数据隐私保护 (被遗忘权)<br>
+• <strong>AI Ethics Guidelines</strong> - 可解释性、公平性、透明度<br>
+• <strong>Industry Standards</strong> - ISO/IEC 42001 AI管理体系<br><br>
+<strong>PM 必知：</strong>你的产品属于哪个风险等级？需要哪些合规措施？
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📈 AI Product Metrics (AI产品指标)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">AI 产品特有指标</div>
+<div class="knowledge-desc">
+不同于传统产品的指标体系：<br><br>
+<strong>模型层面：</strong><br>
+• Accuracy/Precision/Recall/F1<br>
+• Perplexity (困惑度) - 语言模型专用<br>
+• BLEU/ROUGE - 生成质量<br>
+• Latency P50/P99 - 响应时间分布<br><br>
+<strong>用户体验层面：</strong><br>
+• Task Success Rate - 任务完成率<br>
+• Time to Complete - 任务耗时<br>
+• User Satisfaction (CSAT/NPS)<br>
+• Retention Rate - 留存率
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">成本指标</div>
+<div class="knowledge-desc">
+💵 <strong>Token Consumption</strong> - 总消耗 Token 数<br>
+💵 <strong>Cost per User</strong> - 单用户成本<br>
+💵 <strong>Cost per Query</strong> - 单次查询成本<br>
+💵 <strong>Cache Hit Rate</strong> - 缓存命中率 (直接影响成本)<br>💵 <strong>Model Utilization</strong> - 模型利用率<br><br>
+<strong>目标：</strong>在保证质量的前提下最小化成本
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">A/B Testing for AI</div>
+<div class="knowledge-desc>
+<strong>AI 产品 A/B 测试要点：</strong><br>
+✅ 测试变量：不同模型、不同 Prompt、不同参数<br>
+✅ 分流策略：确保用户群体一致<br>
+✅ 样本量：AI 交互方差大，需要更大样本<br>
+✅ 统计显著性：注意 p-value 和置信区间<br>
+✅ 长期跟踪：短期效果 ≠ 长期留存<br><br>
+<strong>工具：</strong>LaunchDarkly, Optimizely, Statsig
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- 笔记区域 -->
+<div style="margin-top:32px;">
+<div class="card">
+<h2>📝 学习笔记</h2>
+<textarea id="knowledgeNotes" placeholder="记录你在学习 AI 知识过程中的笔记、思考和疑问..." style="min-height:180px;"></textarea>
+<button class="btn" onclick="saveKnowledgeNotes()">保存笔记</button>
+</div>
 </div>
 
 </div>
@@ -1183,6 +2124,17 @@ function switchTab(tabName) {
 document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
 document.getElementById('section-' + tabName).classList.add('active');
+event.target.classList.add('active');
+}
+
+function switchKnowledgePage(pageId) {
+document.querySelectorAll('.knowledge-page').forEach(page => {
+page.classList.remove('active');
+});
+document.querySelectorAll('.knowledge-nav-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+document.getElementById('knowledge-' + pageId).classList.add('active');
 event.target.classList.add('active');
 }
 
