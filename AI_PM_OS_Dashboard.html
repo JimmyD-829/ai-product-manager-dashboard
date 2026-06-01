@@ -616,12 +616,10 @@ li:hover {
 
 <div class="nav-tabs">
 <button class="tab-btn active" onclick="switchTab('home')">🏠 首页</button>
-<button class="tab-btn" onclick="switchTab('academy')">📚 产品拆解学院</button>
+<button class="tab-btn" onclick="switchTab('database')">📊 产品数据库</button>
 <button class="tab-btn" onclick="switchTab('prompt')">🧠 Prompt训练营</button>
 <button class="tab-btn" onclick="switchTab('knowledge')">🔬 AI知识库</button>
 <button class="tab-btn" onclick="switchTab('projects')">💻 项目中心</button>
-<button class="tab-btn" onclick="switchTab('discovery')">🔥 产品发现</button>
-<button class="tab-btn" onclick="switchTab('weekly')">📊 周报系统</button>
 <button class="tab-btn" onclick="switchTab('growth')">🏆 成长系统</button>
 </div>
 
@@ -1423,6 +1421,12 @@ RCGCF = Role + Context + Goal + Constraint + Format
 <textarea id="promptLibrary" placeholder="在这里记录你发现的高质量 Prompt...&#10;&#10;分类建议：PRD编写 | 竞品分析 | 用户研究 | 技术方案 | 数据分析" style="min-height:180px;"></textarea>
 <button class="btn" onclick="savePrompts()">保存到收藏库</button>
 <div id="savedPromptsList" style="margin-top:16px;"></div>
+</div>
+
+<div class="card" style="grid-column: span 2;">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;">📊 Prompt 统计 & 模板库 V8</h2>
+<div id="promptStatsPanel"></div>
+<div id="templateLibraryContainer"></div>
 </div>
 
 </div>
@@ -2615,7 +2619,57 @@ Skills 是将复杂的 AI 能力封装成标准化、可调用的"技能单元"�
 • <strong>Edge AI</strong> - 端侧推理降低成本
 </div>
 </div>
+
+<div class="card" style="grid-column: span 3;">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;">💼 作品集 Portfolio <span style="font-size:0.85rem;color:var(--text-secondary);font-weight:400;">V8 新增</span></h2>
+<div id="portfolioStatsContainer"></div>
+<div id="portfolioContainer"></div>
 </div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- AI产品数据库 V8 -->
+<div id="section-database" class="section">
+
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;text-align:center;margin-bottom:24px;">📊 AI 产品数据库</h2>
+
+<div class="grid">
+
+<div class="card" style="grid-column: span 3;">
+<h2>🔍 搜索 & 筛选</h2>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+<input type="text" id="productSearch" placeholder="搜索产品名称、分类、关键词..." oninput="filterProducts()" style="flex:1;min-width:250px;padding:14px 18px;background:rgba(12,18,32,0.6);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);font-size:0.95rem;">
+<select id="categoryFilter" onchange="filterProducts()" style="padding:14px 18px;background:rgba(12,18,32,0.6);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);font-size:0.95rem;cursor:pointer;">
+<option value="all">🌟 全部分类 (50)</option>
+<option value="chat">💬 AI聊天助手 (8)</option>
+<option value="code">💻 AI编程工具 (7)</option>
+<option value="creative">🎨 创意设计 (9)</option>
+<option value="productivity">⚡ 效率自动化 (11)</option>
+<option value="infra">🔬 基础设施 (8)</option>
+<option value="vertical">🏢 垂直行业 (7)</option>
+</select>
+<button onclick="resetFilters()" class="btn btn-secondary" style="padding:14px 24px;">🔄 重置</button>
+</div>
+
+<div id="productStats" style="background:linear-gradient(135deg,rgba(212,168,83,0.08),rgba(45,212,191,0.08));border:1px solid var(--border-color);border-radius:12px;padding:16px;display:flex;gap:20px;flex-wrap:wrap;font-size:0.9rem;color:var(--text-secondary);">
+<span><strong style="color:var(--accent-gold);">总计：</strong><span id="totalProducts">50</span> 个产品</span>
+<span><strong style="color:var(--accent-teal);">显示：</strong><span id="showingProducts">50</span> 个结果</span>
+<span><strong style="color:var(--accent-coral);">收藏：</strong><span id="favoriteCount">0</span> 个产品</span>
+</div>
+</div>
+
+<div class="card" style="grid-column: span 3;">
+<h2>🎯 产品列表 <span style="font-size:0.85rem;color:var(--text-secondary);font-weight:400;">（点击查看详情）</span></h2>
+<div id="productGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:16px;"></div>
+</div>
+
+<div class="card" style="grid-column: span 3;" id="productDetailCard" style="display:none;">
+<h2>📋 产品详情 <button onclick="closeProductDetail()" style="float:right;font-size:0.85rem;background:none;border:none;color:var(--text-secondary);cursor:pointer;">✕ 关闭</button></h2>
+<div id="productDetailContent"></div>
 </div>
 
 </div>
@@ -2729,6 +2783,26 @@ Lv.5 AI Founder (3000 XP)
 <textarea id="growthJournal" placeholder="记录你的成长感悟和学习心得..." style="min-height:180px;"></textarea>
 <button class="btn" onclick="saveGrowthJournal()">保存成长日志</button>
 <div id="journalHistory" style="margin-top:16px;"></div>
+</div>
+
+<div class="card" style="grid-column: span 2;">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;">🧠 AI Coach 2.0 - 智能学习导师</h2>
+<div id="aiCoachV8Container"></div>
+</div>
+
+<div class="card">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;">📈 学习统计中心</h2>
+<div id="learningStatsContainer"></div>
+</div>
+
+<div class="card">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;">🎯 PM KPI 能力模型</h2>
+<div id="kpiRadarContainer"></div>
+</div>
+
+<div class="card">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;">❓ 面试题库</h2>
+<div id="interviewBankContainer"></div>
 </div>
 
 </div>
@@ -3284,6 +3358,15 @@ renderTasks(); renderProjects(); renderCheckinGrid(); updateLevelUI();
 renderWeeklyHistory(); renderJournal();
 initAICoach();
 renderDiscovery();
+if(typeof renderProducts === 'function') renderProducts();
+if(typeof renderAICoach20 === 'function') renderAICoach20();
+if(typeof renderLearningStats === 'function') renderLearningStats();
+if(typeof renderKPIRadar === 'function') renderKPIRadar();
+if(typeof renderInterviewBank === 'function') renderInterviewBank();
+if(typeof renderPromptStats === 'function') renderPromptStats();
+if(typeof renderTemplateLibrary === 'function') renderTemplateLibrary();
+if(typeof renderPortfolio === 'function') renderPortfolio();
+if(typeof renderPortfolioStats === 'function') renderPortfolioStats();
 
 if(quickNotes) document.getElementById('quickNotes').value = quickNotes;
 if(prompts) document.getElementById('promptLibrary').value = prompts;
@@ -3300,6 +3383,10 @@ if(el) el.value = promptExercises[lvl].content;
 });
 };
 </script>
+<script src="product-database.js"></script>
+<script src="growth-system-v8.js"></script>
+<script src="prompt-enhancement-v8.js"></script>
+<script src="portfolio-system-v8.js"></script>
 
 </body>
 </html>
