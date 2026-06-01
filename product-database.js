@@ -29,14 +29,20 @@ let favorites = JSON.parse(localStorage.getItem('v8_favorites') || '[]');
 
 function renderProducts(filter = 'all', search = '') {
 const grid = document.getElementById('productGrid');
-if (!grid) return;
+if (!grid) {
+console.error('productGrid element not found');
+return;
+}
 
-const categoryMap = {all:'all', chat:'chat', code:'code', creative:'creative', productivity:'productivity', infra:'infra'};
+const categoryMap = {all:'all', chat:'chat', code:'code', creative:'creative', productivity:'productivity', infra:'infra', pmtools:'pmtools'};
+
+console.log('renderProducts called - filter:', filter, 'search:', search, 'total products:', productDatabase.length);
 
 let filtered = productDatabase;
 
 if (filter !== 'all') {
 filtered = filtered.filter(p => p.category === filter);
+console.log('After category filter:', filtered.length, 'products');
 }
 
 if (search.trim()) {
@@ -47,6 +53,7 @@ p.desc.toLowerCase().includes(s) ||
 p.position.toLowerCase().includes(s) ||
 p.targetUsers.toLowerCase().includes(s)
 );
+console.log('After search filter:', filtered.length, 'products');
 }
 
 document.getElementById('showingProducts').textContent = filtered.length;
