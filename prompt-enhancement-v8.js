@@ -225,7 +225,7 @@ id:7,
 name:"代码审查助手",
 category:"💻 技术协作",
 icon:"🔍",
-description："非技术人员也能用的代码审查Prompt",
+description:"非技术人员也能用的代码审查Prompt",
 template:`# 代码审查请求
 
 ## 代码片段
@@ -270,7 +270,7 @@ id:8,
 name:"会议纪要生成器",
 category:"📝 协作工具",
 icon:"📋",
-description："将杂乱的会议记录整理成结构化文档",
+description:"将杂乱的会议记录整理成结构化文档",
 template:`# 会议纪要整理
 
 ## 原始记录
