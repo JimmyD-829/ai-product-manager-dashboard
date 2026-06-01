@@ -1,4 +1,5 @@
 // V8 AI Product Database - Core Functions
+console.log('🚀 product-database.js loading...');
 
 const productDatabase = [
 {id:1,name:"ChatGPT",category:"chat",icon:"🤖",url:"https://chat.openai.com",users:"5亿+",pricing:"Freemium + Plus $20/mo",rating:9.9,hot:true,founded:"2022",team:"500+",funding:"$11B",desc:"OpenAI出品的对话式AI助手引领生成式AI浪潮的标志性产品",position:"通用AI助手通过自然语言交互提供信息创意和解决方案降低AI使用门槛",targetUsers:"学生开发者产品经理企业用户研究人员内容创作者",valueProp:"提问即获得答案 - 极简交互强大能力多场景适用",features:{primary:["多轮对话与上下文记忆","GPT-4/GPT-4o多模型支持","插件与GPT Store生态","代码解释器(数据分析/绘图)","DALL-E 3图像生成","语音对话模式"],secondary:["自定义指令(个性化)","文件上传与分析","浏览联网搜索","团队工作区(Enterprise)","API接口服务"]},businessModel:{freemium:"免费版提供GPT-3.5限制使用频率",subscription:"Plus $20/mo (GPT-4优先) / Team $25/user/mo",enterprise:"SSO管理控制台数据隔离无限速"},pmAnalysis:{successReason:["1. 产品形态极简：单输入框零学习成本\n2. 技术领先性：GPT系列模型持续迭代\n3. 先发优势：定义了Chatbot产品范式\n4. 生态构建：Plugin/GPT Store形成飞轮\n5. 品牌效应：ChatGPT成为AI代名词"],moat:["1. 数据飞轮：海量用户反馈优化模型\n2. 模型壁垒：GPT-4仍保持领先\n3. 开发者生态：API+Plugin网络效应\n4. 品牌认知：用户心智占领\n5. 资源优势：Microsoft深度合作"],growthFlywheel:["用户体验→口碑传播→更多用户→更多训练数据→模型更优→体验更好"]}},
@@ -64,7 +65,9 @@ grid.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-se
 return;
 }
 
-grid.innerHTML = filtered.map(product => `
+grid.innerHTML = filtered.map(product => {
+try {
+return `
 <div style="background:rgba(12,18,32,0.6);border:1px solid var(--border-color);border-radius:14px;padding:20px;transition:all 0.3s ease;cursor:pointer;position:relative;"
 onclick="showProductDetail(${product.id})"
 onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='var(--accent-gold)'"
@@ -90,8 +93,14 @@ ${'⭐'.repeat(Math.floor(product.rating/2))} <span style="color:var(--accent-go
 </div>
 </div>
 <button onclick="event.stopPropagation();toggleFavorite(${product.id})" style="margin-top:10px;width:100%;padding:8px;background:${favorites.includes(product.id) ? 'rgba(212,168,83,0.1)' : 'rgba(255,255,255,0.03)'};border:1px solid ${favorites.includes(product.id) ? 'var(--accent-gold)' : 'var(--border-color)'};border-radius:8px;color:${favorites.includes(product.id) ? 'var(--accent-gold)' : 'var(--text-secondary)'};cursor:pointer;font-size:0.85rem;">${favorites.includes(product.id) ? '⭐ 已收藏' : '☆ 收藏'}</button>
-</div>
-`).join('');
+</div>`;
+} catch(e) {
+console.error('Error rendering product:', product.name, e);
+return '';
+}
+}).join('');
+
+console.log('✅ Products rendered - grid.innerHTML length:', grid.innerHTML.length, 'child count:', grid.children.length);
 }
 
 function filterProducts() {
