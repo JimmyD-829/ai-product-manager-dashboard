@@ -224,7 +224,7 @@ renderInterviewBank();
 addExp(1);
 }
 
-function showQuestionQuestion(question,hint) {
+function showQuestionHint(question,hint) {
 const display = document.getElementById('questionHintDisplay');
 const content = document.getElementById('hintContent');
 if(display && content) {
