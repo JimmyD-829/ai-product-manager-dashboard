@@ -7,7 +7,7 @@ const interviewQuestions = [
 {category:"AI产品",type:"🤖 AI产品题",question:"ChatGPT为什么成功？核心原因是什么？",difficulty:"⭐⭐ 入门",hint:"从产品形态、技术、时机、生态多维度分析"},
 {category:"AI产品",type:"🤖 AI产品题",question:"Cursor vs GitHub Copilot，差异和各自优势？",difficulty:"⭐⭐⭐ 中级",hint："对比目标用户、产品定位、技术实现、商业模式"},
 {category:"AI产品",type:"🤖 AI产品题",question:"如何评估一个AI产品的质量？",difficulty:"⭐⭐⭐ 高级",hint:"准确性、速度、成本、用户体验、安全性、可解释性"},
-{category:"Agent",type:"🤖 Agent专题题",question:"Agent和Workflow的区别？什么时候用哪个？",difficulty:"⭐⭐⭐ 中级",hint：'Agent=自主决策+反馈循环；Workflow=预定义步骤'},
+{category:"Agent",type:"🤖 Agent专题题",question:"Agent和Workflow的区别？什么时候用哪个？",difficulty:"⭐⭐⭐ 中级",hint:"Agent=自主决策+反馈循环；Workflow=预定义步骤"},
 {category:"Agent",type:"🤖 Agent专题题",question:"MCP协议的价值是什么？为什么重要？",difficulty:"⭐⭐⭐ 高级",hint:"标准化接口、生态效应、降低集成成本"},
 {category:"Agent",type:"🤖 Agent专题题",question:"如何设计Multi-Agent系统？关键挑战？",difficulty:"⭐⭐⭐⭐ 专家",hint:"任务分解、通信机制、冲突解决、状态同步"},
 {category:"商业模式",type:"📊 商业模式题",question:"AI产品的定价策略有哪些？如何选择？",difficulty:"⭐⭐⭐ 中级",hint:"Freemium/Usage-based/Tiered/Enterprise，结合成本结构"},
@@ -40,7 +40,7 @@ interviewAnswered:15
 };
 
 function renderAICoach20() {
-const coachSection = document.getElementById('aiCoachRecommendation');
+const coachSection = document.getElementById('aiCoachV8Container');
 if(!coachSection) return;
 
 const weakestSkill = [...kpiData.skills].sort((a,b)=>(a.target-a.score)-(b.target-b.score))[0];
