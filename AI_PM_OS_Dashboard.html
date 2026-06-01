@@ -1706,6 +1706,90 @@ Anthropic 提出的开放标准 (2024年11月)<br><br>
 </div>
 </div>
 
+<div class="card">
+<h2>🛠️ AI Skills (技能系统)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 AI Skills？</div>
+<div class="knowledge-desc">
+<strong>AI Skills = 可复用的 AI 能力模块</strong><br><br>
+Skills 是将复杂的 AI 能力封装成标准化、可调用的"技能单元"，让 AI 系统具备专业领域的执行能力。<br><br>
+<strong>类比理解：</strong><br>
+• LLM = 大脑 (通用智能)<br>
+• Tools = 手脚 (执行能力)<br>
+• **Skills = 专业技能** (领域专长)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Skills vs Tools vs Plugins</div>
+<div class="knowledge-desc">
+<strong>🔧 Tools (工具):</strong><br>
+• 基础功能：搜索、计算、API调用<br>
+• 通用性强，无领域知识<br>
+• 示例：Web Search、Calculator、Code Interpreter<br><br>
+<strong>🎯 Skills (技能):</strong><br>
+• 领域专业知识封装<br>
+• 包含 Prompt + 工具 + 流程<br>
+• 示例：数据分析、文档撰写、代码审查<br><br>
+<strong>🔌 Plugins (插件):</strong><br>
+• 第三方扩展能力<br>
+• 通常绑定特定服务<br>
+• 示例：Shopify Plugin、Slack Plugin
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">常见 AI Skills 类型</div>
+<div class="knowledge-desc">
+<strong>1. 📊 数据分析 Skill</strong><br>
+自动清洗数据、生成统计图表、发现趋势异常<br><br>
+<strong>2. 📝 内容创作 Skill</strong><br>
+文章写作、SEO优化、多语言翻译、风格适配<br><br>
+<strong>3. 💻 编程开发 Skill</strong><br>
+代码生成、Code Review、Debug、重构建议<br><br>
+<strong>4. 🔍 研究分析 Skill</strong><br>
+文献综述、竞品分析、市场调研报告生成<br><br>
+<strong>5. 📧 商务沟通 Skill</strong><br>
+邮件起草、会议纪要、PRD撰写、用户故事编写
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Skills 实现方式</div>
+<div class="knowledge-desc">
+<strong>方式一: Prompt Template + Few-shot</strong><br>
+预定义高质量 Prompt 模板，注入示例<br><br>
+<strong>方式二: Agent Workflow</strong><br>
+多步骤工作流，结合多个工具协同<br><br>
+<strong>方式三: Fine-tuned Model</strong><br>
+针对特定任务微调的专用模型<br><br>
+<strong>方式四: RAG + Knowledge Base</strong><br>
+检索增强，结合领域知识库<br><br>
+<strong>PM 视角：</strong>Skills 是 AI 产品差异化的核心！
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">主流 Skills 平台</div>
+<div class="knowledge-desc">
+• <strong>OpenAI GPTs</strong> - 自定义 ChatGPT 助手<br>
+• <strong>Claude Projects</strong> - 项目级定制能力<br>
+• <strong>MCP Servers</strong> - 标准化技能接口<br>
+• <strong>LangChain Tools</strong> - 可组合工具集<br>
+• <strong>Custom Skills</strong> - 企业自建技能库<br><br>
+<strong>趋势：</strong>从"通用AI"到"专业AI助手"，Skills 是关键
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">构建 Skills 的最佳实践</div>
+<div class="knowledge-desc">
+✅ <strong>明确边界</strong> - 一个 Skill 只做一件事<br>
+✅ <strong>可测试</strong> - 定义清晰的输入输出和评估标准<br>
+✅ <strong>可组合</strong> - 设计成可与其他 Skill 协作<br>
+✅ <strong>有版本</strong> - 支持迭代和回滚<br>
+✅ <strong>有监控</strong> - 追踪使用率和成功率<br>
+✅ <strong>文档完善</strong> - 使用说明和示例齐全<br><br>
+<strong>示例：</strong>"产品分析Skill" = 数据提取 → SWOT分析 → 报告生成
+</div>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -2021,7 +2105,8 @@ Anthropic 提出的开放标准 (2024年11月)<br><br>
 
 <div class="card">
 <h2>🏆 等级与经验值</h2>
-<svg class="progress-ring" viewBox="0 0 120 120">
+<div style="position:relative;width:120px;height:120px;margin:20px auto;">
+<svg class="progress-ring" viewBox="0 0 120 120" style="position:absolute;top:0;left:0;width:100%;height:100%;">
 <defs>
 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
 <stop offset="0%" style="stop-color:#d4a853"/>
@@ -2031,11 +2116,12 @@ Anthropic 提出的开放标准 (2024年11月)<br><br>
 <circle class="progress-ring-circle" cx="60" cy="60" r="52"/>
 <circle class="progress-ring-progress" id="expProgress" cx="60" cy="60" r="52"
 stroke-dasharray="327" stroke-dashoffset="245"/>
-<div class="progress-text">
+</svg>
+<div class="progress-text" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:10;">
 <div class="progress-value" id="currentLevel">Lv.2</div>
 <div class="progress-label">Prompt 工程师</div>
 </div>
-</svg>
+</div>
 <div style="text-align:center;margin-top:10px;">
 <span style="color:var(--text-secondary);font-size:0.9rem;">经验值: </span>
 <span style="color:var(--accent-gold);font-weight:600;" id="currentExp">250</span>
