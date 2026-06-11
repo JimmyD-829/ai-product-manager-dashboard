@@ -1,0 +1,3392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI PM Academy - Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0c1220;
+  --bg-secondary: #141d30;
+  --bg-card: rgba(20, 32, 55, 0.75);
+  --text-primary: #f0f4f8;
+  --text-secondary: #8b9cb8;
+  --accent-gold: #d4a853;
+  --accent-teal: #2dd4bf;
+  --accent-coral: #f472b6;
+  --border-color: rgba(212, 168, 83, 0.15);
+  --shadow-warm: 0 12px 40px rgba(212, 168, 83, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 10% 10%, rgba(212, 168, 83, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, rgba(45, 212, 191, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(244, 114, 182, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 36px 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 48px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.header-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+.header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+
+.header p {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.nav-tabs {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 44px;
+  animation: fadeInUp 0.7s ease-out 0.2s backwards;
+}
+
+.tab-btn {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tab-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.section {
+  display: none;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.section.active { display: block; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 26px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.6s ease-out backwards;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212, 168, 83, 0.25);
+  box-shadow: var(--shadow-warm);
+}
+
+.card:hover::before { opacity: 1; }
+
+.card h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-top: 14px;
+  margin-bottom: 10px;
+  color: var(--accent-gold);
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.link-group {
+  background: rgba(12, 18, 32, 0.5);
+  border-radius: 14px;
+  padding: 18px;
+  border-left: 3px solid var(--accent-gold);
+}
+
+.link-group.inspiration {
+  border-left-color: var(--accent-coral);
+}
+
+.link-group h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 0.92rem;
+}
+
+.link-item:hover {
+  color: var(--accent-teal);
+  padding-left: 6px;
+}
+
+.link-item::before {
+  content: '→';
+  opacity: 0.5;
+}
+
+.case-study {
+  background: linear-gradient(135deg, rgba(212, 168, 83, 0.06), rgba(45, 212, 191, 0.04));
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 20px;
+  margin: 14px 0;
+  position: relative;
+}
+
+.case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 14px;
+}
+
+.case-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.case-tag {
+  background: rgba(45, 212, 191, 0.15);
+  color: var(--accent-teal);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.case-content {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.case-content strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.case-highlights {
+  margin-top: 12px;
+  padding-left: 16px;
+}
+
+.case-highlights li {
+  margin: 6px 0;
+  list-style: disc;
+  color: var(--accent-teal);
+}
+
+.case-highlights li span {
+  color: var(--text-secondary);
+}
+
+.level-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.level-beginner { background: rgba(45, 212, 191, 0.15); color: var(--accent-teal); }
+.level-intermediate { background: rgba(212, 168, 83, 0.15); color: var(--accent-gold); }
+.level-advanced { background: rgba(244, 114, 182, 0.15); color: var(--accent-coral); }
+
+textarea, input[type="text"], select {
+  width: 100%;
+  background: rgba(12, 18, 32, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: 11px;
+  padding: 14px;
+  color: var(--text-primary);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.93rem;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+textarea:focus, input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 0 3px rgba(212, 168, 83, 0.1);
+}
+
+input[type="text"], select {
+  height: 46px;
+  min-height: auto;
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  border: none;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+  margin-top: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212, 168, 83, 0.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  margin-left: 8px;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  box-shadow: none;
+}
+
+ul { list-style: none; padding: 0; }
+
+li {
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+li:last-child { border-bottom: none; }
+
+li:hover {
+  padding-left: 6px;
+  color: var(--accent-gold);
+}
+
+.progress-ring {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.progress-ring-circle {
+  fill: none;
+  stroke: rgba(212, 168, 83, 0.15);
+  stroke-width: 8;
+}
+
+.progress-ring-progress {
+  fill: none;
+  stroke: url(#gradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.progress-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.checkin-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.checkin-day {
+  aspect-ratio: 1;
+  background: rgba(12, 18, 32, 0.5);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.checkin-day:hover {
+  border-color: var(--accent-gold);
+  background: rgba(212, 168, 83, 0.08);
+}
+
+.checkin-day.checked {
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  font-weight: 600;
+}
+
+.checkin-day.today {
+  border: 2px solid var(--accent-teal);
+}
+
+.knowledge-card {
+  background: rgba(12, 18, 32, 0.5);
+  border-radius: 12px;
+  padding: 16px;
+  margin: 10px 0;
+  border-left: 3px solid var(--accent-teal);
+}
+
+.knowledge-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: var(--accent-teal);
+}
+
+.knowledge-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.report-output {
+  background: rgba(12, 18, 32, 0.6);
+  border-radius: 12px;
+  padding: 18px;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stat-box {
+  background: rgba(12, 18, 32, 0.5);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-name {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(35px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Knowledge Base Pagination */
+.knowledge-nav {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.knowledge-nav-btn {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 10px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.knowledge-nav-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+.knowledge-nav-btn.active {
+  background: linear-gradient(135deg, var(--accent-gold), #b8923f);
+  color: var(--bg-primary);
+  border-color: transparent;
+  font-weight: 600;
+}
+
+.knowledge-page {
+  display: none;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.knowledge-page.active {
+  display: block;
+}
+
+.knowledge-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: 1fr; }
+  .links-grid { grid-template-columns: 1fr; }
+  .knowledge-grid-2 { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+<div class="header-badge">🎓 AI PM Academy</div>
+<h1>Dashboard</h1>
+<p>从"会用 AI"到"会设计 AI 产品"的系统化学习平台</p>
+</div>
+
+<div class="nav-tabs">
+<button class="tab-btn active" onclick="switchTab('home')">🏠 首页</button>
+<button class="tab-btn" onclick="switchTab('database')">📊 产品数据库</button>
+<button class="tab-btn" onclick="switchTab('prompt')">🧠 Prompt训练营</button>
+<button class="tab-btn" onclick="switchTab('knowledge')">🔬 AI知识库</button>
+<button class="tab-btn" onclick="switchTab('projects')">💻 项目中心</button>
+<button class="tab-btn" onclick="switchTab('growth')">🏆 成长系统</button>
+</div>
+
+<!-- 首页 -->
+<div id="section-home" class="section active">
+
+<div class="grid">
+
+<div class="card" style="grid-column: span 2;">
+<h2>📰 AI 新闻入口 & 🔥 灵感发现</h2>
+<div class="links-grid">
+<div class="link-group">
+<h4>📰 AI 新闻网站</h4>
+<a href="https://openai.com/blog" target="_blank" class="link-item">OpenAI Blog</a>
+<a href="https://www.anthropic.com/news" target="_blank" class="link-item">Anthropic News</a>
+<a href="https://huggingface.co/blog" target="_blank" class="link-item">Hugging Face Blog</a>
+<a href="https://venturebeat.com/category/ai/" target="_blank" class="link-item">VentureBeat AI</a>
+</div>
+<div class="link-group inspiration">
+<h4>🔥 灵感发现</h4>
+<a href="https://www.producthunt.com/topics/artificial-intelligence" target="_blank" class="link-item">Product Hunt AI</a>
+<a href="https://theresanaiforthat.com" target="_blank" class="link-item">There's An AI For That</a>
+<a href="https://github.com/trending?since=daily" target="_blank" class="link-item">GitHub Trending</a>
+<a href="https://www.ycombinator.com/companies?category=ai" target="_blank" class="link-item">Y Combinator AI</a>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>✅ 今日任务</h2>
+<div style="display:flex;gap:8px;margin-bottom:14px;">
+<input type="text" id="taskInput" placeholder="添加新任务..." onkeypress="if(event.key==='Enter')addTask()">
+<button class="btn" onclick="addTask()" style="margin:0;padding:11px 18px;">+</button>
+</div>
+<ul id="taskList"></ul>
+<div class="stats-row" style="grid-template-columns:repeat(2,1fr);">
+<div class="stat-box">
+<div class="stat-number" id="taskTotal">0</div>
+<div class="stat-name">总任务</div>
+</div>
+<div class="stat-box">
+<div class="stat-number" id="taskCompleted">0</div>
+<div class="stat-name">已完成</div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>💡 快速笔记</h2>
+<textarea id="quickNotes" placeholder="记录今天的灵感和想法..." style="min-height:160px;"></textarea>
+<button class="btn" onclick="saveNotes()">保存笔记</button>
+</div>
+
+<div class="card" style="grid-column: span 2;">
+<h2>🧠 AI Coach - 今日学习推荐</h2>
+<div id="aiCoachRecommendation" style="background:linear-gradient(135deg,rgba(212,168,83,0.1),rgba(45,212,191,0.1));border:1px solid var(--border-color);border-radius:16px;padding:24px;margin:16px 0;">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+<span style="font-size:2rem;">🎯</span>
+<div>
+<div style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--accent-gold);font-weight:600;">今天推荐拆解：</div>
+<div id="coachProductName" style="font-size:1.3rem;color:var(--text-primary);font-weight:500;margin-top:4px;">Cursor</div>
+</div>
+<div style="margin-left:auto;background:var(--bg-card);padding:8px 16px;border-radius:20px;border:1px solid var(--border-color);">
+<span id="coachDifficulty" style="color:var(--accent-teal);font-weight:600;">⭐⭐⭐ 中级</span>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:20px;">
+<div style="background:rgba(12,18,32,0.6);padding:16px;border-radius:12px;">
+<div style="color:var(--accent-teal);font-weight:600;margin-bottom:8px;">📊 产品信息</div>
+<div id="coachCategory" style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">
+<strong>类别：</strong>AI编程工具<br>
+<strong>热度：</strong>🔥 GitHub 40K+ Stars<br>
+<strong>适合：</strong>想了解AI原生产品设计
+</div>
+</div>
+<div style="background:rgba(12,18,32,0.6);padding:16px;border-radius:12px;">
+<div style="color:var(--accent-coral);font-weight:600;margin-bottom:8px;">⏱️ 学习时间</div>
+<div id="coachTimeNeeded" style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">
+建议时长：<strong>45分钟</strong><br>
+• 首页分析：10min<br>
+• Pricing研究：10min<br>
+• 功能体验：15min<br>
+• 总结反思：10min
+</div>
+</div>
+</div>
+
+<div style="background:rgba(12,18,32,0.5);border-left:3px solid var(--accent-gold);padding:16px;border-radius:8px;margin-bottom:16px;">
+<div style="color:var(--accent-gold);font-weight:600;margin-bottom:10px;">🔍 观察重点（结构化引导）</div>
+<ol id="coachObservations" style="margin:0;padding-left:20px;color:var(--text-secondary);font-size:0.9rem;line-height:1.9;">
+<li><strong>首页设计</strong> - Hero区域的价值主张如何表达？用户第一眼看到什么？</li>
+<li><strong>Pricing策略</strong> - 免费版到付费版的转化路径？定价心理学？</li>
+<li><strong>Agent/AI能力</strong> - AI如何深度集成到产品中？是核心还是辅助？</li>
+<li><strong>Onboarding流程</strong> - 新用户的首次使用体验？如何快速展示价值？</li>
+</ol>
+</div>
+
+<div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.2);padding:16px;border-radius:12px;">
+<div style="color:var(--accent-teal);font-weight:600;margin-bottom:10px;">✅ 今日任务清单</div>
+<ul id="coachTasks" style="margin:0;padding-left:20px;color:var(--text-secondary);font-size:0.9rem;line-height:1.9;">
+<li>☐ 访问 <span id="coachProductLink">cursor.sh</span>，记录第一印象</li>
+<li>☐ 分析首页的3个关键转化元素</li>
+<li>☐ 对比免费版/付费版的功能差异</li>
+<li>☐ 思考：如果让你重新设计这个产品...</li>
+<li>☐ 在产品拆解学院查看完整案例</li>
+</ul>
+</div>
+</div>
+
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:16px;">
+<button class="btn" onclick="refreshCoach()" style="flex:1;min-width:150px;">🔄 换一个产品</button>
+<button class="btn btn-secondary" onclick="addCoachToTasks()" style="flex:1;min-width:150px;">📋 加入今日任务</button>
+</div>
+<div id="coachResources" style="margin-top:16px;background:rgba(12,18,32,0.4);padding:14px;border-radius:10px;font-size:0.88rem;color:var(--text-secondary);">
+<strong style="color:var(--accent-gold);">📚 推荐阅读：</strong>
+<span id="coachResourceLinks">📖 知识库: LLM & Transformer | 🔗 外部资源</span>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<!-- 产品拆解学院 -->
+<div id="section-academy" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>🎯 ChatGPT 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">ChatGPT</span>
+<span class="case-tag">对话式 AI · SaaS</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>通用 AI 助手，通过自然语言交互提供信息、创意和解决方案<br><br>
+<strong>目标用户：</strong>学生、开发者、产品经理、企业用户、研究人员<br><br>
+<strong>核心价值主张：</strong>"提问即获得答案"，降低 AI 使用门槛<br><br>
+<strong>商业模式：</strong>Freemium + 订阅制 (Plus $20/月) + API 按量付费
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>极简首页设计 - 单输入框降低认知负担</span></li>
+<li><span>强大的对话体验 - 上下文记忆、多轮对话</span></li>
+<li><span>Memory 能力 - 跨会话记住用户偏好</span></li>
+<li><span>Projects 工作区 - 文件上传、自定义指令</span></li>
+<li><span>GPT Store - 第三方应用生态</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"产品经理模式" - 自动生成 PRD、竞品分析<br>
+• 引入团队协作功能 - 共享对话历史和 Prompt<br>
+• 开放更多定制化选项 - 行业模板、角色预设
+</div>
+</div>
+
+<div class="card">
+<h2>🔍 Perplexity 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Perplexity AI</span>
+<span class="case-tag">AI 搜索引擎 · Prosumer</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>AI 驱动的搜索引擎，提供带引用来源的回答<br><br>
+<strong>目标用户：</strong>研究者、学生、专业人士、知识工作者<br><br>
+<strong>核心价值：</strong>"搜索 + 总结 + 引用"，一站式获取可信信息<br><br>
+<strong>差异化优势：</strong>实时联网、来源可追溯、减少幻觉
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>引用机制 - 每句话都有来源链接</span></li>
+<li><span>实时搜索能力 - 整合多个搜索引擎</span></li>
+<li><span>Follow-up 问题链 - 引导深度探索</span></li>
+<li><span>Collections 功能 - 收藏和组织研究</span></li>
+<li><span>Pro 版订阅 - 高级模型 + 更多查询</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"行业报告生成器" - 一键生成行业分析<br>
+• 团队知识库共享 - 企业版协作功能<br>
+• 可视化数据图表 - 将搜索结果转为图表
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ Cursor 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Cursor</span>
+<span class="case-tag">AI 编程工具 · Developer Tools</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>AI 原生的代码编辑器，重新定义编程体验<br><br>
+<strong>目标用户：</strong>开发者、全栈工程师、技术创业者<br><br>
+<strong>核心价值：</strong>从"写代码"升级为"描述需求，AI 实现"<br><br>
+<strong>技术栈：</strong>Fork 自 VS Code，集成 Claude/GPT-4
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Composer 模式 - 多文件同时编辑</span></li>
+<li><span>Codebase 索引 - 理解整个项目上下文</span></li>
+<li><span>Cmd+K/Cmd+L - 内联编辑和聊天</span></li>
+<li><span>.cursorrules - 项目级 AI 规则配置</span></li>
+<li><span>Tab 补全 - 智能代码预测</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"PM 模式" - 用自然语言生成原型<br>
+• 代码审查自动化 - AI Code Review 集成<br>
+• 团队协作增强 - 实时 Pair Programming
+</div>
+</div>
+
+<div class="card">
+<h2>🎨 Lovable 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Lovable</span>
+<span class="case-tag">AI 应用构建 · No-Code</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>用 Prompt 生成完整 Web 应用的 AI 平台<br><br>
+<strong>目标用户：</strong>非技术人员、创业者、产品原型设计师<br><br>
+<strong>核心价值：</strong>"说一句话，得到一个 App"<br><br>
+<strong>技术实现：</strong>Supabase 后端 + Next.js 前端 + AI 编排
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Natural Language to UI - 自然语言转界面</span></li>
+<li><span>实时预览 - 边说边看效果</span></li>
+<li><span>数据库自动生成 - CRUD 一键完成</span></li>
+<li><span>部署一体化 - 直接上线托管</span></li>
+<li><span>迭代修改 - 对话式调整 UI</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"移动端适配" - 自动响应式设计<br>
+• 模板市场 - 行业最佳实践模板<br>
+• 协作功能 - 多人共同设计
+</div>
+</div>
+
+<div class="card">
+<h2>🔄 n8n 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">n8n</span>
+<span class="case-tag">工作流自动化 · Open Source</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>开源的工作流自动化平台，连接 AI 与业务系统<br><br>
+<strong>目标用户：</strong>开发者、运维工程师、AI 工程师、中小企业<br><br>
+<strong>核心价值：</strong>用可视化方式编排 Agent 和自动化流程<br><br>
+<strong>商业模式：</strong>开源免费 + 云服务 (n8n Cloud)
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>节点式编程 - 可视化拖拽编排</span></li>
+<li><span>200+ 集成 - 连接主流 SaaS 服务</span></li>
+<li><span>AI Agent 支持 - LLM 作为工作流节点</span></li>
+<li><span>Self-hosted - 数据隐私可控</span></li>
+<li><span>JavaScript 表达式 - 灵活的数据处理</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加"AI PM 模板库" - 产品管理专用工作流<br>
+• 更强的 AI Agent 能力 - 自主决策节点<br>
+• 低代码扩展 - 让非技术人员也能创建工作流
+</div>
+</div>
+
+<div class="card">
+<h2>🤖 Claude 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Claude</span>
+<span class="case-tag">安全优先AI · Anthropic</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>Anthropic出品的AI助手，以安全性和长上下文著称<br><br>
+<strong>目标用户：</strong>企业用户、开发者、研究者、对安全性要求高的场景<br><br>
+<strong>核心价值：</strong>" helpful, harmless, and honest "，在能力与安全间平衡<br><br>
+<strong>差异化优势：</strong>200K token超长上下文、Constitutional AI、更少幻觉
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Constitutional AI - 基于原则的安全训练</span></li>
+<li><span>长上下文处理 - 整本书级别的输入</span></li>
+<li><span>Claude Artifacts - 可视化内容生成</span></li>
+<li><span>Projects功能 - 多文档协作分析</span></li>
+<li><span>API定价策略 - 按token计费模式</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 增加多模态能力 - 图像/视频理解<br>
+• 开放插件生态 - 类似GPT Store<br>
+• 企业版增强 - SSO、审计日志、合规认证
+</div>
+</div>
+
+<div class="card">
+<h2>💬 Pi (Inflection) 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Pi</span>
+<span class="case-tag">情感陪伴AI · Inflection AI</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>个性化AI伴侣，注重情感连接和持续对话<br><br>
+<strong>目标用户：</strong>寻求情感支持的用户、孤独人群、心理健康关注者<br><br>
+<strong>核心价值：</strong>" always there for you "，提供有温度的对话体验<br><br>
+<strong>商业模式：</strong>免费使用 + 未来可能的Premium订阅
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>情感化设计 - 记住用户的喜好和经历</span></li>
+<li><span>主动提问 - 引导深度交流而非被动回答</span></li>
+<li><span>声音交互 - 自然语音对话体验</span></li>
+<li><span>记忆系统 - 跨会话的长期关系建立</span></li>
+<li><span>边界设定 - 明确不是治疗师或朋友替代品</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 专业版Pi - 针对心理咨询场景<br>
+• 社交功能 - 匿名匹配相似兴趣用户<br>
+• 日记整合 - 自动记录情绪变化趋势
+</div>
+</div>
+
+<div class="card">
+<h2>🎭 Character.ai 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Character.ai</span>
+<span class="case-tag">角色扮演AI · 创作者平台</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>与虚拟角色对话的平台，用户可创建和分享AI角色<br><br>
+<strong>目标用户：</strong>Z世代、粉丝群体、创意写作者、娱乐 seekers<br><br>
+<strong>核心价值：</strong>" chat with anyone "，从名人到原创角色<br><br>
+<strong>商业模式：</strong>免费 + c.ai+订阅 ($9.99/月) + 广告
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>UGC生态 - 用户创造角色驱动增长</span></li>
+<li><span>角色一致性 - 保持人设不崩塌的技术</span></li>
+<li><span>群聊功能 - 多角色同台互动</span></li>
+<li><span>Viral传播 - 社交媒体分享对话截图</span></li>
+<li><span>创作者激励 - 角色热度排名机制</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 品牌合作 - 官方授权IP角色<br>
+• 教育场景 - 历史人物/语言学习角色<br>
+• 变现深化 - 角色创作者分成计划
+</div>
+</div>
+
+<div class="card">
+<h2>🐙 GitHub Copilot 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">GitHub Copilot</span>
+<span class="case-tag">AI编程助手 · Microsoft</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>VS Code/JetBrains的AI代码补全插件<br><br>
+<strong>目标用户：</strong>专业开发者、学生程序员、技术团队<br><br>
+<strong>核心价值：</strong>" pair programmer "，实时代码建议和生成<br><br>
+<strong>商业模式：</strong>$10/月个人版 / $19/月商业版
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>IDE深度集成 - 无缝融入开发工作流</span></li>
+<li><span>多语言支持 - 主流编程语言全覆盖</span></li>
+<li><span>Copilot Chat - 对话式代码解释和修改</span></li>
+<li><span>Copilot Enterprise - 团队知识库定制</span></li>
+<li><span>版权争议 - 训练数据来源的伦理问题</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 代码审查模式 - 自动检测bug和安全漏洞<br>
+• 项目级学习 - 理解团队编码规范<br>
+• 免费层优化 - 吸引更多学生用户
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ Bolt.new 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Bolt.new</span>
+<span class="case-tag">全栈AI生成 · StackBlitz</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>Prompt一键生成完整全栈Web应用<br><br>
+<strong>目标用户：</strong>创业者、原型设计师、非技术人员、开发者<br><br>
+<strong>核心价值：</strong>" prompt to deployed app in seconds "<br><br>
+<strong>技术栈：</strong>WebContainers (浏览器端运行Node.js) + AI
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>零配置部署 - 自动生成在线预览链接</span></li>
+<li><span>真实运行环境 - 不是mock，是真正的应用</span></li>
+<li><span>迭代修改 - 对话式调整功能和UI</span></li>
+<li><span>开源友好 - 生成的代码完全可见可控</span></li>
+<li><span>速度优势 - 从想法到上线只需分钟</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 移动端预览 - 响应式设计自动适配<br>
+• 数据库集成 - 一键接入Supabase/Firebase<br>
+• 协作编辑 - 多人共同构建应用
+</div>
+</div>
+
+<div class="card">
+<h2>🎨 Midjourney 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Midjourney</span>
+<span class="case-tag">AI图像生成 · Discord原生</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>高质量AI艺术图像生成工具<br><br>
+<strong>目标用户：</strong>设计师、艺术家、内容创作者、营销人员<br><br>
+<strong>核心价值：</strong>" imagination engine "，将文字转化为惊艳视觉<br><br>
+<strong>商业模式：</strong>订阅制 ($10-60/月) + 额外GPU时间购买
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Discord作为载体 - 利用现有社区降低获客成本</span></li>
+<li><span>风格一致性 - --sref参数保持角色/场景统一</span></li>
+<li><span>社区驱动 - 用户作品展示形成飞轮效应</span></li>
+<li><span>版本迭代 - V1到V6的质量飞跃</span></li>
+<li><span>提示词文化 - Prompt engineering成为创作技能</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• Web端独立应用 - 降低Discord门槛<br>
+• 商业版权 - 清晰的商用授权方案<br>
+• API开放 - 让其他产品集成Midjourney
+</div>
+</div>
+
+<div class="card">
+<h2>📊 Gamma 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Gamma</span>
+<span class="case-tag">AI演示文稿 · 效率工具</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>用AI快速生成专业演示文稿和文档<br><br>
+<strong>目标用户：</strong>商务人士、销售人员、教育工作者、创业者<br><br>
+<strong>核心价值：</strong>" beautiful presentations in minutes "<br><br>
+<strong>商业模式：</strong>Freemium + Pro ($10/月)
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>大纲引导 - 先结构后内容的创作流程</span></li>
+<li><span>设计自动化 - 排版配色无需手动调整</span></li>
+<li><span>多格式输出 - PPT/PDF/Web页面/文档</span></li>
+<li><span>实时协作 - 团队共同编辑</span></li>
+<li><span>品牌套件 - 企业VI自动应用</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 数据可视化 - 自动生成图表<br>
+• 演讲者备注 - AI生成演讲稿<br>
+• 模板市场 - 行业特定模板库
+</div>
+</div>
+
+<div class="card">
+<h2>🎨 Canva AI 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Canva AI</span>
+<span class="case-tag">AI设计平台 · 设计民主化</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>将AI能力集成到已有的设计工具中<br><br>
+<strong>目标用户：</strong>非设计师、小企业主、社交媒体运营者、营销人员<br><br>
+<strong>核心价值：</strong>" empower the world to design "，AI让设计更简单<br><br>
+<strong>商业模式：</strong>Freemium (Canva Pro $12.99/月) + Teams/Enterprise
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Magic Design - 输入描述自动生成设计</span></li>
+<li><span>Magic Edit - 图片局部智能修改</span></li>
+<li><span>Magic Eraser - 一键移除背景元素</span></li>
+<li><span>品牌工具包 - 统一企业视觉规范</span></li>
+<li><span>渐进式创新 - 在成熟产品中嵌入AI</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 批量生成 - 一次生成多个变体供选择<br>
+• A/B测试 - 不同设计方案的转化对比<br>
+• 视频扩展 - AI视频剪辑功能
+</div>
+</div>
+
+<div class="card">
+<h2>🎬 Runway 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Runway</span>
+<span class="case-tag">AI视频创作 · Gen-2</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>专业级AI视频生成和编辑平台<br><br>
+<strong>目标用户：</strong>视频创作者、电影制作人、广告代理商、艺术家<br><br>
+<strong>核心价值：</strong>" creative tools for creative people "<br><br>
+<strong>技术亮点：</strong>Gen-1/Gen-2模型，Text-to-Video & Image-to-Video
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Gen-2模型 - 文字/图片生成视频</span></li>
+<li><span>Motion Brush - 局部控制运动区域</span></li>
+<li><span>Camera Control - 模拟专业运镜</span></li>
+<li><span>专业工具集成 - 与Premiere/After Effects配合</span></li>
+<li><span>奥斯卡认可 - 技术被用于获奖影片</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 降低门槛 - 简化版面向普通用户<br>
+• 模板库 - 常见视频效果一键应用<br>
+• 版权清晰 - 商用授权明确说明
+</div>
+</div>
+
+<div class="card">
+<h2>📝 Notion AI 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Notion AI</span>
+<span class="case-tag">AI知识管理 · 生产力工具</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>将AI能力深度集成到Notion知识库中<br><br>
+<strong>目标用户：</strong>知识工作者、团队协作者、项目经理、学生<br><br>
+<strong>核心价值：</strong>" your connected workspace, powered by AI "<br><br>
+<strong>商业模式：</strong>Notion免费版 + AI附加费 ($8/月/成员)
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>上下文感知 - 基于当前文档智能回答</span></li>
+<li><span>Q&A over workspace - 跨文档检索问答</span></li>
+<li><span>自动填充 - 会议纪要、项目状态等模板</span></li>
+<li><span>写作辅助 - 改写、翻译、总结、扩写</span></li>
+<li><span>自然集成 - 不破坏原有Notion体验</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 数据库AI - 自动分析和可视化数据<br>
+• 团队记忆 - 组织知识的智能沉淀<br>
+• 外部连接 - 整合Slack/Email/GCalendar
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ Zapier AI 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Zapier AI</span>
+<span class="case-tag">自动化平台 · No-Code</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>用AI简化工作流自动化创建过程<br><br>
+<strong>目标用户：</strong>业务运营人员、小企业主、市场营销、销售团队<br><br>
+<strong>核心价值：</strong>" automate your work with AI "<br><br>
+<strong>核心功能：</strong>5000+ app集成 + AI Chatbot创建Zaps
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Natural Language → Zap - 用文字描述需求</span></li>
+<li><span>Zap Studio - 可视化流程编辑器</span></li>
+<li><span>Table/Multi-step - 复杂逻辑支持</span></li>
+<li><span>Interfaces - 无代码表单和数据录入</span></li>
+<li><span>AI Actions - 在Zap中调用LLM</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 智能推荐 - 根据用户行为建议自动化<br>
+• 错误诊断 - AI帮助排查失败的工作流<br>
+• 成本优化 - 减少不必要的任务执行
+</div>
+</div>
+
+<div class="card">
+<h2>🎙️ Otter.ai 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Otter.ai</span>
+<span class="case-tag">AI会议记录 · 效率SaaS</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>AI驱动的会议转录和笔记工具<br><br>
+<strong>目标用户：</strong>商务人士、记者、学生、远程团队<br><br>
+<strong>核心价值：</strong>" never miss a word "，自动记录整理会议内容<br><br>
+<strong>商业模式：</strong>Free (300min/月) + Pro ($8.33/月) + Business
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>实时转录 - 说话即显示文字</span></li>
+<li><span>说话人识别 - 区分不同发言者</span></li>
+<li><span>关键词高亮 - 自动标记重要信息</span></li>
+<li><span>会议摘要 - AI生成要点总结</span></li>
+<li><span>集成Zoom/Teams/GMeet - 无缝对接主流平台</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 行动项提取 - 自动识别待办事项<br>
+• 决策追踪 - 记录关键决策和理由<br>
+• 多语言支持 - 全球团队协作场景
+</div>
+</div>
+
+<div class="card">
+<h2>🤗 Hugging Face 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Hugging Face</span>
+<span class="case-tag">AI模型平台 · 开源社区</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>AI领域的GitHub，模型、数据集、Demo的中心枢纽<br><br>
+<strong>目标用户：</strong>AI研究员、ML工程师、数据科学家、开发者<br><br>
+<strong>核心价值：</strong>" The AI community building the future "<br><br>
+<strong>商业模式：</strong>Hub免费 + Inference API付费 + Enterprise解决方案
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Model Hub - 500K+开源模型托管</span></li>
+<li><span>Datasets Hub - 100K+数据集共享</span></li>
+<li><span>Spaces - 一键部署Demo</span></li>
+<li><span>Transformers库 - 最流行的NLP框架</span></li>
+<li><span>社区驱动 - Star/Fork/讨论形成社交网络</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• AutoTrain - 降低微调门槛<br>
+• 模型评测 - 标准化Benchmark对比<br>
+• 企业私有部署 - 安全合规方案
+</div>
+</div>
+
+<div class="card">
+<h2>🌲 Pinecone 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">Pinecone</span>
+<span class="case-tag">向量数据库 · AI基础设施</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>专为AI应用设计的云原生向量数据库<br><br>
+<strong>目标用户：</strong>AI工程师、RAG开发者、搜索产品团队<br><br>
+<strong>核心价值：</strong>" vector database for AI "，让语义搜索变得简单<br><br>
+<strong>商业模式：</strong>Free tier + Standard ($70/月起) + Pod-based enterprise
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>Serverless - 按需付费，无需管理基础设施</span></li>
+<li><span>元数据过滤 - 结合结构化和向量查询</span></li>
+<li><span>Namespace隔离 - 多租户数据分离</span></li>
+<li><span>高性能 - 毫秒级响应，支持亿级向量</span></li>
+<li><span>开发者友好 - REST API + SDK齐全</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 可视化控制台 - 向量空间探索界面<br>
+• 混合搜索 - 关键词+向量联合检索<br>
+• 成本优化 - 冷热数据分层存储
+</div>
+</div>
+
+<div class="card">
+<h2>⛓️ LangChain 完整拆解</h2>
+<div class="case-study">
+<div class="case-header">
+<span class="case-title">LangChain</span>
+<span class="case-tag">LLM开发框架 · 开源生态</span>
+</div>
+<div class="case-content">
+<strong>产品定位：</strong>构建LLM应用的标准化开发框架<br><br>
+<strong>目标用户：</strong>AI应用开发者、Prompt工程师、创业公司CTO<br><br>
+<strong>核心价值：</strong>" develop LLM-powered applications "<br><br>
+<strong>核心抽象：</strong>Model I/O / Retrieval / Agents / Chains / Memory
+</div>
+<div class="case-highlights">
+<li><span><strong>学习重点：</strong></span></li>
+<li><span>抽象层次 - 高-level组件降低复杂度</span></li>
+<li><span>生态丰富 - 200+集成和工具</span></li>
+<li><span>LangGraph - 新一代图状工作流引擎</span></li>
+<li><span>LangSmith - 监控调试评估一体化</span></li>
+<li><span>社区活跃 - 快速迭代和新功能发布</span></li>
+</div>
+</div>
+<div class="case-content" style="margin-top:12px;">
+<strong>🔍 如果是我会如何优化：</strong><br>
+• 更好文档 - 新手友好的教程体系<br>
+• 性能优化 - 减少不必要的延迟<br>
+• 企业支持 - SLA保障和专业服务
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Prompt训练营 -->
+<div id="section-prompt" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>🧠 RCGCF 公式详解</h2>
+<table style="margin-top:12px;width:100%;">
+<tr><th>字母</th><th>含义</th><th>示例</th></tr>
+<tr><td><strong>R</strong>ole</td><td>角色</td><td>"你是一位高级AI产品经理"</td></tr>
+<tr><td><strong>C</strong>ontext</td><td>背景</td><td>"我们正在开发一个智能客服系统"</td></tr>
+<tr><td><strong>G</strong>oal</td><td>目标</td><td>"请编写一份完整的PRD文档"</td></tr>
+<tr><td><strong>C</strong>onstraint</td><td>约束</td><td>"输出不超过2000字，包含用户故事"</td></tr>
+<tr><td><strong>F</strong>ormat</td><td>格式</td><td>"使用Markdown格式，分章节呈现"</td></tr>
+</table>
+<div style="background:linear-gradient(135deg,rgba(212,168,83,0.08),rgba(45,212,191,0.08));padding:16px;border-radius:12px;text-align:center;margin-top:16px;font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--accent-gold);">
+RCGCF = Role + Context + Goal + Constraint + Format
+</div>
+</div>
+
+<div class="card">
+<h2>🏅 分级练习体系</h2>
+
+<h3 style="color:var(--accent-teal);"><span class="level-badge level-beginner">入门级</span> 基础 Prompt 编写</h3>
+<p style="font-size:0.9rem;color:var(--text-secondary);margin:8px 0;">掌握 RCGCF 结构，能写出清晰的单轮 Prompt</p>
+<textarea placeholder="练习题：使用 RCGCF 公式，编写一个让 AI 帮你总结文章的 Prompt..." style="min-height:100px;" id="promptBeginner"></textarea>
+<button class="btn" onclick="savePrompt('beginner')" style="font-size:0.85rem;">提交练习</button>
+
+<h3 style="color:var(--accent-gold);margin-top:20px;"><span class="level-badge level-intermediate">进阶级</span> 多轮对话设计</h3>
+<p style="font-size:0.9rem;color:var(--text-secondary);margin:8px 0;">设计复杂的对话流，处理边界情况</p>
+<textarea placeholder="练习题：设计一个 AI 面试官的完整 Prompt 系统，包括开场、提问、追问、结束..." style="min-height:100px;" id="promptIntermediate"></textarea>
+<button class="btn" onclick="savePrompt('intermediate')" style="font-size:0.85rem;">提交练习</button>
+
+<h3 style="color:var(--accent-coral);margin-top:20px;"><span class="level-badge level-advanced">高级</span> System Prompt 架构</h3>
+<p style="font-size:0.9rem;color:var(--text-secondary);margin:8px 0;">设计完整的 System Prompt，包含 Few-shot、CoT 等</p>
+<textarea placeholder="练习题：为一个 AI 产品助手设计完整的 System Prompt，包含角色定义、能力边界、输出规范..." style="min-height:100px;" id="promptAdvanced"></textarea>
+<button class="btn" onclick="savePrompt('advanced')" style="font-size:0.85rem;">提交练习</button>
+
+</div>
+
+<div class="card">
+<h2>❌ vs ✅ Prompt 对比案例</h2>
+
+<div style="background:rgba(244,114,182,0.08);border-left:3px solid var(--accent-coral);padding:14px;border-radius:8px;margin:12px 0;">
+<strong style="color:var(--accent-coral);">❌ 差 Prompt：</strong>
+<div style="margin-top:8px;color:var(--text-secondary);font-size:0.9rem;">帮我写个产品需求文档</div>
+<div style="margin-top:8px;font-size:0.82rem;color:var(--text-secondary);">
+问题：无角色、无背景、无目标、无约束、无格式 → AI 只能猜测
+</div>
+</div>
+
+<div style="background:rgba(45,212,191,0.08);border-left:3px solid var(--accent-teal);padding:14px;border-radius:8px;margin:12px 0;">
+<strong style="color:var(--accent-teal);">✅ 好 Prompt：</strong>
+<div style="margin-top:8px;color:var(--text-secondary);font-size:0.9rem;line-height:1.7;">
+<strong>[Role]</strong> 你是一位有 8 年经验的 B2B SaaS 产品经理，擅长企业级产品设计。<br>
+<strong>[Context]</strong> 我们公司要开发一个 AI 智能客服系统，服务于电商行业的中大型客户。<br>
+<strong>[Goal]</strong> 请编写一份 PRD，覆盖核心功能需求和非功能性需求。<br>
+<strong>[Constraint]</strong> 字数控制在 3000 字以内，必须包含用户故事格式。<br>
+<strong>[Format]</strong> 使用 Markdown，分为：产品概述、用户画像、功能列表、用户故事、验收标准。
+</div>
+</div>
+
+</div>
+
+<div class="card">
+<h2>📝 Prompt 收藏库</h2>
+<textarea id="promptLibrary" placeholder="在这里记录你发现的高质量 Prompt...&#10;&#10;分类建议：PRD编写 | 竞品分析 | 用户研究 | 技术方案 | 数据分析" style="min-height:180px;"></textarea>
+<button class="btn" onclick="savePrompts()">保存到收藏库</button>
+<div id="savedPromptsList" style="margin-top:16px;"></div>
+</div>
+
+<div class="card" style="grid-column: span 2;">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;">📊 Prompt 统计 & 模板库</h2>
+<div id="promptStatsPanel"></div>
+<div id="templateLibraryContainer"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- AI知识库 -->
+<div id="section-knowledge" class="section">
+
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;text-align:center;margin-bottom:24px;">🔬 AI 知识库</h2>
+
+<div class="knowledge-nav">
+<button class="knowledge-nav-btn active" onclick="switchKnowledgePage('page1')">📖 基础概念</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page2')">🧠 LLM & Transformer</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page3')">🔗 RAG & 向量数据库</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page4')">🤖 Agent & MCP</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page5')">⚙️ 工具 & 框架</button>
+<button class="knowledge-nav-btn" onclick="switchKnowledgePage('page6')">📊 评估 & 优化</button>
+</div>
+
+<!-- Page 1: 基础概念 -->
+<div id="knowledge-page1" class="knowledge-page active">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>🤖 什么是 AI (人工智能)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">AI 定义与分类</div>
+<div class="knowledge-desc">
+<strong>Artificial Intelligence (AI)</strong> 是让机器模拟人类智能的技术。<br><br>
+<strong>三大分类：</strong><br>
+• <strong>ANI (弱人工智能)</strong>: 专精单一任务 (Siri, AlphaGo)<br>
+• <strong>AGI (通用人工智能)</strong>: 具备人类级别全面智能 (目标中)<br>
+• <strong>ASI (超人工智能)</strong>: 超越人类所有能力 (未来)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">AI 发展历程</div>
+<div class="knowledge-desc">
+• <strong>1950年代</strong>: 图灵测试、达特茅斯会议<br>
+• <strong>1980年代</strong>: 专家系统、神经网络复兴<br>
+• <strong>2010年代</strong>: Deep Learning 爆发<br>
+• <strong>2020年代</strong>: 大语言模型 (LLM) 时代
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">PM 为什么需要懂 AI？</div>
+<div class="knowledge-desc">
+• 判断 AI 技术可行性边界<br>
+• 与技术团队有效沟通<br>
+• 设计合理的 AI 产品功能<br>
+• 预判开发成本和时间<br>
+• 理解用户对 AI 的期望
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎯 Machine Learning (机器学习)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">ML 核心概念</div>
+<div class="knowledge-desc">
+<strong>Machine Learning = 用数据训练模型，让机器自动学习规律</strong><br><br>
+<strong>三大范式：</strong><br>
+1. <strong>监督学习</strong>: 有标签数据 (分类、回归)<br>
+2. <strong>无监督学习</strong>: 无标签数据 (聚类、降维)<br>
+3. <strong>强化学习</strong>: 奖励机制 (游戏 AI、机器人)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">常见 ML 算法</div>
+<div class="knowledge-desc">
+• <strong>线性/逻辑回归</strong> - 基础预测模型<br>
+• <strong>决策树/随机森林</strong> - 可解释性强<br>
+• <strong>SVM</strong> - 分类问题经典算法<br>
+• <strong>K-Means</strong> - 聚类分析<br>
+• <strong>神经网络</strong> - Deep Learning 基础
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">PM 应用场景</div>
+<div class="knowledge-desc">
+• 推荐系统 (协同过滤 + 内容推荐)<br>
+• 用户分群 (聚类算法)<br>
+• 风控模型 (异常检测)<br>
+• 定价优化 (回归预测)
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🧪 Deep Learning (深度学习)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 Deep Learning？</div>
+<div class="knowledge-desc">
+<strong>Deep Learning = 多层神经网络的机器学习方法</strong><br><br>
+<strong>核心优势：</strong><br>
+• 自动特征提取 (无需人工设计特征)<br>
+• 处理非结构化数据 (图像、文本、语音)<br>
+• 在大数据量下表现卓越<br>
+• 端到端学习 (输入原始数据→输出结果)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">关键架构演进</div>
+<div class="knowledge-desc">
+• <strong>CNN (卷积神经网络)</strong> - 图像识别 (AlexNet, ResNet)<br>
+• <strong>RNN/LSTM</strong> - 序列数据处理<br>
+• <strong>Transformer</strong> - Attention 机制革命<br>
+• <strong>GAN</strong> - 生成对抗网络 (图像生成)<br>
+• <strong>Diffusion Model</strong> - 扩散模型 (Midjourney, Stable Diffusion)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">DL vs 传统 ML 对比</div>
+<div class="knowledge-desc">
+<strong>传统 ML:</strong> 数据量小可工作、可解释性好、需要特征工程<br>
+<strong>Deep Learning:</strong> 需要大量数据、黑盒难解释、自动学特征
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>💡 NLP (自然语言处理)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">NLP 定义</div>
+<div class="knowledge-desc">
+<strong>Natural Language Processing = 让计算机理解、生成人类语言</strong><br><br>
+<strong>核心任务：</strong><br>
+• 文本分类 (情感分析、垃圾邮件检测)<br>
+• 命名实体识别 (NER) - 提取人名、地名、机构<br>
+• 机器翻译 (Google Translate)<br>
+• 问答系统 (ChatGPT)<br>
+• 文本摘要 (自动生成摘要)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">NLP 技术演进</div>
+<div class="knowledge-desc">
+• <strong>规则方法</strong> - 人工编写语法规则<br>
+• <strong>统计方法</strong> - HMM, CRF<br>
+• <strong>Word Embedding</strong> - Word2Vec, GloVe<br>
+• <strong>预训练模型</strong> - BERT, GPT 系列<br>
+• <strong>大语言模型</strong> - GPT-4, Claude, Gemini
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Tokenization (分词)</div>
+<div class="knowledge-desc">
+<strong>Token = LLM 处理文本的最小单位</strong><br><br>
+• <strong>Word-level</strong>: 按单词切分 ("Hello" → ["Hello"])<br>
+• <strong>Subword-level</strong>: BPE, WordPiece (处理未知词)<br>
+• <strong>Character-level</strong>: 按字符切分<br><br>
+<strong>为什么重要？</strong>影响模型输入长度限制和成本计算
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 2: LLM & Transformer -->
+<div id="knowledge-page2" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>📚 LLM (大语言模型)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 LLM？</div>
+<div class="knowledge-desc">
+<strong>Large Language Model = 参数量巨大的预训练语言模型</strong><br><br>
+<strong>"大"的定义：</strong><br>
+• 参数量: 通常 > 1B (10亿) 参数<br>
+• 训练数据: TB 级别的文本语料<br>
+• 训练成本: 数百万到数千万美元<br><br>
+<strong>代表模型：</strong>GPT-4 (~1.8T), Claude 3, Gemini Ultra, LLaMA 3
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LLM 核心能力</div>
+<div class="knowledge-desc">
+✅ <strong>文本生成</strong> - 写作、创作、代码生成<br>
+✅ <strong>理解推理</strong> - 问答、分析、数学<br>
+✅ <strong>多轮对话</strong> - 上下文记忆、角色扮演<br>
+✅ <strong>Few-shot Learning</strong> - 少样本快速适应<br>
+✅ <strong>Chain-of-Thought</strong> - 分步推理解决问题
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LLM 局限性</div>
+<div class="knowledge-desc">
+⚠️ <strong>幻觉 (Hallucination)</strong> - 编造不存在的信息<br>
+⚠️ <strong>上下文窗口限制</strong> - 无法处理超长文档<br>
+⚠️ <strong>实时性差</strong> - 训练截止日期后的事件不知道<br>
+⚠️ <strong>成本高</strong> - API 调用费用昂贵<br>
+⚠️ <strong>偏见问题</strong> - 训练数据中的社会偏见
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔄 Transformer 架构</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Transformer 革命 (2017)</div>
+<div class="knowledge-desc">
+<strong>论文:</strong> "Attention Is All You Need" (Google)<br><br>
+<strong>核心创新 - Self-Attention (自注意力机制):</strong><br>
+让模型在处理每个词时，都能"关注"到句子中的其他相关词汇<br><br>
+<strong>类比：</strong>读一句话时，你自然会关注关键词来理解整体含义
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Encoder-Decoder 架构</div>
+<div class="knowledge-desc">
+<strong>Encoder (编码器):</strong><br>
+• 理解输入文本的语义<br>
+• 双向注意力 (同时看前后文)<br><br>
+<strong>Decoder (解码器):</strong><br>
+• 逐词生成输出<br>
+• 单向注意力 (只能看前面的词)<br><br>
+<strong>变体：</strong>BERT (纯Encoder), GPT (纯Decoder), T5 (完整架构)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">为什么 Transformer 如此重要？</div>
+<div class="knowledge-desc">
+• <strong>并行计算</strong> - 比 RNN 快数百倍<br>
+• <strong>长距离依赖</strong> - 解决梯度消失问题<br>
+• <strong>可扩展性</strong> - 更大模型效果更好<br>
+• <strong>通用性</strong> - NLP/CV/多模态统一架构<br>
+• <strong>诞生了所有现代 LLM</strong>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ Attention Mechanism (注意力机制)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Attention 工作原理</div>
+<div class="knowledge-desc">
+<strong>QKV 三元组：</strong><br>
+• <strong>Query (Q)</strong>: "我在找什么信息？"<br>
+• <strong>Key (K)</strong>: "我有什么信息可以提供？"<br>
+• <strong>Value (V)</strong>: "实际的内容是什么？"<br><br>
+<strong>计算过程：</strong><br>
+Attention(Q,K,V) = softmax(Q·K^T / √d_k) · V<br><br>
+简单说：计算 Query 和所有 Key 的相似度，加权求和 Value
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Multi-Head Attention</div>
+<div class="knowledge-desc">
+<strong>多头注意力 = 并行运行多个 Attention 机制</strong><br><br>
+• 每个 Head 学习不同的关注模式<br>
+• 有的关注语法关系<br>
+• 有的关注语义相似<br>
+• 有的指代消解<br><br>
+<strong>类比：</strong>多人从不同角度阅读同一篇文章，综合得出更全面的理解
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Positional Encoding (位置编码)</div>
+<div class="knowledge-desc">
+<strong>问题：</strong>Transformer 本身没有顺序概念！<br><br>
+<strong>解决方案：</strong>给每个位置添加位置信息<br>
+• <strong>Sinusoidal</strong> - 正弦余弦函数 (原始方案)<br>
+• <strong>Learned</strong> - 可学习的嵌入向量 (GPT-2+)<br>
+• <strong>RoPE</strong> - 旋转位置编码 (LLaMA 使用)
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎓 Pre-training & Fine-tuning</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">两阶段训练范式</div>
+<div class="knowledge-desc">
+<strong>Stage 1: Pre-training (预训练)</strong><br>
+• 在海量无标注数据上训练<br>
+• 学习通用的语言理解和生成能力<br>
+• 成本极高 (数百万美元)<br>
+• 产出: Base Model (基础模型)<br><br>
+<strong>Stage 2: Fine-tuning (微调)</strong><br>
+• 在特定任务的小数据集上调整<br>
+• 让模型适配特定场景<br>
+• 成本相对较低<br>
+• 产出: 专用模型
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Fine-tuning 方法对比</div>
+<div class="knowledge-desc">
+• <strong>Full Fine-tuning</strong> - 更新所有参数 (效果好但贵)<br>
+• <strong>LoRA (Low-Rank Adaptation)</strong> - 只训练低秩矩阵 (成本低70%)<br>
+• <strong>QLoRA</strong> - LoRA + 量化 (4-bit 训练)<br>
+• <strong>RLHF</strong> - 人类反馈强化学习 (ChatGPT 核心)<br>
+• <strong>DPO</strong> - 直接偏好优化 (比 RLHF 简单)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">PEFT (参数高效微调)</div>
+<div class="knowledge-desc">
+<strong>为什么需要 PEFT？</strong><br>
+• 全量微调 7B 模型需要 28GB 显存<br>
+• LoRA 只需 4-8GB 显存<br>
+• 效果接近全量微调<br>
+• 支持快速切换不同任务<br><br>
+<strong>工具库：</strong>PEFT (Hugging Face), Axolotl, Unsloth
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 3: RAG & 向量数据库 -->
+<div id="knowledge-page3" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>🔗 RAG (检索增强生成)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 RAG？</div>
+<div class="knowledge-desc">
+<strong>RAG = Retrieval-Augmented Generation</strong><br>
+结合了检索和生成的混合 AI 架构<br><br>
+<strong>核心原理：</strong><br>
+1. 用户提问 → 2. 检索相关知识文档 → 3. 将文档作为上下文 → 4. LLM 生成回答并引用来源<br><br>
+<strong>解决的核心问题：</strong>LLM 幻觉、知识过时、私有数据访问
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">RAG vs Fine-tuning 选择指南</div>
+<div class="knowledge-desc">
+<strong>选择 RAG 当你需要：</strong><br>
+✅ 动态更新的知识库<br>
+✅ 可追溯的回答来源<br>
+✅ 降低幻觉风险<br>
+✅ 利用企业私有数据<br><br>
+<strong>选择 Fine-tuning 当你需要：</strong><br>
+✅ 特定风格或格式输出<br>
+✅ 领域专业术语理解<br>
+✅ 低延迟响应<br>
+✅ 减少 Token 消耗
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">RAG 进阶技术</div>
+<div class="knowledge-desc">
+• <strong>Hybrid Search</strong> - 关键词 + 向量混合检索<br>
+• <strong>Reranking</strong> - 二次排序提升精度 (Cohere Rerank)<br>
+• <strong>Parent-Child Chunking</strong> - 父子文档策略<br>
+• <strong>Multi-query</strong> - 一个问题生成多个查询变体<br>
+• <strong>Agentic RAG</strong> - Agent 自主决定检索策略
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🗄️ Vector Database (向量数据库)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">为什么需要向量数据库？</div>
+<div class="knowledge-desc">
+传统数据库擅长精确匹配，但无法做"语义搜索"<br><br>
+<strong>例子：</strong><br>
+• 传统 SQL: WHERE title = 'AI产品' → 只能找到完全匹配<br>
+• 向量搜索: 找到语义相近的 "机器学习应用"、"人工智能工具"...<br><br>
+<strong>核心技术：</strong>将文本转为高维向量 (768/1536维)，计算余弦相似度
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">主流向量数据库对比</div>
+<div class="knowledge-desc">
+• <strong>Pinecone</strong> - 全托管云服务，最易上手<br>
+• <strong>Weaviate</strong> - 开源 + 云服务，支持混合搜索<br>
+• <strong>Milvus</strong> - 开源，性能强，适合大规模<br>
+• <strong>Chroma</strong> - 轻量级嵌入式，适合本地开发<br>
+• <strong>Qdrant</strong> - Rust 写成，高性能过滤<br>
+• <strong>pgvector</strong> - PostgreSQL 扩展，无需额外数据库
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">PM 选型决策树</div>
+<div class="knowledge-desc">
+<strong>选云服务如果：</strong>团队小、不想运维、预算充足 → Pinecone<br>
+<strong>选开源自建如果：</strong>数据敏感、需要定制、有运维能力 → Milvus/Qdrant<br>
+<strong>选轻量级如果：</strong>原型验证、个人项目 → Chroma<br>
+<strong>选 PostgreSQL 如果：</strong>已有 PG 实例、需要事务一致性 → pgvector
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📐 Embedding Model (嵌入模型)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Embedding 原理</div>
+<div class="knowledge-desc">
+<strong>Embedding = 将文本映射为高维空间中的向量</strong><br><br>
+<strong>关键特性：</strong><br>
+• 语义相似的文本 → 向量距离近<br>
+• 语义不同的文本 → 向量距离远<br>
+• 维度通常: 384 / 768 / 1536 维<br><br>
+<strong>常用距离度量：</strong><br>
+• 余弦相似度 (Cosine Similarity) - 最常用<br>
+• 欧氏距离 (Euclidean Distance)<br>
+• 点积 (Dot Product)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">主流 Embedding 模型</div>
+<div class="knowledge-desc">
+• <strong>OpenAI text-embedding-3</strong> - 小/大尺寸可选 (1536维)<br>
+• <strong>Cohere embed-v3</strong> - 多语言支持好<br>
+• <strong>HuggingFace E5</strong> - 开源 SOTA<br>
+• <strong>Voyage AI</strong> - 检索专用优化<br>
+• <strong>BGE</strong> - 中文优化 (智源研究院)<br>
+• <strong>M3E</strong> - 中文开源推荐
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Embedding 成本估算</div>
+<div class="knowledge-desc">
+<strong>以 OpenAI 为例：</strong><br>
+• text-embedding-3-small: $0.02 / 1M tokens<br>
+• text-embedding-3-large: $0.13 / 1M tokens<br><br>
+<strong>100万中文 ≈ 150万 tokens ≈ $3-$20</strong><br><br>
+<strong>省钱技巧：</strong>用开源模型本地部署 (BGE/M3E)
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📊 RAG 评估框架</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">RAGAS 框架</div>
+<div class="knowledge-desc">
+<strong>RAGAS = RAG Assessment</strong> - 专门评估 RAG 系统质量<br><br>
+<strong>四大评估维度：</strong><br>
+1. <strong>Faithfulness (忠实度)</strong> - 回答是否基于检索内容<br>
+2. <strong>Answer Relevancy (相关性)</strong> - 回答是否针对问题<br>
+3. <strong>Context Precision (上下文精确度)</strong> - 检索内容是否有用<br>
+4. <strong>Context Recall (上下文召回率)</strong> - 是否找到所有相关信息
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">其他评估指标</div>
+<div class="knowledge-desc">
+• <strong>MRR (Mean Reciprocal Rank)</strong> - 排序质量<br>
+• <strong>NDCG</strong> - 归一化折损累积增益<br>
+• <strong>Hit Rate</strong> - 命中率<br>
+• <strong>Latency</strong> - 响应延迟 (P50/P95/P99)<br>
+• <strong>Cost per Query</strong> - 单次查询成本
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">RAG 优化 Checklist</div>
+<div class="knowledge-desc">
+☐ Chunk size 调优 (512/1024/2048 tokens 测试)<br>
+☐ 重叠比例设置 (10%-20% 防止信息断裂)<br>
+☐ Top-K 值调整 (通常 5-20)<br>
+☐ Reranker 引入 (提升精度 15-30%)<br>
+☐ 元数据过滤 (时间范围、文档类型)<br>
+☐ 缓存策略 (相同问题不重复检索)
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 4: Agent & MCP -->
+<div id="knowledge-page4" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>🤖 AI Agent (智能体)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 定义</div>
+<div class="knowledge-desc">
+<strong>Agent = 具备自主决策和行动能力的 AI 系统</strong><br><br>
+不只是"回答问题"，而是：<br>
+1. <strong>感知 (Perception)</strong> - 接收环境信息<br>
+2. <strong>推理 (Reasoning)</strong> - 规划执行步骤<br>
+3. <strong>行动 (Action)</strong> - 调用工具/API<br>
+4. <strong>反思 (Reflection)</strong> - 根据结果调整策略<br><br>
+<strong>核心区别：</strong>LLM 被动回答 vs Agent 主动完成任务
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 架构模式</div>
+<div class="knowledge-desc">
+• <strong>ReAct (Reasoning + Acting)</strong><br>
+交替进行思考和行动，最常用模式<br><br>
+• <strong>Plan-and-Execute</strong><br>
+先制定完整计划，再逐步执行<br><br>
+• <strong>Multi-Agent System</strong><br>
+多个专业 Agent 协作 (CEO/CTO/CMO 角色)<br><br>
+• <strong>Hierarchical Agent</strong><br>
+上层规划，下层执行的层级结构
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 能力边界</div>
+<div class="knowledge-desc">
+<strong>当前能做到：</strong><br>
+✅ 自动浏览网页、搜索信息<br>
+✅ 调用 API 完成操作<br>
+✅ 读写文件、操作数据库<br>
+✅ 发送邮件、消息通知<br>
+✅ 编写和执行代码<br><br>
+<strong>当前局限：</strong><br>
+❌ 长期记忆和持续学习<br>
+❌ 复杂多步骤任务的可靠性<br>
+❌ 真正的理解而非模式匹配
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🛠️ Tool Use (工具调用)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Function Calling 机制</div>
+<div class="knowledge-desc">
+<strong>Tool Use = LLM 决定何时以及如何调用外部函数</strong><br><br>
+<strong>工作流程：</strong><br>
+1. 用户提问 → 2. LLM 分析需要什么工具 → 3. 输出函数调用请求 → 4. 系统执行函数 → 5. 结果返回 LLM → 6. LLM 生成最终回答<br><br>
+<strong>标准协议：</strong>OpenAI Function Calling, Anthropic Tool Use
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">常用 Tool 类型</div>
+<div class="knowledge-desc">
+• <strong>Search Tools</strong> - Google Search, Tavily, SerpAPI<br>
+• <strong>Code Tools</strong> - Python REPL, Code Interpreter<br>
+• <strong>Data Tools</strong> - SQL Database, CSV/Excel<br>
+• <strong>API Tools</strong> - Weather, Stock, Maps<br>
+• <strong>File Tools</strong> - Read/Write/Create/Delete<br>
+• <strong>Communication</strong> - Email, Slack, Notion
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Tool 设计最佳实践</div>
+<div class="knowledge-desc">
+✅ 清晰的工具名称和描述 (LLM 靠描述选择工具)<br>
+✅ 明确的参数定义和类型约束<br>
+✅ 错误处理和重试机制<br>
+✅ 权限控制和安全沙箱<br>
+✅ 工具结果的简洁返回 (节省 Token)<br>
+❌ 不要让 Agent 有破坏性操作的权限
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔌 MCP (Model Context Protocol)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">MCP 是什么？</div>
+<div class="knowledge-desc">
+<strong>MCP = Model Context Protocol</strong><br>
+Anthropic 提出的开放标准 (2024年11月)<br><br>
+<strong>核心理念：</strong>让 AI 模型能安全地与外部数据源和工具交互<br><br>
+<strong>类比：</strong><br>
+• USB 对电脑 - 统一硬件接口<br>
+• App Store 对手机 - 统一软件分发<br>
+• MCP 对 AI - 统一工具集成标准
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">MCP 三层架构</div>
+<div class="knowledge-desc">
+<strong>1. MCP Host (宿主)</strong><br>
+运行环境：Claude Desktop, IDE (VS Code/Cursor), Web App<br><br>
+<strong>2. MCP Client (客户端)</strong><br>
+协议实现：负责与 Server 通信<br><br>
+<strong>3. MCP Server (服务器)</strong><br>
+数据源/工具：GitHub, Slack, Google Drive, PostgreSQL, File System...
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">为什么 PM 要关注 MCP？</div>
+<div class="knowledge-desc">
+🎯 <strong>降低集成成本</strong> - 一次开发，所有兼容平台可用<br>
+🎯 <strong>生态效应</strong> - 类似 iOS App Store 的网络效应<br>
+🎯 <strong>标准化机会</strong> - 可能成为 AI 时代的 API 标准<br>
+🎯 <strong>竞争格局</strong> - OpenAI 可能推出类似标准 (Plugin v2?)<br>
+🎯 <strong>创业机会</strong> - 开发垂直领域 MCP Server
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🏗️ Memory (记忆系统)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Agent 记忆层次</div>
+<div class="knowledge-desc">
+<strong>1. Short-term Memory (短期记忆)</strong><br>
+• 当前对话上下文 (Context Window)<br>
+• 有限容量 (8K-128K tokens)<br>
+• 会话结束即丢失<br><br>
+<strong>2. Long-term Memory (长期记忆)</strong><br>
+• 跨会话持久化存储<br>
+• 向量数据库存储历史交互<br>
+• 检索时按相关性召回<br><br>
+<strong>3. Episodic Memory (情景记忆)</strong><br>
+• 记住特定事件和经历<br>
+• 时间线组织<br>
+• 用于个性化
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Memory 实现方案</div>
+<div class="knowledge-desc">
+• <strong>Zep</strong> - 专为 LLM Agent 设计的记忆层<br>
+• <strong>Mem0</strong> - 开源记忆管理框架<br>
+• <strong>Letta (MemGPT)</strong> - 操作系统风格的记忆管理<br>
+• <strong>自定义方案</strong> - PostgreSQL + pgvector<br><br>
+<strong>关键功能：</strong>记忆总结、重要性评分、遗忘机制
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Memory 设计考量</div>
+<div class="knowledge-desc">
+⚠️ <strong>隐私合规</strong> - GDPR 要求被遗忘权<br>
+⚠️ <strong>成本控制</strong> - 存储和检索都有成本<br>
+⚠️ <strong>准确性</strong> - 错误记忆比没有记忆更糟糕<br>
+⚠️ <strong>时效性</strong> - 过时的记忆应该降权或删除
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 5: 工具 & 框架 -->
+<div id="knowledge-page5" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>🤗 Hugging Face 生态</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">Hugging Face 平台</div>
+<div class="knowledge-desc">
+<strong>AI 界的 GitHub</strong> - 模型、数据集、Demo 的中心枢纽<br><br>
+<strong>核心资源：</strong><br>
+• <strong>Model Hub</strong> - 500K+ 开源模型 (LLaMA, BERT, Stable Diffusion...)<br>
+• <strong>Dataset Hub</strong> - 100K+ 数据集<br>
+• <strong>Spaces</strong> - 一键部署 Demo<br>
+• <strong>Inference API</strong> - 免费试用模型<br>
+• <strong>AutoTrain</strong> - 无代码训练
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Transformers 库</div>
+<div class="knowledge-desc">
+<strong>最流行的 NLP/DL 库</strong><br><br>
+• 支持 PyTorch 和 TensorFlow<br>
+• 统一 API 接口 (model.generate())<br>
+• 内置 200+ 预训练模型<br>
+• Tokenizer、Pipeline 一站式<br>
+• 社区活跃，文档完善<br><br>
+<strong>PM 视角：</strong>降低 AI 应用开发门槛 80%
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Hugging Face 其他工具</div>
+<div class="knowledge-desc">
+• <strong>Diffusers</strong> - 生成图像/音频/视频模型库<br>
+• <strong>PEFT</strong> - 高效微调 (LoRA/QLoRA)<br>
+• <strong>TRL</strong> - 强化学习微调 (RLHF/DPO)<br>
+• <strong>Datasets</strong> - 数据加载和处理<br>
+• <strong>Evaluate</strong> - 模型评估基准<br>
+• <strong>Hub CLI</strong> - 命令行上传下载模型
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>⚡ LangChain 框架</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">LangChain 是什么？</div>
+<div class="knowledge-desc">
+<strong>构建 LLM 应用的开发框架</strong><br><br>
+<strong>核心抽象：</strong><br>
+• <strong>Model I/O</strong> - Prompt 管理、输出解析<br>
+• <strong>Retrieval</strong> - 文档加载、分割、向量存储、检索<br>
+• <strong>Agents</strong> - 工具调用、决策循环<br>
+• <strong>Chains</strong> - 多步骤工作流编排<br>
+• <strong>Memory</strong> - 对话历史管理<br>
+• <strong>Callbacks</strong> - 日志、监控、流式输出
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LangChain vs LangGraph</div>
+<div class="knowledge-desc">
+<strong>LangChain (传统):</strong><br>
+• 预定义 Chain 模式<br>
+• 适合简单线性流程<br>
+• 学习曲线较陡<br><br>
+<strong>LangGraph (新一代):</strong><br>
+• 图结构定义工作流<br>
+• 支持循环和条件分支<br>
+• 更灵活的 Agent 构建<br>
+• **官方推荐的新方向**
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LangChain 生态系统</div>
+<div class="knowledge-desc">
+• <strong>LangServe</strong> - 将 Chain 部署为 REST API<br>
+• <strong>LangSmith</strong> - LLM 应用监控和调试平台<br>
+• <strong>Template</strong> - 快速启动模板库<br>
+• <strong>LlamaIndex</strong> - 竞品，专注 RAG 场景<br>
+• <strong>Haystack</strong> - deepset 出品的 NLP 框架
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎭 Prompt Engineering (提示工程)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">高级 Prompt 技术</div>
+<div class="knowledge-desc">
+<strong>1. Few-shot Learning (少样本学习)</strong><br>
+提供几个示例，让模型理解任务模式<br><br>
+<strong>2. Chain-of-Thought (CoT)</strong><br>
+"让我们一步步思考..." - 引导推理过程<br><br>
+<strong>3. Self-Consistency</strong><br>
+多次采样，投票选出最一致的答案<br><br>
+<strong>4. Tree-of-Thought (ToT)</strong><br>
+探索多条推理路径，回溯和修正
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">System Prompt 设计</div>
+<div class="knowledge-desc">
+<strong>最佳实践：</strong><br>
+✅ 明确角色和专业背景<br>
+✅ 定义能力边界 (不能做什么)<br>
+✅ 指定输出格式 (JSON/Markdown/Table)<br>
+✅ 设置行为准则 (语气、风格、安全)<br>
+✅ 提供 Few-shot 示例<br>
+✅ 思考安全护栏 (拒绝有害请求)<br><br>
+<strong>长度建议：</strong> 500-1500 字为佳
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Prompt 优化工具</div>
+<div class="knowledge-desc">
+• <strong>PromptPerfect</strong> - 自动优化 Prompt<br>
+• <strong>WePrompt</strong> - 协作编辑和版本管理<br>
+• <strong>LangSmith</strong> - A/B 测试不同 Prompt<br>
+• <strong>HumanLoop</strong> - 人类反馈收集<br>
+• <strong>Argilla</strong> - 标注和评估数据集
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔧 LLM Ops (大模型运维)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">LLM 应用生命周期</div>
+<div class="knowledge-desc">
+<strong>1. 开发阶段</strong><br>
+• Prompt 实验 (Jupyter Notebook)<br>
+• 模型选择 (开源 vs API)<br>
+• Prototype 验证<br><br>
+<strong>2. 生产部署</strong><br>
+• API 封装 (FastAPI/Flask)<br>
+• 负载均衡和缓存<br>
+• 监控告警<br><br>
+<strong>3. 持续优化</strong><br>
+• 收集用户反馈<br>
+• A/B 测试迭代<br>
+• 成本优化
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">LLM Ops 工具栈</div>
+<div class="knowledge-desc">
+• <strong>Weights & Biases</strong> - 实验追踪和可视化<br>
+• <strong>MLflow</strong> - 模型版本管理和注册<br>
+• <strong>Arize Phoenix</strong> - LLM 可观测性<br>
+• <strong>Helicone</strong> - OpenAI API 代理和监控<br>
+• <strong>Litellm</strong> - 统一 LLM API 调用接口<br>
+• <strong>Portkey</strong> - Gateway + 缓存 + fallback
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">成本优化策略</div>
+<div class="knowledge-desc">
+💰 <strong>模型路由</strong> - 简单问题用小模型，复杂用大模型<br>
+💰 <strong>响应缓存</strong> - 相似问题命中缓存<br>
+💰 <strong>Prompt 压缩</strong> - 减少输入 Token<br>
+💰 <strong>批量处理</strong> - 合并请求降低 API 调用次数<br>
+💰 <strong>开源替代</strong> - LLaMA/Ollama 本地部署<br>
+💰 <strong>量化</strong> - 4-bit/8-bit 降低显存需求
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🛠️ AI Skills (技能系统)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">什么是 AI Skills？</div>
+<div class="knowledge-desc">
+<strong>AI Skills = 可复用的 AI 能力模块</strong><br><br>
+Skills 是将复杂的 AI 能力封装成标准化、可调用的"技能单元"，让 AI 系统具备专业领域的执行能力。<br><br>
+<strong>类比理解：</strong><br>
+• LLM = 大脑 (通用智能)<br>
+• Tools = 手脚 (执行能力)<br>
+• **Skills = 专业技能** (领域专长)
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Skills vs Tools vs Plugins</div>
+<div class="knowledge-desc">
+<strong>🔧 Tools (工具):</strong><br>
+• 基础功能：搜索、计算、API调用<br>
+• 通用性强，无领域知识<br>
+• 示例：Web Search、Calculator、Code Interpreter<br><br>
+<strong>🎯 Skills (技能):</strong><br>
+• 领域专业知识封装<br>
+• 包含 Prompt + 工具 + 流程<br>
+• 示例：数据分析、文档撰写、代码审查<br><br>
+<strong>🔌 Plugins (插件):</strong><br>
+• 第三方扩展能力<br>
+• 通常绑定特定服务<br>
+• 示例：Shopify Plugin、Slack Plugin
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">常见 AI Skills 类型</div>
+<div class="knowledge-desc">
+<strong>1. 📊 数据分析 Skill</strong><br>
+自动清洗数据、生成统计图表、发现趋势异常<br><br>
+<strong>2. 📝 内容创作 Skill</strong><br>
+文章写作、SEO优化、多语言翻译、风格适配<br><br>
+<strong>3. 💻 编程开发 Skill</strong><br>
+代码生成、Code Review、Debug、重构建议<br><br>
+<strong>4. 🔍 研究分析 Skill</strong><br>
+文献综述、竞品分析、市场调研报告生成<br><br>
+<strong>5. 📧 商务沟通 Skill</strong><br>
+邮件起草、会议纪要、PRD撰写、用户故事编写
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">Skills 实现方式</div>
+<div class="knowledge-desc">
+<strong>方式一: Prompt Template + Few-shot</strong><br>
+预定义高质量 Prompt 模板，注入示例<br><br>
+<strong>方式二: Agent Workflow</strong><br>
+多步骤工作流，结合多个工具协同<br><br>
+<strong>方式三: Fine-tuned Model</strong><br>
+针对特定任务微调的专用模型<br><br>
+<strong>方式四: RAG + Knowledge Base</strong><br>
+检索增强，结合领域知识库<br><br>
+<strong>PM 视角：</strong>Skills 是 AI 产品差异化的核心！
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">主流 Skills 平台</div>
+<div class="knowledge-desc">
+• <strong>OpenAI GPTs</strong> - 自定义 ChatGPT 助手<br>
+• <strong>Claude Projects</strong> - 项目级定制能力<br>
+• <strong>MCP Servers</strong> - 标准化技能接口<br>
+• <strong>LangChain Tools</strong> - 可组合工具集<br>
+• <strong>Custom Skills</strong> - 企业自建技能库<br><br>
+<strong>趋势：</strong>从"通用AI"到"专业AI助手"，Skills 是关键
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">构建 Skills 的最佳实践</div>
+<div class="knowledge-desc">
+✅ <strong>明确边界</strong> - 一个 Skill 只做一件事<br>
+✅ <strong>可测试</strong> - 定义清晰的输入输出和评估标准<br>
+✅ <strong>可组合</strong> - 设计成可与其他 Skill 协作<br>
+✅ <strong>有版本</strong> - 支持迭代和回滚<br>
+✅ <strong>有监控</strong> - 追踪使用率和成功率<br>
+✅ <strong>文档完善</strong> - 使用说明和示例齐全<br><br>
+<strong>示例：</strong>"产品分析Skill" = 数据提取 → SWOT分析 → 报告生成
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Page 6: 评估 & 优化 -->
+<div id="knowledge-page6" class="knowledge-page">
+<div class="knowledge-grid-2">
+
+<div class="card">
+<h2>📊 LLM 评估方法</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">评估维度</div>
+<div class="knowledge-desc">
+<strong>1. 质量 (Quality)</strong><br>
+• 正确性 (Accuracy) - 回答是否正确<br>
+• 相关性 (Relevance) - 是否针对问题<br>
+• 完整性 (Completeness) - 信息是否充分<br><br>
+<strong>2. 安全性 (Safety)</strong><br>
+• 有害内容检测<br>
+• PII 泄露检查<br>
+• Bias 偏见评估<br><br>
+<strong>3. 性能 (Performance)</strong><br>
+• Latency (P50/P99 延迟)<br>
+• Throughput (TPS 吞吐量)<br>
+• Cost per Request
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">评估方法论</div>
+<div class="knowledge-desc">
+• <strong>人工评估 (Human Eval)</strong><br>
+最准确但昂贵，适合金标准建立<br><br>
+• <strong>自动化指标 (BLEU/ROUGE)</strong><br>
+传统 NLP 指标，与人类判断相关性低<br><br>
+• <strong>LLM-as-Judge</strong><br>
+用 GPT-4/Claude 评判其他模型的输出<br>
+成本低，与人工评估相关性 ~80%<br><br>
+• <strong>众包评估 (Scale/AWS MTurk)</strong><br>
+平衡成本和质量
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">评估框架工具</div>
+<div class="knowledge-desc">
+• <strong>LangSmith</strong> - 内置评估和测试<br>
+• <strong>DeepEval</strong> - LLM 单元测试框架<br>
+• <strong>Ragas</strong> - RAG 专项评估<br>
+• <strong>Phoenix Arize</strong> - 可观测性 + 评估<br>
+• <strong>Promptfoo</strong> - Prompt 变体测试<br>
+• <strong>Confident AI</strong> - 自动化评估平台
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">🔧 LLM Evaluation Harness (评估套件)</div>
+<div class="knowledge-desc">
+<strong>什么是 Harness？</strong><br><br>
+<strong>LLM Evaluation Harness = 大语言模型标准化评测框架</strong><br><br>
+由 **EleutherAI** 开发的开源评估工具，用于对 LLM 进行全面、标准化的性能测试。<br><br>
+<strong>核心功能：</strong><br>
+✅ <strong>支持 200+ 评测数据集</strong> - MMLU、HellaSwag、GSM8K、HumanEval...<br>
+✅ <strong>标准化流程</strong> - 统一的模型加载、推理、评分流程<br>
+✅ <strong>多模型支持</strong> - HuggingFace、OpenAI、本地模型均可<br>
+✅ <strong>可扩展</strong> - 自定义评测任务和指标<br><br>
+<strong>知名评测榜单使用：</strong><br>
+• <strong>Hugging Face Open LLM Leaderboard</strong><br>
+• <strong>EleutherAI Leaderboard</strong><br>
+• 各大模型发布时的基准测试<br><br>
+<strong>PM 视角：</strong>选择模型时，查看 Harness 评测结果比厂商宣传更客观
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🎯 HEMERS 评估框架</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">HEMERS 六维评估体系</div>
+<div class="knowledge-desc">
+<strong>HEMERS = Holistic Evaluation Metric for Enterprise Response Systems</strong><br><br>
+面向企业级 AI 应用的综合评估框架：<br><br>
+<strong>H - Helpfulness (有用性)</strong><br>
+回答是否真正帮助用户解决问题？<br><br>
+<strong>E - Exactness (准确性)</strong><br>
+事实陈述是否正确无误？<br><br>
+<strong>M - Measurability (可度量性)</strong><br>
+评估指标是否客观可量化？
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">HEMERS 续</div>
+<div class="knowledge-desc">
+<strong>E - Efficiency (效率性)</strong><br>
+响应速度、资源消耗、成本效益<br><br>
+<strong>R - Robustness (鲁棒性)</strong><br>
+面对异常输入、攻击、边缘情况的稳定性<br><br>
+<strong>S - Safety (安全性)</strong><br>
+隐私保护、内容安全、合规要求<br><br>
+<strong>适用场景：</strong>客服机器人、企业助手、金融咨询等生产系统
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">HEMERS 实施建议</div>
+<div class="knowledge-desc">
+✅ 建立各维度的基线和阈值<br>
+✅ 定期自动化回归测试<br>
+✅ 结合业务指标 (CSAT/NPS)<br>
+✅ 灰度发布时重点监控 R 和 S<br>
+✅ 建立人工审核抽样机制 (10% 抽检)
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🔒 AI 安全与治理</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">主要安全风险</div>
+<div class="knowledge-desc">
+<strong>1. Prompt Injection (提示注入)</strong><br>
+恶意用户通过精心构造的输入绕过安全限制<br><br>
+<strong>2. Data Leakage (数据泄露)</strong><br>
+模型在回复中泄露训练数据或用户隐私<br><br>
+<strong>3. Jailbreak (越狱)</strong><br>
+诱导模型违反安全准则输出有害内容<br><br>
+<strong>4. Hallucination (幻觉)</strong><br>
+生成虚假但看似可信的信息
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">安全防护措施</div>
+<div class="knowledge-desc">
+• <strong>Input Guardrails</strong> - 输入过滤和检测 (NeMo Guardrails)<br>
+• <strong>Output Filtering</strong> - 敏感词过滤、PII 识别<br>
+• <strong>Content Moderation</strong> - 内容审核 API (OpenAI Moderation)<br>
+• <strong>Rate Limiting</strong> - 防止滥用和 DDoS<br>
+• <strong>Audit Logging</strong> - 完整的操作日志记录<br>
+• <strong>RBAC</strong> - 基于角色的权限控制
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">合规框架</div>
+<div class="knowledge-desc">
+• <strong>EU AI Act</strong> - 欧盟 AI 法规 (分级监管)<br>
+• <strong>GDPR</strong> - 数据隐私保护 (被遗忘权)<br>
+• <strong>AI Ethics Guidelines</strong> - 可解释性、公平性、透明度<br>
+• <strong>Industry Standards</strong> - ISO/IEC 42001 AI管理体系<br><br>
+<strong>PM 必知：</strong>你的产品属于哪个风险等级？需要哪些合规措施？
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📈 AI Product Metrics (AI产品指标)</h2>
+<div class="knowledge-card">
+<div class="knowledge-title">AI 产品特有指标</div>
+<div class="knowledge-desc">
+不同于传统产品的指标体系：<br><br>
+<strong>模型层面：</strong><br>
+• Accuracy/Precision/Recall/F1<br>
+• Perplexity (困惑度) - 语言模型专用<br>
+• BLEU/ROUGE - 生成质量<br>
+• Latency P50/P99 - 响应时间分布<br><br>
+<strong>用户体验层面：</strong><br>
+• Task Success Rate - 任务完成率<br>
+• Time to Complete - 任务耗时<br>
+• User Satisfaction (CSAT/NPS)<br>
+• Retention Rate - 留存率
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">成本指标</div>
+<div class="knowledge-desc">
+💵 <strong>Token Consumption</strong> - 总消耗 Token 数<br>
+💵 <strong>Cost per User</strong> - 单用户成本<br>
+💵 <strong>Cost per Query</strong> - 单次查询成本<br>
+💵 <strong>Cache Hit Rate</strong> - 缓存命中率 (直接影响成本)<br>💵 <strong>Model Utilization</strong> - 模型利用率<br><br>
+<strong>目标：</strong>在保证质量的前提下最小化成本
+</div>
+</div>
+<div class="knowledge-card">
+<div class="knowledge-title">A/B Testing for AI</div>
+<div class="knowledge-desc">
+<strong>AI 产品 A/B 测试要点：</strong><br>
+✅ 测试变量：不同模型、不同 Prompt、不同参数<br>
+✅ 分流策略：确保用户群体一致<br>
+✅ 样本量：AI 交互方差大，需要更大样本<br>
+✅ 统计显著性：注意 p-value 和置信区间<br>
+✅ 长期跟踪：短期效果 ≠ 长期留存<br><br>
+<strong>工具：</strong>LaunchDarkly, Optimizely, Statsig
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- 笔记区域 -->
+<div style="margin-top:32px;">
+<div class="card">
+<h2>📝 学习笔记</h2>
+<textarea id="knowledgeNotes" placeholder="记录你在学习 AI 知识过程中的笔记、思考和疑问..." style="min-height:180px;"></textarea>
+<button class="btn" onclick="saveKnowledgeNotes()">保存笔记</button>
+</div>
+</div>
+
+</div>
+
+<!-- 项目中心 -->
+<div id="section-projects" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>💻 当前项目列表</h2>
+<div style="display:flex;gap:8px;margin-bottom:14px;">
+<input type="text" id="projectInput" placeholder="新项目名称..." onkeypress="if(event.key==='Enter')addProject()">
+<select id="projectStatus" style="width:auto;min-width:100px;">
+<option value="planning">📋 规划中</option>
+<option value="progress" selected>🚀 进行中</option>
+<option value="completed">✅ 已完成</option>
+</select>
+<button class="btn" onclick="addProject()" style="margin:0;padding:11px 18px;">+</button>
+</div>
+<div id="projectList"></div>
+</div>
+
+<div class="card">
+<h2>🎯 Smart Recipe Recommender 项目详情</h2>
+<div style="background:rgba(12,18,32,0.5);border-radius:12px;padding:16px;margin:12px 0;">
+<div style="font-weight:600;font-size:1.05rem;color:var(--accent-gold);margin-bottom:10px;">项目概览</div>
+<div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.7;">
+<strong>定位：</strong>AI 驱动的个性化菜谱推荐系统<br>
+<strong>目标用户：</strong>家庭厨师、健康饮食人群、烹饪新手<br>
+<strong>核心功能：</strong>图片识别食材 → 智能推荐菜谱 → 营养分析<br>
+<strong>技术栈：</strong>GPT-4 Vision + Food Database + React Native<br>
+<strong>当前阶段：</strong>MVP 开发中
+</div>
+</div>
+<textarea id="projectDetail" placeholder="更新项目进展、记录遇到的问题和解决方案..." style="min-height:140px;"></textarea>
+<button class="btn" onclick="saveProjectDetail()">保存进展</button>
+</div>
+
+<div class="card">
+<h2>🔗 GitHub 同步</h2>
+<div style="background:linear-gradient(135deg,rgba(212,168,83,0.08),rgba(45,212,191,0.08));border:1px solid var(--border-color);border-radius:12px;padding:18px;margin:14px 0;">
+<div style="font-weight:600;margin-bottom:10px;">仓库配置</div>
+<input type="text" id="githubRepo" placeholder="GitHub 仓库地址 (如: https://github.com/user/repo)" style="margin-bottom:10px;">
+<input type="text" id="githubToken" placeholder="Personal Access Token (可选)" type="password">
+</div>
+<button class="btn" onclick="syncToGithub()">🔄 同步到 GitHub</button>
+<div id="syncStatus" style="margin-top:12px;font-size:0.9rem;color:var(--text-secondary);"></div>
+<div style="margin-top:16px;padding:14px;background:rgba(12,18,32,0.5);border-radius:10px;font-size:0.88rem;color:var(--text-secondary);">
+<strong>同步内容：</strong><br>
+• 任务完成状态<br>
+• 项目进度更新<br>
+• 学习笔记<br>
+• 复盘记录
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- AI产品发现中心 -->
+<div id="section-discovery" class="section">
+
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;text-align:center;margin-bottom:24px;">🔥 AI 产品发现中心</h2>
+
+<div class="grid">
+
+<div class="card" style="grid-column: span 2;">
+<h2>🎯 今日热门 AI 产品推荐</h2>
+<p style="font-size:0.95rem;color:var(--text-secondary);margin-bottom:20px;">每天自动更新，发现最新的AI产品和工具。点击产品卡片查看详情或直接访问官网。</p>
+
+<div id="discoveryGrid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:16px;">
+</div>
+</div>
+
+<div class="card">
+<h2>📊 产品分类浏览</h2>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:14px;">
+<button onclick="filterDiscovery('all')" class="discovery-filter-btn active" style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-primary);padding:12px 20px;border-radius:10px;cursor:pointer;text-align:left;font-size:0.9rem;">🌟 全部产品 (20+)</button>
+<button onclick="filterDiscovery('chat')" class="discovery-filter-btn" style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-secondary);padding:12px 20px;border-radius:10px;cursor:pointer;text-align:left;font-size:0.9rem;">💬 AI 聊天 & 助手 (5)</button>
+<button onclick="filterDiscovery('code')" class="discovery-filter-btn" style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-secondary);padding:12px 20px;border-radius:10px;cursor:pointer;text-align:left;font-size:0.9rem;">💻 编程 & 开发 (4)</button>
+<button onclick="filterDiscovery('creative')" class="discovery-filter-btn" style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-secondary);padding:12px 20px;border-radius:10px;cursor:pointer;text-align:left;font-size:0.9rem;">🎨 创作 & 设计 (4)</button>
+<button onclick="filterDiscovery('productivity')" class="discovery-filter-btn" style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-secondary);padding:12px 20px;border-radius:10px;cursor:pointer;text-align:left;font-size:0.9rem;">⚡ 效率 & 自动化 (4)</button>
+<button onclick="filterDiscovery('infra')" class="discovery-filter-btn" style="background:var(--bg-card);border:1px solid var(--border-color);color:var(--text-secondary);padding:12px 20px;border-radius:10px;cursor:pointer;text-align:left;font-size:0.9rem;">🔬 基础设施 (3)</button>
+</div>
+</div>
+
+<div class="card">
+<h2>📈 发现趋势</h2>
+<div style="margin-top:14px;">
+<div style="background:linear-gradient(135deg,rgba(212,168,83,0.08),rgba(45,212,191,0.08));border:1px solid var(--border-color);border-radius:12px;padding:18px;margin-bottom:14px;">
+<div style="font-weight:600;color:var(--accent-gold);margin-bottom:8px;">🔥 本周热门</div>
+<div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.8;">
+<strong>1. Cursor</strong> - AI编程新范式<br>
+<strong>2. Bolt.new</strong> - 一键生成全栈应用<br>
+<strong>3. Gamma</strong> - AI演示文稿革命<br>
+<strong>4. Perplexity</strong> - 搜索的未来形态
+</div>
+</div>
+<div style="background:rgba(12,18,32,0.5);border-radius:12px;padding:18px;">
+<div style="font-weight:600;color:var(--accent-teal);margin-bottom:8px;">🆕 新兴趋势</div>
+<div style="font-size:0.9rem;color:var(--text-secondary);line-height:1.8;">
+• <strong>AI Agents</strong> - 自主完成任务成为主流<br>
+• <strong>MCP协议</strong> - AI互操作标准崛起<br>
+• <strong>多模态</strong> - 文本/图像/视频统一理解<br>
+• <strong>Edge AI</strong> - 端侧推理降低成本
+</div>
+</div>
+
+<div class="card" style="grid-column: span 3;">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;">💼 作品集 Portfolio <span style="font-size:0.85rem;color:var(--text-secondary);font-weight:400;">V8 新增</span></h2>
+<div id="portfolioStatsContainer"></div>
+<div id="portfolioContainer"></div>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- AI产品数据库 V8 -->
+<div id="section-database" class="section">
+
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:2rem;text-align:center;margin-bottom:24px;">📊 AI 产品数据库</h2>
+
+<div class="grid">
+
+<div class="card" style="grid-column: span 3;">
+<h2>🔍 搜索 & 筛选</h2>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+<input type="text" id="productSearch" placeholder="搜索产品名称、分类、关键词..." oninput="filterProducts()" style="flex:1;min-width:250px;padding:14px 18px;background:rgba(12,18,32,0.6);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);font-size:0.95rem;">
+<select id="categoryFilter" onchange="filterProducts()" style="padding:14px 18px;background:rgba(12,18,32,0.6);border:1px solid var(--border-color);border-radius:10px;color:var(--text-primary);font-size:0.95rem;cursor:pointer;">
+<option value="all">🌟 全部分类 (46)</option>
+<option value="chat">💬 AI聊天助手 (5)</option>
+<option value="code">💻 AI编程工具 (9)</option>
+<option value="creative">🎨 创意设计 (10)</option>
+<option value="productivity">⚡ 效率自动化 (8)</option>
+<option value="infra">🔬 基础设施 (4)</option>
+<option value="pmtools">🛠️ PM工具箱 (11)</option>
+</select>
+<button onclick="resetFilters()" class="btn btn-secondary" style="padding:14px 24px;">🔄 重置</button>
+</div>
+
+<div id="productStats" style="background:linear-gradient(135deg,rgba(212,168,83,0.08),rgba(45,212,191,0.08));border:1px solid var(--border-color);border-radius:12px;padding:16px;display:flex;gap:20px;flex-wrap:wrap;font-size:0.9rem;color:var(--text-secondary);">
+<span><strong style="color:var(--accent-gold);">总计：</strong><span id="totalProducts">22</span> 个产品</span>
+<span><strong style="color:var(--accent-teal);">显示：</strong><span id="showingProducts">22</span> 个结果</span>
+<span><strong style="color:var(--accent-coral);">收藏：</strong><span id="favoriteCount">0</span> 个产品</span>
+</div>
+</div>
+
+<div class="card" style="grid-column: span 3;">
+<h2>🎯 产品列表 <span style="font-size:0.85rem;color:var(--text-secondary);font-weight:400;">（点击查看详情）</span></h2>
+<div id="productGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:16px;"></div>
+</div>
+
+<div class="card" id="productDetailCard" style="grid-column: span 3; display: none;">
+<h2>📋 产品详情 <button onclick="closeProductDetail()" style="float:right;font-size:0.85rem;background:none;border:none;color:var(--text-secondary);cursor:pointer;">✕ 关闭</button></h2>
+<div id="productDetailContent"></div>
+</div>
+
+</div>
+</div>
+
+<!-- 周报系统 -->
+<div id="section-weekly" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>📊 本周数据统计</h2>
+<div class="stats-row">
+<div class="stat-box">
+<div class="stat-number" id="weekTasksCompleted">0</div>
+<div class="stat-name">完成任务</div>
+</div>
+<div class="stat-box">
+<div class="stat-number" id="studyHours">0h</div>
+<div class="stat-name">学习时长</div>
+</div>
+<div class="stat-box">
+<div class="stat-number" id="casesStudied">0</div>
+<div class="stat-name">案例学习</div>
+</div>
+</div>
+<div style="margin-top:20px;">
+<label style="font-size:0.92rem;color:var(--text-secondary);display:block;margin-bottom:8px;">本周学习时长（小时）：</label>
+<input type="number" id="hoursInput" placeholder="例如: 15" min="0" max="168" style="width:150px;">
+</div>
+</div>
+
+<div class="card">
+<h2>📝 周报内容填写</h2>
+<textarea id="weeklyAccomplishment" placeholder="本周主要成就和产出..." style="min-height:90px;"></textarea>
+<textarea id="weeklyLearning" placeholder="本周学到的关键知识点..." style="min-height:90px;margin-top:10px;"></textarea>
+<textarea id="weeklyChallenge" placeholder="遇到的挑战和解决方案..." style="min-height:90px;margin-top:10px;"></textarea>
+<textarea id="weeklyNextWeek" placeholder="下周计划和目标..." style="min-height:90px;margin-top:10px;"></textarea>
+<button class="btn" onclick="generateWeeklyReport()" style="margin-top:14px;">✨ 自动生成周报</button>
+</div>
+
+<div class="card">
+<h2>📄 生成的周报</h2>
+<div id="weeklyReportOutput" class="report-output"></div>
+<button class="btn btn-secondary" onclick="copyReport()" id="copyBtn" style="display:none;margin-top:10px;">📋 复制周报</button>
+<div id="reportHistory" style="margin-top:20px;"></div>
+</div>
+
+</div>
+
+</div>
+
+<!-- 成长系统 -->
+<div id="section-growth" class="section">
+
+<div class="grid">
+
+<div class="card">
+<h2>🏆 等级与经验值</h2>
+<div style="position:relative;width:120px;height:120px;margin:20px auto;">
+<svg class="progress-ring" viewBox="0 0 120 120" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+<defs>
+<linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#d4a853"/>
+<stop offset="100%" style="stop-color:#2dd4bf"/>
+</linearGradient>
+</defs>
+<circle class="progress-ring-circle" cx="60" cy="60" r="52"/>
+<circle class="progress-ring-progress" id="expProgress" cx="60" cy="60" r="52"
+stroke-dasharray="327" stroke-dashoffset="245"/>
+</svg>
+<div class="progress-text" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:10;">
+<div class="progress-value" id="currentLevel">Lv.2</div>
+<div class="progress-label">Prompt 工程师</div>
+</div>
+</div>
+<div style="text-align:center;margin-top:10px;">
+<span style="color:var(--text-secondary);font-size:0.9rem;">经验值: </span>
+<span style="color:var(--accent-gold);font-weight:600;" id="currentExp">250</span>
+<span style="color:var(--text-secondary);"> / 500 XP</span>
+</div>
+<div style="background:rgba(12,18,32,0.5);border-radius:10px;padding:14px;margin-top:16px;font-size:0.88rem;line-height:1.8;">
+<strong style="color:var(--accent-gold);">升级路径：</strong><br>
+Lv.1 AI 使用者 (0 XP)<br>
+Lv.2 Prompt 工程师 (250 XP) ← 当前<br>
+Lv.3 AI 产品经理 (750 XP)<br>
+Lv.4 AI Builder (1500 XP)<br>
+Lv.5 AI Founder (3000 XP)
+</div>
+</div>
+
+<div class="card">
+<h2>✅ 每日打卡</h2>
+<p style="font-size:0.9rem;color:var(--text-secondary);margin-bottom:12px;">坚持每天学习，养成成长习惯</p>
+<div class="checkin-grid" id="checkinGrid"></div>
+<div style="margin-top:16px;display:flex;align-items:center;justify-content:center;gap:12px;">
+<button class="btn" onclick="todayCheckin()">📌 今日打卡</button>
+<span id="streakCount" style="font-size:0.95rem;color:var(--accent-gold);font-weight:600;"></span>
+</div>
+<div style="margin-top:16px;background:rgba(12,18,32,0.5);border-radius:10px;padding:14px;font-size:0.86rem;color:var(--text-secondary);">
+<strong style="color:var(--accent-teal);">打卡奖励：</strong><br>
+• 连续 7 天: +50 XP<br>
+• 连续 30 天: +300 XP<br>
+• 完成 1 个案例学习: +20 XP<br>
+• 提交 1 次 Prompt 练习: +15 XP
+</div>
+</div>
+
+<div class="card">
+<h2>📈 成长轨迹</h2>
+<textarea id="growthJournal" placeholder="记录你的成长感悟和学习心得..." style="min-height:180px;"></textarea>
+<button class="btn" onclick="saveGrowthJournal()">保存成长日志</button>
+<div id="journalHistory" style="margin-top:16px;"></div>
+</div>
+
+<div class="card" style="grid-column: span 2;">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;">🧠 AI Coach 2.0 - 智能学习导师</h2>
+<div id="aiCoachV8Container"></div>
+</div>
+
+<div class="card">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;">📈 学习统计中心</h2>
+<div id="learningStatsContainer"></div>
+</div>
+
+<div class="card">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;">🎯 PM KPI 能力模型</h2>
+<div id="kpiRadarContainer"></div>
+</div>
+
+<div class="card">
+<h2 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;">❓ 面试题库</h2>
+<div id="interviewBankContainer"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem('v6_tasks')) || [
+{ id: 1, text: '阅读 OpenAI / Anthropic 最新动态', completed: false },
+{ id: 2, text: '学习 1 个产品拆解案例', completed: false },
+{ id: 3, text: '完成 Prompt 训练练习', completed: false },
+{ id: 4, text: '推进当前项目', completed: false },
+{ id: 5, text: '今日复盘和打卡', completed: false }
+];
+
+let projects = JSON.parse(localStorage.getItem('v6_projects')) || [
+{ id: 1, name: 'Smart Recipe Recommender', status: 'progress' },
+{ id: 2, name: 'AI 物流装载计算器', status: 'planning' },
+{ id: 3, name: 'AI 简历优化器', status: 'progress' },
+{ id: 4, name: 'RAG 知识库助手', status: 'completed' },
+{ id: 5, name: 'Agent 工作流平台', status: 'planning' }
+];
+
+let reviews = JSON.parse(localStorage.getItem('v6_reviews')) || [];
+let prompts = localStorage.getItem('v6_prompts') || '';
+let quickNotes = localStorage.getItem('v6_quicknotes') || '';
+let knowledgeNotes = localStorage.getItem('v6_knowledge') || '';
+let weeklyReports = JSON.parse(localStorage.getItem('v6_weekly')) || [];
+let checkins = JSON.parse.localStorage ? JSON.parse(localStorage.getItem('v6_checkins')) : [];
+try { checkins = JSON.parse(localStorage.getItem('v6_checkins')) || []; } catch(e) { checkins = []; }
+let growthJournal = JSON.parse(localStorage.getItem('v6_journal')) || [];
+let userExp = parseInt(localStorage.getItem('v6_exp')) || 250;
+let promptExercises = JSON.parse(localStorage.getItem('v6_exercises')) || {};
+
+function saveData() {
+localStorage.setItem('v6_tasks', JSON.stringify(tasks));
+localStorage.setItem('v6_projects', JSON.stringify(projects));
+localStorage.setItem('v6_reviews', JSON.stringify(reviews));
+localStorage.setItem('v6_weekly', JSON.stringify(weeklyReports));
+localStorage.setItem('v6_checkins', JSON.stringify(checkins));
+localStorage.setItem('v6_journal', JSON.stringify(growthJournal));
+localStorage.setItem('v6_exercises', JSON.stringify(promptExercises));
+localStorage.setItem('v6_exp', userExp.toString());
+}
+
+function switchTab(tabName) {
+document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+document.getElementById('section-' + tabName).classList.add('active');
+event.target.classList.add('active');
+}
+
+function switchKnowledgePage(pageId) {
+document.querySelectorAll('.knowledge-page').forEach(page => {
+page.classList.remove('active');
+});
+document.querySelectorAll('.knowledge-nav-btn').forEach(btn => {
+btn.classList.remove('active');
+});
+document.getElementById('knowledge-' + pageId).classList.add('active');
+event.target.classList.add('active');
+}
+
+function renderTasks() {
+const list = document.getElementById('taskList');
+list.innerHTML = tasks.map(t => `
+<li onclick="toggleTask(${t.id})" class="${t.completed?'completed':''}">
+<span>${t.completed?'✓':'○'}</span>
+<span>${t.text}</span>
+<span onclick="event.stopPropagation();deleteTask(${t.id})" style="margin-left:auto;cursor:pointer;color:var(--accent-coral);">×</span>
+</li>`).join('');
+document.getElementById('taskTotal').textContent = tasks.length;
+document.getElementById('taskCompleted').textContent = tasks.filter(t => t.completed).length;
+}
+
+function addTask() {
+const input = document.getElementById('taskInput');
+if(input.value.trim()) {
+tasks.push({id:Date.now(), text:input.value.trim(), completed:false});
+input.value=''; saveData(); renderTasks();
+}
+}
+
+function toggleTask(id) {
+const t = tasks.find(x => x.id===id);
+if(t) { t.completed=!t.completed; saveData(); renderTasks(); addExp(5); }
+}
+
+function deleteTask(id) {
+tasks = tasks.filter(t=>t.id!==id); saveData(); renderTasks();
+}
+
+function renderProjects() {
+const list = document.getElementById('projectList');
+list.innerHTML = projects.map(p => {
+const colors = {progress:'var(--accent-teal)',planning:'var(--accent-gold)',completed:'var(--text-secondary)'};
+const labels = {progress:'进行中',planning:'规划中',completed:'已完成'};
+return `<div style="background:rgba(12,18,32,0.5);padding:14px;border-radius:11px;margin-bottom:10px;border-left:3px solid ${colors[p.status]};display:flex;justify-content:space-between;align-items:center;">
+<div><strong>${p.name}</strong></div>
+<div><span style="color:${colors[p.status]};font-size:0.82rem;font-weight:600;">${labels[p.status]}</span>
+<span onclick="deleteProject(${p.id})" style="cursor:pointer;color:var(--accent-coral);margin-left:10px;">×</span></div>
+</div>`;
+}).join('');
+}
+
+function addProject() {
+const input = document.getElementById('projectInput');
+const status = document.getElementById('projectStatus').value;
+if(input.value.trim()) {
+projects.push({id:Date.now(), name:input.value.trim(), status});
+input.value=''; saveData(); renderProjects();
+}
+}
+
+function deleteProject(id) {
+projects = projects.filter(p=>p.id!==id); saveData(); renderProjects();
+}
+
+function saveNotes() {
+quickNotes = document.getElementById('quickNotes').value;
+localStorage.setItem('v6_quicknotes', quickNotes);
+alert('笔记已保存！');
+}
+
+function savePrompts() {
+prompts = document.getElementById('promptLibrary').value;
+localStorage.setItem('v6_prompts', prompts);
+alert('Prompt 收藏已保存！');
+}
+
+function savePrompt(level) {
+const el = document.getElementById('prompt'+level.charAt(0).toUpperCase()+level.slice(1));
+promptExercises[level] = {content:el.value, date:new Date().toLocaleDateString()};
+saveData();
+alert(level==='beginner'?'入门级练习已提交！':level==='intermediate'?'进阶级练习已提交！':'高级练习已提交！');
+addExp(level==='beginner'?15:level==='intermediate'?25:40);
+}
+
+function saveKnowledgeNotes() {
+knowledgeNotes = document.getElementById('knowledgeNotes').value;
+localStorage.setItem('v6_knowledge', knowledgeNotes);
+alert('知识笔记已保存！');
+}
+
+function saveProjectDetail() {
+localStorage.setItem('v6_project_detail', document.getElementById('projectDetail').value);
+alert('项目进展已保存！');
+}
+
+function syncToGithub() {
+const repo = document.getElementById('githubRepo').value;
+const token = document.getElementById('githubToken').value;
+const status = document.getElementById('syncStatus');
+status.innerHTML = '<span style="color:var(--accent-gold);">⏳ 正在同步...</span>';
+setTimeout(() => {
+status.innerHTML = '<span style="color:var(--accent-teal);">✅ 同步成功！(模拟)</span>';
+}, 1500);
+}
+
+function generateWeeklyReport() {
+const accomplishment = document.getElementById('weeklyAccomplishment').value;
+const learning = document.getElementById('weeklyLearning').value;
+const challenge = document.getElementById('weeklyChallenge').value;
+const nextWeek = document.getElementById('weeklyNextWeek').value;
+const hours = document.getElementById('hoursInput').value || '0';
+const completedTasks = tasks.filter(t=>t.completed).length;
+
+const report = `📊 AI PM Academy - 周报
+===========================
+📅 时间范围: ${new Date().toLocaleDateString('zh-CN')} (本周)
+
+📈 本周数据
+---------------------------
+✅ 完成任务: ${completedTasks} 个
+📚 学习时长: ${hours} 小时
+🎯 经验值获得: +${Math.min(completedTasks*5 + parseInt(hours)*10, 200)} XP
+
+🏆 主要成就
+---------------------------
+${accomplishment || '(未填写)'}
+
+📖 关键学习
+---------------------------
+${learning || '(未填写)'}
+
+⚠️ 挑战与解决
+---------------------------
+${challenge || '(未填写)'}
+
+🎯 下周计划
+---------------------------
+${nextWeek || '(未填写)'}
+
+---
+Generated by AI PM Academy Dashboard V6`;
+
+document.getElementById('weeklyReportOutput').textContent = report;
+document.getElementById('copyBtn').style.display = 'inline-flex';
+
+weeklyReports.unshift({
+id:Date.now(),
+date:new Date().toLocaleDateString('zh-CN'),
+summary:`${completedTasks}任务/${hours}小时`
+});
+saveData();
+renderWeeklyHistory();
+addExp(30);
+}
+
+function copyReport() {
+navigator.clipboard.writeText(document.getElementById('weeklyReportOutput').textContent);
+alert('周报已复制到剪贴板！');
+}
+
+function renderWeeklyHistory() {
+const hist = document.getElementById('reportHistory');
+hist.innerHTML = '<h3 style="margin-bottom:12px;color:var(--accent-gold);">历史周报</h3>' +
+weeklyReports.slice(0,5).map(r =>
+`<div style="background:rgba(12,18,32,0.5);padding:12px;border-radius:10px;margin-bottom:8px;font-size:0.88rem;">
+<span style="color:var(--accent-teal);">📅 ${r.date}</span> - ${r.summary}
+</div>`
+).join('');
+}
+
+function renderCheckinGrid() {
+const grid = document.getElementById('checkinGrid');
+const today = new Date();
+const dayNames = ['日','一','二','三','四','五','六'];
+let html = '';
+for(let i=6;i>=0;i--) {
+const d = new Date(today);
+d.setDate(d.getDate()-i);
+const dateStr = d.toLocaleDateString('zh-CN');
+const isToday = i===0;
+const isChecked = checkins.includes(dateStr);
+html += `<div class="checkin-day ${isChecked?'checked':''} ${isToday?'today':''}" onclick="toggleCheckin('${dateStr}')">
+<div>${d.getDate()}</div>
+<div>${dayNames[d.getDay()]}</div>
+</div>`;
+}
+grid.innerHTML = html;
+updateStreak();
+}
+
+function toggleCheckin(dateStr) {
+if(checkins.includes(dateStr)) {
+checkins = checkins.filter(c=>c!==dateStr);
+} else {
+checkins.push(dateStr);
+addExp(10);
+}
+saveData(); renderCheckinGrid();
+}
+
+function todayCheckin() {
+const today = new Date().toLocaleDateString('zh-CN');
+if(!checkins.includes(today)) {
+checkins.push(today);
+addExp(10);
+saveData(); renderCheckinGrid();
+alert('✅ 打卡成功！+10 XP');
+} else {
+alert('今天已经打过卡啦！');
+}
+}
+
+function updateStreak() {
+let streak = 0;
+const today = new Date();
+for(let i=0;i<365;i++) {
+const d = new Date(today);
+d.setDate(d.getDate()-i);
+if(checkins.includes(d.toLocaleDateString('zh-CN'))) streak++;
+else break;
+}
+document.getElementById('streakCount').textContent = `🔥 连续 ${streak} 天`;
+}
+
+function updateLevelUI() {
+let level = 1, threshold = 0;
+const levels = [0,250,750,1500,3000];
+for(let i=levels.length-1;i>=0;i--) {
+if(userExp >= levels[i]) { level=i+1; threshold=levels[i]; break; }
+}
+const nextThreshold = levels[level] || 9999;
+const progress = ((userExp-threshold)/(nextThreshold-threshold))*327;
+
+document.getElementById('currentLevel').textContent = 'Lv.'+level;
+document.getElementById('currentExp').textContent = userExp;
+document.getElementById('expProgress').setAttribute('stroke-dashoffset', 327-progress);
+
+const titles = ['','AI使用者','Prompt工程师','AI产品经理','AI Builder','AI Founder'];
+document.querySelector('.progress-label').textContent = titles[level] || '';
+}
+
+function addExp(amount) {
+userExp += amount;
+localStorage.setItem('v6_exp', userExp.toString());
+updateLevelUI();
+}
+
+function saveGrowthJournal() {
+const content = document.getElementById('growthJournal').value;
+if(content.trim()) {
+growthJournal.unshift({id:Date.now(),date:new Date().toLocaleDateString('zh-CN'),content:content.trim()});
+document.getElementById('growthJournal').value='';
+saveData(); renderJournal();
+addExp(20);
+alert('成长日志已保存！+20 XP');
+}
+}
+
+function renderJournal() {
+const hist = document.getElementById('journalHistory');
+hist.innerHTML = growthJournal.slice(0,5).map(j =>
+`<div style="background:rgba(12,18,32,0.5);padding:14px;border-radius:10px;margin-bottom:10px;">
+<div style="font-size:0.82rem;color:var(--accent-gold);margin-bottom:6px;">📅 ${j.date}</div>
+<div style="font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">${j.content.substring(0,120)}${j.length>120?'...':''}</div>
+</div>`
+).join('');
+}
+
+const aiProducts = [
+{
+name: "Cursor",
+category: "AI编程工具",
+difficulty: "⭐⭐⭐ 中级",
+time: "45分钟",
+link: "cursor.sh",
+hot: "🔥 GitHub 40K+ Stars",
+fit: "想了解AI原生产品设计",
+observations: [
+"首页设计 - Hero区域的价值主张如何表达？用户第一眼看到什么？",
+"Pricing策略 - 免费版到付费版的转化路径？定价心理学？",
+"Agent/AI能力 - AI如何深度集成到产品中？是核心还是辅助？",
+"Onboarding流程 - 新用户的首次使用体验？如何快速展示价值？"
+],
+resource: "📖 知识库: LLM & Transformer | 🔗 cursor.sh/blog"
+},
+{
+name: "Lovable",
+category: "AI应用构建",
+difficulty: "⭐⭐ 入门级",
+time: "30分钟",
+link: "lovable.dev",
+hot: "🔥 Product Hunt #1",
+fit: "非技术人员了解No-Code+AI",
+observations: [
+"自然语言转UI - Prompt如何映射到界面元素？",
+"实时预览 - 用户如何获得即时反馈？",
+"数据库自动生成 - CRUD操作的抽象层次？",
+"部署一体化 - 从创建到上线的用户旅程？"
+],
+resource: "📖 知识库: Agent & MCP | 🔗 lovable.dev"
+},
+{
+name: "Bolt.new",
+category: "全栈AI生成",
+difficulty: "⭐⭐⭐ 中级",
+time: "40分钟",
+link: "bolt.new",
+hot: "🔥 StackBlitz出品",
+fit: "了解端到端AI应用生成",
+observations: [
+"零配置部署 - 如何消除技术门槛？",
+"真实运行环境 - 与mock原型的区别？",
+"迭代修改 - 对话式产品迭代的体验？",
+"开源友好 - 代码可见性对信任的影响？"
+],
+resource: "📖 知识库: LLM & Transformer | 🔗 bolt.new"
+},
+{
+name: "Perplexity",
+category: "AI搜索引擎",
+difficulty: "⭐⭐ 入门级",
+time: "35分钟",
+link: "perplexity.ai",
+hot: "🔥 月活10M+",
+fit: "了解AI+搜索的产品形态",
+observations: [
+"引用机制 - 每句话都有来源链接的设计？",
+"实时联网 - 与传统LLM的核心差异？",
+"Follow-up问题链 - 如何引导深度探索？",
+"Collections功能 - 研究场景的用户价值？"
+],
+resource: "📖 知识库: RAG & 向量数据库 | 🔗 perplexity.ai"
+},
+{
+name: "Gamma",
+category: "AI演示文稿",
+difficulty: "⭐ 入门级",
+time: "25分钟",
+link: "gamma.app",
+hot: "🔥 5000万+演示文稿",
+fit: "效率工具类AI产品的学习",
+observations: [
+"大纲引导 - 先结构后内容的创作流程？",
+"设计自动化 - 排版配色的决策逻辑？",
+"多格式输出 - 一内容多场景的策略？",
+"品牌套件 - 企业级需求的满足方式？"
+],
+resource: "📖 知识库: Skills系统 | 🔗 gamma.app"
+},
+{
+name: "Midjourney",
+category: "AI图像生成",
+difficulty: "⭐⭐⭐ 中级",
+time: "50分钟",
+link: "midjourney.com",
+hot: "🔥 年收入$2亿+",
+fit: "创意类AI产品的商业模式",
+observations: [
+"Discord作为载体 - 社区驱动的获客策略？",
+"风格一致性 - --sref参数的PM思考？",
+"社区驱动 - UGC形成飞轮效应的机制？",
+"提示词文化 - 用户教育的成功案例？"
+],
+resource: "📖 知识库: 工具 & 框架 | 🔗 midjourney.com"
+},
+{
+name: "n8n",
+category: "工作流自动化",
+difficulty: "⭐⭐⭐⭐ 高级",
+time: "60分钟",
+link: "n8n.io",
+hot: "🔥 开源40K+ Stars",
+fit: "企业级AI工作流设计",
+observations: [
+"节点式编程 - 可视化编排的用户体验？",
+"200+集成 - 平台生态的构建策略？",
+"Self-hosted vs Cloud - 部署选项的定价影响？",
+"AI Agent节点 - 自动化的新范式？"
+],
+resource: "📖 知识库: Agent & MCP | 🔗 n8n.io"
+}
+];
+
+let currentCoachIndex = 0;
+
+function initAICoach() {
+const today = new Date().toDateString();
+let savedIndex = localStorage.getItem('v7_coach_index');
+if (savedIndex && localStorage.getItem('v7_coach_date') === today) {
+currentCoachIndex = parseInt(savedIndex);
+} else {
+currentCoachIndex = Math.floor(Math.random() * aiProducts.length);
+localStorage.setItem('v7_coach_date', today);
+localStorage.setItem('v7_coach_index', currentCoachIndex.toString());
+}
+renderAICoach();
+}
+
+function renderAICoach() {
+const product = aiProducts[currentCoachIndex];
+document.getElementById('coachProductName').textContent = product.name;
+document.getElementById('coachDifficulty').textContent = product.difficulty;
+document.getElementById('coachCategory').innerHTML = `<strong>类别：</strong>${product.category}<br><strong>热度：</strong>${product.hot}<br><strong>适合：</strong>${product.fit}`;
+document.getElementById('coachTimeNeeded').innerHTML = `建议时长：<strong>${product.time}</strong><br>• 首页分析：${Math.floor(parseInt(product.time)/5)}min<br>• Pricing研究：${Math.floor(parseInt(product.time)/5)}min<br>• 功能体验：${Math.floor(parseInt(product.time)/3)}min<br>• 总结反思：${Math.floor(parseInt(product.time)/5)}min`;
+document.getElementById('coachObservations').innerHTML = product.observations.map((obs, i) => `<li><strong>${obs.split(' - ')[0]}</strong> - ${obs.split(' - ')[1] || ''}</li>`).join('');
+document.getElementById('coachTasks').innerHTML = `☐ 访问 <span id="coachProductLink">${product.link}</span>，记录第一印象<br>☐ 分析首页的3个关键转化元素<br>☐ 对比免费版/付费版的功能差异<br>☐ 思考：如果让你重新设计这个产品...<br>☐ 在产品拆解学院查看完整案例`;
+document.getElementById('coachResourceLinks').textContent = product.resource;
+}
+
+function refreshCoach() {
+currentCoachIndex = (currentCoachIndex + 1) % aiProducts.length;
+localStorage.setItem('v7_coach_index', currentCoachIndex.toString());
+renderAICoach();
+addExp(2);
+}
+
+function addCoachToTasks() {
+const product = aiProducts[currentCoachIndex];
+const coachTask = `🎯 AI Coach推荐: 拆解分析 ${product.name} (${product.time})`;
+if (!tasks.find(t => t.text.includes(product.name))) {
+tasks.push({id: Date.now(), text: coachTask, completed: false});
+saveData(); renderTasks();
+addExp(5);
+alert(`✅ 已将"${product.name}"拆解任务添加到今日待办！`);
+} else {
+alert('该产品已在今日任务列表中！');
+}
+}
+
+const discoveryProducts = [
+{name: "ChatGPT", category: "chat", icon: "🤖", url: "https://chat.openai.com", desc: "OpenAI对话式AI助手", hot: true, rating: 4.9},
+{name: "Claude", category: "chat", icon: "🔮", url: "https://claude.ai", desc: "Anthropic安全优先AI", hot: true, rating: 4.8},
+{name: "Perplexity", category: "chat", icon: "🔍", url: "https://perplexity.ai", desc: "AI搜索引擎", hot: true, rating: 4.8},
+{name: "Pi", category: "chat", icon: "💬", url: "https://pi.ai", desc: "情感陪伴型AI", hot: false, rating: 4.6},
+{name: "Character.ai", category: "chat", icon: "🎭", url: "https://character.ai", desc: "角色扮演AI平台", hot: false, rating: 4.7},
+{name: "Cursor", category: "code", icon: "⚡", url: "https://cursor.sh", desc: "AI原生代码编辑器", hot: true, rating: 4.9},
+{name: "GitHub Copilot", category: "code", icon: "🐙", url: "https://github.com/features/copilot", desc: "AI编程助手", hot: true, rating: 4.8},
+{name: "Lovable", category: "code", icon: "🎨", url: "https://lovable.dev", desc: "自然语言生成App", hot: true, rating: 4.8},
+{name: "Bolt.new", category: "code", icon: "⚡", url: "https://bolt.new", desc: "全栈AI应用生成", hot: true, rating: 4.7},
+{name: "Midjourney", category: "creative", icon: "🎨", url: "https://midjourney.com", desc: "AI图像生成", hot: true, rating: 4.9},
+{name: "Gamma", category: "creative", icon: "📊", url: "https://gamma.app", desc: "AI演示文稿制作", hot: true, rating: 4.7},
+{name: "Canva AI", category: "creative", icon: "✨", url: "https://canva.com", desc: "AI设计平台", hot: false, rating: 4.6},
+{name: "Runway", category: "creative", icon: "🎬", url: "https://runwayml.com", desc: "AI视频创作", hot: false, rating: 4.5},
+{name: "Notion AI", category: "productivity", icon: "📝", url: "https://notion.so", desc: "AI知识管理", hot: true, rating: 4.7},
+{name: "Zapier AI", category: "productivity", icon: "⚡", url: "https://zapier.com", desc: "AI自动化平台", hot: false, rating: 4.5},
+{name: "Otter.ai", category: "productivity", icon: "🎙️", url: "https://otter.ai", desc: "AI会议记录", hot: false, rating: 4.4},
+{name: "n8n", category: "productivity", icon: "🔄", url: "https://n8n.io", desc: "工作流自动化", hot: true, rating: 4.6},
+{name: "Hugging Face", category: "infra", icon: "🤗", url: "https://huggingface.co", desc: "AI模型平台", hot: true, rating: 4.9},
+{name: "Pinecone", category: "infra", icon: "🌲", url: "https://pinecone.io", desc: "向量数据库", hot: false, rating: 4.5},
+{name: "LangChain", category: "infra", icon: "⛓️", url: "https://langchain.com", desc: "LLM开发框架", hot: true, rating: 4.7}
+];
+
+let currentFilter = 'all';
+
+function renderDiscovery(filter = 'all') {
+currentFilter = filter;
+const grid = document.getElementById('discoveryGrid');
+if (!grid) return;
+
+const filtered = filter === 'all' ? discoveryProducts : discoveryProducts.filter(p => p.category === filter);
+
+grid.innerHTML = filtered.map(product => `
+<div style="background:rgba(12,18,32,0.6);border:1px solid var(--border-color);border-radius:14px;padding:20px;transition:all 0.3s ease;cursor:pointer;"
+onmouseover="this.style.transform='translateY(-4px)';this.style.borderColor='var(--accent-gold)'"
+onmouseout="this.style.transform='none';this.style.borderColor='var(--border-color)'"
+onclick="window.open('${product.url}','_blank')">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+<span style="font-size:2rem;">${product.icon}</span>
+<div>
+<div style="font-weight:600;font-size:1.1rem;color:var(--text-primary);">${product.name}</div>
+<div style="font-size:0.85rem;color:var(--text-secondary);">${product.desc}</div>
+</div>
+${product.hot ? '<span style="margin-left:auto;background:linear-gradient(135deg,var(--accent-coral),#e91e63);color:white;padding:2px 10px;border-radius:12px;font-size:0.75rem;font-weight:600;">HOT</span>' : ''}
+</div>
+<div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;">
+<div style="display:flex;gap:4px;">
+${'⭐'.repeat(Math.floor(product.rating))}${product.rating % 1 >= 0.5 ? '½' : ''} <span style="font-size:0.85rem;color:var(--text-secondary);">${product.rating}</span>
+</div>
+<a href="${product.url}" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent-teal);font-size:0.88rem;font-weight:500;text-decoration:none;">访问官网 →</a>
+</div>
+</div>
+`).join('');
+}
+
+function filterDiscovery(category) {
+document.querySelectorAll('.discovery-filter-btn').forEach(btn => {
+btn.classList.remove('active');
+btn.style.color = 'var(--text-secondary)';
+});
+event.target.classList.add('active');
+event.target.style.color = 'var(--text-primary)';
+renderDiscovery(category);
+}
+
+window.onload = function() {
+renderTasks(); renderProjects(); renderCheckinGrid(); updateLevelUI();
+renderWeeklyHistory(); renderJournal();
+initAICoach();
+renderDiscovery();
+if(typeof renderProducts === 'function') renderProducts();
+if(typeof renderAICoach20 === 'function') renderAICoach20();
+if(typeof renderLearningStats === 'function') renderLearningStats();
+if(typeof renderKPIRadar === 'function') renderKPIRadar();
+if(typeof renderInterviewBank === 'function') renderInterviewBank();
+if(typeof renderPromptStats === 'function') renderPromptStats();
+if(typeof renderTemplateLibrary === 'function') renderTemplateLibrary();
+if(typeof renderPortfolio === 'function') renderPortfolio();
+if(typeof renderPortfolioStats === 'function') renderPortfolioStats();
+
+if(quickNotes) document.getElementById('quickNotes').value = quickNotes;
+if(prompts) document.getElementById('promptLibrary').value = prompts;
+if(knowledgeNotes) document.getElementById('knowledgeNotes').value = knowledgeNotes;
+
+const detail = localStorage.getItem('v6_project_detail');
+if(detail) document.getElementById('projectDetail').value = detail;
+
+['beginner','intermediate','advanced'].forEach(lvl => {
+if(promptExercises[lvl]) {
+const el = document.getElementById('prompt'+lvl.charAt(0).toUpperCase()+lvl.slice(1));
+if(el) el.value = promptExercises[lvl].content;
+}
+});
+};
+</script>
+<script src="product-database.js?v=5"></script>
+<script src="growth-system-v8.js?v=2"></script>
+<script src="prompt-enhancement-v8.js"></script>
+<script src="portfolio-system-v8.js"></script>
+
+</body>
+</html>

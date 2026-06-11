@@ -1,103 +1,41 @@
-# AI PM Academy - Dashboard V8 Intelligence Edition
+# AI PM Academy Dashboard V9 - Learning Engine
 
-面向 AI 产品经理的成长分析平台 - 从"会用 AI"到"会设计 AI 产品"
+面向 AI 产品经理的职业训练系统。V9 在原 V8 Dashboard 的基础上做增量优化，保留原有内容与模块，同时加入“目标 -> 任务 -> 产出 -> 作品集”的学习闭环。
 
-## 🎓 V8 重大升级：Intelligence Edition
+## V9 核心变化
 
-**定位升级：** 从学习平台 → **AI产品经理成长分析平台**
+- **保留 V8 原内容**：首页、产品数据库、Prompt 训练营、AI 知识库、项目中心、成长系统、作品集增强脚本继续保留。
+- **首页增量增强**：在原首页顶部新增 V9 Learning Engine 面板，而不是重做整个页面。
+- **证据型任务**：今日任务必须填写真实产出，V9 使用 `v9_` LocalStorage 前缀，不覆盖旧版数据。
+- **产品拆解生成器**：基于原有产品数据库生成产品拆解报告，并可保存为作品集素材。
+- **AI PM 工作流模板**：新增 PRD / RAG / Agent 类工作流模板入口。
+- **能力模型**：7 个维度追踪 AI PM 能力差距：AI 技术理解、产品分析、AI UX、Prompt / Workflow、数据评估、商业化、作品表达。
 
-## ✨ 六大核心模块
+## 访问地址
 
-### 🏠 首页 - 每日启动台
-- **📰 AI 新闻入口**: OpenAI Blog, Anthropic News, Hugging Face, VentureBeat AI
-- **🔥 灵感发现**: Product Hunt AI, There's An AI For That, GitHub Trending, Y Combinator
-- **✅ 今日任务系统**: 任务管理 + 实时统计
-- **💡 快速笔记**: 记录灵感和想法
+- GitHub Pages 根入口：`https://jimmyd-829.github.io/ai-product-manager-dashboard/`
+- V9 直达：`https://jimmyd-829.github.io/ai-product-manager-dashboard/AI_PM_OS_Dashboard_V9.html`
+- V8 历史版：`AI_PM_OS_Dashboard_V8.html`
+- V5 历史版：`AI_PM_OS_Dashboard_V5.html`
 
-### � 产品数据库 - 15个核心AI产品（V8核心）
-- **6大分类**: 聊天助手/编程工具/创意设计/效率自动化/基础设施
-- **完整数据模型**: 定位/用户/价值/功能/商业模式/PM分析
-- **搜索筛选 + 收藏系统**
-- **产品详情页深度展示**
+## 本地打开
 
-### 🧠 Prompt训练营 - 增强版
-- **三级训练体系**: 入门/进阶级/高级
-- **统计面板**: 累计创作/本周新增/连续天数/平均评分
-- **模板库**: 8个专业模板（RCGCF/PRD/竞品分析等）
-- **RCGCF公式详解 + 对比案例**
-
-### 🔬 AI 知识库 - 三大核心技术
-1. **RAG (检索增强生成)**
-2. **Agent (智能体)**
-3. **MCP (Model Context Protocol)**
-
-### 💻 项目中心 + 作品集管理（V8合并）
-- **项目管理**: 添加与状态管理
-- **作品集展示**: 项目卡片/技能标签/浏览量统计
-- **项目详情 + 添加新项目**
-
-### 🏆 成长系统 - 超级模块（V8增强）
-- **AI Coach 2.0**: 智能学习导师 + 个性化建议
-- **学习数据中心**: 统计面板 + 成就徽章
-- **PM KPI能力模型**: 7维度可视化评估
-- **面试题库**: 12道精选题目（含解题提示）
-- **等级体系 + 打卡机制**
-
-## 🎨 V8 设计特色
-
-- **模块化架构**: 4个独立JS文件
-- **响应式设计**: 移动端完美适配
-- **数据持久化**: LocalStorage保存所有进度
-- **渐进式加载**: 兼容性优化
-
-## 🚀 快速开始
+直接打开：
 
 ```bash
-# 方式一：直接打开
-双击 AI_PM_OS_Dashboard.html
-
-# 方式二：GitHub Pages访问
-https://jimmyd-829.github.io/ai-product-manager-dashboard/
-
-# 方式三：本地服务器
-python -m http.server 8000
-# 浏览器访问 http://localhost:8000/AI_PM_OS_Dashboard.html
+AI_PM_OS_Dashboard_V9.html
 ```
 
-## 📱 技术栈
+如果需要本地服务，可以用任意静态服务器托管当前目录。
 
-- **HTML5** - 语义化结构
-- **CSS3** - Grid/Flexbox布局、动画、渐变
-- **Vanilla JavaScript (ES6+)** - 无框架依赖
-- **LocalStorage API** - 数据持久化
-- **Google Fonts** - Cormorant Garamond + Outfit
+## 技术栈
 
-## 🆚 V7 vs V8 对比
+- HTML5
+- CSS3 Grid / Flexbox
+- Vanilla JavaScript
+- LocalStorage
+- GitHub Pages
 
-| 特性 | V7 | V8 |
-|------|----|----|
-| 定位 | 学习平台 | 成长分析平台 |
-| 产品数据库 | 无 | 15个完整产品 |
-| AI Coach | 基础版 | 2.0智能导师 |
-| KPI能力 | 无 | 7维度评估 |
-| 面试题库 | 无 | 12道精选题 |
-| Prompt模板 | 无 | 8个专业模板 |
-| 作品集 | 无 | Portfolio管理 |
+## 版本说明
 
-## 🎯 适用人群
-
-✅ AI 产品经理（初级→高级）
-✅ Prompt 工程师
-✅ AI 创业者
-✅ 想要系统学习 AI 产品设计的转型者
-
-## 📄 License
-
-MIT License
-
----
-
-**作者**: JimmyD
-**版本**: V8 - Intelligence Edition
-**更新时间**: 2026-06-01
-**GitHub**: https://github.com/JimmyD-829/ai-product-manager-dashboard
+V9 保持纯静态架构，不接后端，不在前端暴露 API Key。第一版采用规则型逻辑，重点是在不破坏原 V8 内容的前提下补上“学习目标 -> 每日训练 -> 产出证据 -> 作品集”的闭环。
